@@ -1,0 +1,162 @@
+:root {
+  /* Brand Colors */
+  --mal-indigo-950: #0B1838;
+  --mal-indigo-900: #14244D;
+  --mal-indigo-800: #1C3470;
+  --mal-indigo-700: #24449B;
+  --mal-indigo-600: #3B5BBF;
+  --mal-indigo-500: #5977D4;
+  
+  --mal-ochre-900: #7A4D0E;
+  --mal-ochre-800: #A36612;
+  --mal-ochre-700: #CD8117;
+  --mal-ochre-600: #E2971F;
+  --mal-ochre-500: #F4B149;
+  
+  --mal-clay-900: #6B2D21;
+  --mal-clay-700: #AD4935;
+  --mal-clay-500: #D06D59;
+  
+  --mal-sage-700: #4B5E4C;
+  --mal-sage-500: #6E8A6F;
+  --mal-sage-300: #A1B6A2;
+  
+  --mal-bone-100: #FBF8F2;
+  --mal-bone-200: #F5EFE1;
+  --mal-bone-300: #E8E0CE;
+  
+  --mal-ink-950: #14120B;
+  --mal-ink-800: #3D392E;
+  --mal-ink-600: #6B6452;
+  --mal-ink-400: #9C9583;
+
+  /* Semantic Tokens */
+  --bg-page: var(--mal-bone-100);
+  --bg-surface: #FFFFFF;
+  --bg-sunken: var(--mal-bone-200);
+  --bg-inverted: var(--mal-indigo-950);
+  
+  --fg-main: var(--mal-ink-950);
+  --fg-muted: var(--mal-ink-600);
+  --fg-on-dark: var(--mal-bone-100);
+  --fg-link: var(--mal-indigo-700);
+  --fg-accent: var(--mal-ochre-700);
+  
+  --border-soft: var(--mal-bone-300);
+  --border-strong: var(--mal-ink-800);
+  
+  /* Typos */
+  --font-serif: "Source Serif 4", serif;
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  
+  /* Spacing */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-8: 48px;
+  --s-10: 64px;
+  --s-12: 80px;
+  
+  /* Radius */
+  --r-1: 2px;
+  --r-2: 4px;
+  --r-3: 8px;
+  --r-pill: 999px;
+  
+  /* Shadows */
+  --shadow-1: 0 2px 4px rgba(20, 18, 11, 0.04);
+  --shadow-2: 0 12px 24px rgba(20, 18, 11, 0.08);
+  --shadow-3: 0 24px 48px rgba(20, 18, 11, 0.12);
+}
+
+/* Base resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--fg-main);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .serif {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+a {
+  color: var(--fg-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.2s, text-decoration-thickness 0.2s;
+}
+
+a:hover {
+  color: var(--mal-ochre-700);
+  text-decoration-thickness: 2px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--fg-accent);
+  margin-bottom: var(--s-2);
+  font-weight: 600;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-2) var(--s-4);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: var(--r-2);
+  cursor: pointer;
+  transition: 0.2s cubic-bezier(0.2, 0.6, 0.2, 1);
+  border: 1px solid transparent;
+  gap: var(--s-2);
+}
+
+.btn-primary {
+  background-color: var(--mal-indigo-700);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--mal-indigo-800);
+}
+
+.btn-secondary {
+  background-color: white;
+  border-color: var(--border-soft);
+  color: var(--fg-main);
+}
+
+.btn-secondary:hover {
+  background-color: var(--mal-bone-100);
+}
+
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-2);
+  padding: var(--s-5);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-2);
+}

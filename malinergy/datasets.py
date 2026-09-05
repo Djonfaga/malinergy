@@ -27,6 +27,8 @@ DATASET_FILES = {
     "outages": "outages.json",
     "reforms": "reforms.json",
     "interventions": "interventions.json",
+    "observations": "observations.json",
+    "mines": "mines.json",
 }
 
 CONFIDENCE_ORDER = ("haute", "moyenne", "faible")
@@ -196,6 +198,13 @@ class Registry:
             for end in ("from", "to"):
                 if line[end] not in node_ids:
                     raise DataError(f"ligne réseau vers un nœud inconnu: {line[end]}")
+
+        obs_ids = [o["id"] for o in self["observations"]["observations"]]
+        if len(set(obs_ids)) != len(obs_ids):
+            raise DataError("le corpus contient des observations en double")
+        for obs in self["observations"]["observations"]:
+            if not obs.get("unit"):
+                raise DataError(f"observation sans unité: {obs['id']}")
 
         months = [row["month"] for row in self["outages"]["series"]]
         if months != sorted(months):

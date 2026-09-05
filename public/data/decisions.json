@@ -3,11 +3,15 @@
   "snapshot": "2026-01",
   "data": {
     "findings": [
-      "Chaque kWh vendu rapporte 96 FCFA et en coûte 147. L'écart de 52 FCFA/kWh n'est pas un choix tarifaire: c'est une dette de 75 milliards FCFA par an qui se reporte sur le budget, puis sur les fournisseurs.",
+      "Chaque kWh vendu rapporte 96 FCFA et en coûte 123. L'écart de 28 FCFA/kWh n'est pas un choix tarifaire: c'est une dette de 40 milliards FCFA par an qui se reporte sur le budget, puis sur les fournisseurs.",
       "Le délestage a coûté environ 135 milliards FCFA à l'économie sur douze mois, pour 145 GWh non fournis (10.0% des ventes). Subir un kWh manquant coûte 3.9 fois plus cher que le produire au coût marginal: l'inaction est l'option la plus chère du tableau.",
       "Le déficit est un déficit de puissance ferme, pas d'énergie: 489 MW disponibles le soir contre 620 MW de pointe et 800 MW de demande latente. Ajouter du solaire sans stockage réduit la facture de carburant sans réduire le délestage du soir.",
       "L'irradiation ne varie que de 11% entre le meilleur et le moins bon site du pays, alors que le coût de raccordement varie d'un facteur 125. Choisir un site pour son ensoleillement plutôt que pour son raccordement, c'est optimiser la variable la moins importante.",
-      "Les mesures sans regret identifiées valent 18 milliards FCFA par an et ne dépendent d'aucune réforme non acquise. Elles portent sur l'énergie déjà produite: pertes, recouvrement, arriérés."
+      "Les mesures sans regret identifiées valent 18 milliards FCFA par an et ne dépendent d'aucune réforme non acquise. Elles portent sur l'énergie déjà produite: pertes, recouvrement, arriérés.",
+      "52% de la puissance ferme dépend d'un carburant acheminé par la route. Depuis septembre 2025, plus de 300 camions-citernes ont été détruits sur ces axes. Le carburant importé n'est plus seulement le poste le plus cher du parc: c'est le seul qu'un tiers peut interrompre. L'option qui retire le plus de puissance de cette dépendance en retire 88 MW.",
+      "Les mines d'or exploitent déjà 185 MW en autoproduction, soit 44% de la capacité thermique d'EDM-SA, dont 50 MW de solaire avec stockage. L'arbitrage que le secteur public débat encore, des acteurs privés l'ont tranché sur leurs propres fonds et sans subvention, parce qu'il est rentable.",
+      "Un ménage raccordé au réseau paie 96 FCFA/kWh et reçoit 28 FCFA/kWh de subvention. Les 78 000 ménages d'un mini-réseau rural paient 335 FCFA/kWh — 3.5 fois plus — et n'en reçoivent aucune. La subvention à l'électricité est régressive dans sa géographie même.",
+      "Le Mali consomme 90 kWh par habitant et par an, contre 500 en moyenne africaine. Rejoindre cette moyenne suppose de multiplier la consommation par 5.6 à population constante: le problème n'est pas d'ajuster le système existant, mais d'en construire un d'un autre ordre."
     ],
     "options": [
       {
@@ -24,6 +28,7 @@
         ],
         "unserved_gwh_addressed": 72.7,
         "subsidy_relief_xof": 17541209000.0,
+        "fuel_exposure_reduction_mw": 88.0,
         "rationale": "100 MW / 4 h restituent l'énergie à l'heure où le parc appelle son kWh à 235 FCFA et où le délestage coûte 928 FCFA/kWh à l'économie. C'est la seule option non thermique qui agisse sur la pointe du soir.",
         "source": "cif-mali-rei",
         "blocking_conditions": [
@@ -47,6 +52,7 @@
         ],
         "unserved_gwh_addressed": 0.0,
         "subsidy_relief_xof": 63493794000.00001,
+        "fuel_exposure_reduction_mw": 0.0,
         "rationale": "200 MW produisant 353 GWh/an déplacent un kWh à 235 FCFA pour un PPA à 55 FCFA. Le gain est du carburant, pas de la capacité: la pointe du soir reste inchangée.",
         "source": "afdb-desert-to-power-mali",
         "blocking_conditions": [
@@ -70,6 +76,7 @@
         ],
         "unserved_gwh_addressed": 0.0,
         "subsidy_relief_xof": 70824600000.00002,
+        "fuel_exposure_reduction_mw": 0.0,
         "rationale": "100 MW de transit supplémentaire à 88 FCFA/kWh contre 235 FCFA/kWh en local. Le gain suppose un excédent exportable côté ivoirien et le paiement régulier des factures.",
         "source": "wb-mali-esrap",
         "blocking_conditions": [
@@ -77,31 +84,6 @@
         ],
         "risk_adjusted_benefit": 56659680000.000015,
         "payback_years": 1.2425061348740407,
-        "category": "conditionnel"
-      },
-      {
-        "id": "ciblage_subvention",
-        "name": "Remplacer la subvention au kWh par une subvention ciblée",
-        "lever": "tarif",
-        "annual_benefit_xof": 50706716666.66667,
-        "capex_xof": 4000000000.0,
-        "lead_time_months": 12,
-        "risk": "eleve",
-        "depends_on": [
-          "verite_des_couts",
-          "subvention_ciblee",
-          "regulateur_independant"
-        ],
-        "unserved_gwh_addressed": 0.0,
-        "subsidy_relief_xof": 50706716666.66667,
-        "rationale": "Aujourd'hui 52% de la subvention va aux ménages, mais seulement 12% à la tranche sociale, qui représente 34% des abonnés. Cibler le soutien sur les ménages les plus modestes libère l'essentiel de l'enveloppe à impact social équivalent.",
-        "source": "malinergy-estimation",
-        "blocking_conditions": [
-          "verite_des_couts",
-          "subvention_ciblee"
-        ],
-        "risk_adjusted_benefit": 30424030000.000004,
-        "payback_years": 0.0788850129322118,
         "category": "conditionnel"
       },
       {
@@ -117,12 +99,39 @@
         ],
         "unserved_gwh_addressed": 11.632,
         "subsidy_relief_xof": 21907130420.0,
+        "fuel_exposure_reduction_mw": 8.0,
         "rationale": "L'antenne 33 kV plafonne à 18 MW: le centre du pays est délesté faute de transit et n'a aucune marge pour accueillir du solaire. Le passage en 150 kV dégage 72 MW et rend raccordables environ 36 MW de PV local.",
         "source": "malinergy-estimation",
         "blocking_conditions": [],
         "risk_adjusted_benefit": 17525704336.0,
         "payback_years": 3.240953910384398,
         "category": "a preparer"
+      },
+      {
+        "id": "ciblage_subvention",
+        "name": "Remplacer la subvention au kWh par une subvention ciblée",
+        "lever": "tarif",
+        "annual_benefit_xof": 27169216666.666668,
+        "capex_xof": 4000000000.0,
+        "lead_time_months": 12,
+        "risk": "eleve",
+        "depends_on": [
+          "verite_des_couts",
+          "subvention_ciblee",
+          "regulateur_independant"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 27169216666.666668,
+        "fuel_exposure_reduction_mw": 0.0,
+        "rationale": "Aujourd'hui 58% de la subvention va aux ménages, mais seulement 16% à la tranche sociale, qui représente 34% des abonnés. Cibler le soutien sur les ménages les plus modestes libère l'essentiel de l'enveloppe à impact social équivalent.",
+        "source": "malinergy-estimation",
+        "blocking_conditions": [
+          "verite_des_couts",
+          "subvention_ciblee"
+        ],
+        "risk_adjusted_benefit": 16301530000.0,
+        "payback_years": 0.1472254444828185,
+        "category": "conditionnel"
       },
       {
         "id": "pertes_3pts",
@@ -137,6 +146,7 @@
         ],
         "unserved_gwh_addressed": 0.0,
         "subsidy_relief_xof": 16940818812.121212,
+        "fuel_exposure_reduction_mw": 12.0,
         "rationale": "3 points de pertes récupérés représentent 53 GWh: du carburant non brûlé au coût marginal (235 FCFA/kWh) et de l'énergie désormais facturée.",
         "source": "wb-mali-esrap",
         "blocking_conditions": [],
@@ -158,6 +168,7 @@
         ],
         "unserved_gwh_addressed": 0.0,
         "subsidy_relief_xof": 22093632000.0,
+        "fuel_exposure_reduction_mw": 66.0,
         "rationale": "Le loyer de capacité (8 Md FCFA/an sur la part remplacée) est payé en devises et disparaît intégralement. Le kWh loué passe de 235 à 172 FCFA.",
         "source": "malinergy-estimation",
         "blocking_conditions": [
@@ -180,6 +191,7 @@
         ],
         "unserved_gwh_addressed": 0.0,
         "subsidy_relief_xof": 11017351785.6,
+        "fuel_exposure_reduction_mw": 25.0,
         "rationale": "Rétablir l'accès normal à l'hydro partagé substitue environ 50 GWh à 16 FCFA/kWh à du thermique à 235 FCFA/kWh. La dépense est un apurement de trésorerie, pas un investissement.",
         "source": "apa-dette-omvs",
         "blocking_conditions": [
@@ -202,6 +214,7 @@
         ],
         "unserved_gwh_addressed": 0.0,
         "subsidy_relief_xof": 15176700000.0,
+        "fuel_exposure_reduction_mw": 33.0,
         "rationale": "Les centres isolés produisent à 280 FCFA/kWh avec du gasoil acheminé par route. Hybrider 55% de cette énergie à environ 105 FCFA/kWh supprime aussi la vulnérabilité logistique.",
         "source": "wb-amader-concessions",
         "blocking_conditions": [],
@@ -222,6 +235,7 @@
         ],
         "unserved_gwh_addressed": 0.0,
         "subsidy_relief_xof": 11093349494.949492,
+        "fuel_exposure_reduction_mw": 0.0,
         "rationale": "Passer de 86% à 94% de recouvrement sur des ventes déjà réalisées: aucune capacité nouvelle, aucun kWh supplémentaire à produire.",
         "source": "wb-mali-esrap",
         "blocking_conditions": [],
@@ -248,7 +262,7 @@
       {
         "horizon": "18-36 mois — substituer le carburant importé",
         "logic": "Le solaire raccordé et la sortie des groupes loués attaquent le poste de coût dominant. Leur rendement suppose un acheteur solvable: c'est la condition à lever en parallèle, pas après.",
-        "annual_benefit_xof": 200564359946.01697,
+        "annual_benefit_xof": 186441859946.01697,
         "capex_xof": 446000000000.0,
         "options": [
           "pv_bess_100",

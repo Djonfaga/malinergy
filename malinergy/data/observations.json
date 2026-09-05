@@ -1,0 +1,489 @@
+{
+  "schema": "malinergy/observations/1",
+  "snapshot": "2026-09",
+  "note": "Corpus des observations externes sur l'énergie au Mali, y compris celles issues de jeux de données mondiaux où le Mali n'est qu'une ligne parmi d'autres. Chaque entrée est une valeur publiée, jamais une valeur calculée par Malinergy. Le champ 'reconcile' indique la grandeur interne que l'observation doit confronter: c'est ce qui permet de détecter qu'une hypothèse de travail est contredite par une donnée publiée. Le champ 'resolution' consigne, lorsque c'est le cas, comment une divergence constatée a été tranchée — ou pourquoi elle ne l'a pas été.",
+  "observations": [
+    {
+      "id": "acces_national",
+      "label": "Accès à l'électricité, population totale",
+      "value": 54.5,
+      "unit": "%",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "wb-wdi",
+      "reconcile": {
+        "kind": "dataset",
+        "dataset": "sector",
+        "path": [
+          "aggregates",
+          "access_rate_national"
+        ],
+        "scale": 0.01,
+        "tolerance": 0.05
+      }
+    },
+    {
+      "id": "acces_minimum_historique",
+      "label": "Accès à l'électricité, minimum historique",
+      "value": 4.29,
+      "unit": "%",
+      "year": 1997,
+      "scope": "Mali",
+      "source": "wb-wdi"
+    },
+    {
+      "id": "acces_moyenne_1996_2023",
+      "label": "Accès à l'électricité, moyenne 1996-2023",
+      "value": 27.23,
+      "unit": "%",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "wb-wdi"
+    },
+    {
+      "id": "prix_vente_moyen_edm",
+      "label": "Prix de vente moyen d'EDM-SA",
+      "value": 97.0,
+      "unit": "FCFA/kWh",
+      "year": 2024,
+      "scope": "Mali",
+      "source": "imf-mali-2025",
+      "reconcile": {
+        "kind": "computed",
+        "metric": "average_revenue_per_kwh",
+        "tolerance": 0.08
+      }
+    },
+    {
+      "id": "subvention_etat_edm",
+      "label": "Subvention annuelle de l'État à EDM-SA, moyenne sur cinq ans",
+      "value": 40000000000.0,
+      "unit": "FCFA/an",
+      "year": 2024,
+      "scope": "Mali",
+      "source": "imf-mali-2025",
+      "reconcile": {
+        "kind": "dataset",
+        "dataset": "sector",
+        "path": [
+          "aggregates",
+          "state_subsidy_xof_year"
+        ],
+        "tolerance": 0.05
+      },
+      "resolution": "Divergence résolue en séparant deux grandeurs que les sources confondaient: la subvention budgétaire directe (FMI, 40 Md FCFA/an) et la ponction budgétaire totale (Banque mondiale, 100-150 MUSD/an) qui ajoute arriérés et emprunts garantis. Malinergy porte désormais les deux."
+    },
+    {
+      "id": "prix_entreprises",
+      "label": "Prix de l'électricité pour les entreprises, toutes taxes comprises",
+      "value": 94.93,
+      "unit": "FCFA/kWh",
+      "year": 2025,
+      "scope": "Mali",
+      "source": "gpp-mali-elec-2025",
+      "reconcile": {
+        "kind": "computed",
+        "metric": "mt_price",
+        "tolerance": 0.1
+      },
+      "resolution": "Divergence non résolue. Le relevé annonce un prix toutes taxes comprises de 94,93 FCFA/kWh, très proche du tarif hors taxes de la grille moyenne tension (96 FCFA/kWh). Deux lectures possibles: le relevé est en réalité hors taxes, ou la moyenne tension bénéficie d'un régime de TVA différent. Une délibération tarifaire de la CREE postérieure à 2019 trancherait."
+    },
+    {
+      "id": "ratio_menages_entreprises",
+      "label": "Tarif ménages rapporté au tarif entreprises",
+      "value": 1.3808,
+      "unit": "ratio",
+      "year": 2025,
+      "scope": "Mali",
+      "source": "gpp-mali-elec-2025"
+    },
+    {
+      "id": "capacite_totale",
+      "label": "Capacité de production totale installée",
+      "value": 866.0,
+      "unit": "MW",
+      "year": 2024,
+      "scope": "Mali",
+      "source": "trade-gov-mali-energy",
+      "reconcile": {
+        "kind": "computed",
+        "metric": "total_installed_mw",
+        "tolerance": 0.15
+      }
+    },
+    {
+      "id": "capacite_edm",
+      "label": "Capacité détenue et exploitée par EDM-SA",
+      "value": 365.0,
+      "unit": "MW",
+      "year": 2024,
+      "scope": "Mali",
+      "source": "wb-mali-esrap"
+    },
+    {
+      "id": "part_diesel_production",
+      "label": "Part de la production issue de groupes diesel",
+      "value": 66.0,
+      "unit": "%",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "trade-gov-mali-energy"
+    },
+    {
+      "id": "part_solaire_capacite",
+      "label": "Part du solaire dans la capacité installée",
+      "value": 2.7,
+      "unit": "%",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "trade-gov-mali-energy"
+    },
+    {
+      "id": "part_bas_carbone",
+      "label": "Part d'électricité bas carbone",
+      "value": 41.0,
+      "unit": "%",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "lowcarbonpower-mali"
+    },
+    {
+      "id": "intensite_carbone",
+      "label": "Intensité carbone de l'électricité",
+      "value": 391.0,
+      "unit": "gCO2eq/kWh",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "lowcarbonpower-mali"
+    },
+    {
+      "id": "production_hydro",
+      "label": "Production hydroélectrique",
+      "value": 2321.0,
+      "unit": "GWh",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "lowcarbonpower-mali",
+      "reconcile": {
+        "kind": "computed",
+        "metric": "generation_gwh",
+        "tolerance": 0.15
+      },
+      "caveat": "Incohérent avec une capacité totale de 866 MW: 2 321 GWh d'hydraulique supposeraient à eux seuls un parc hydraulique bien supérieur à celui documenté. Conservé tel quel pour que la divergence reste visible.",
+      "resolution": "Écart de 23 % avec la production totale retenue par Malinergy. La valeur publiée attribue à la seule hydraulique un volume supérieur au productible du parc documenté et paraît inclure de l'énergie OMVS non revenant au Mali. Conservée pour mémoire, non utilisée dans les calculs."
+    },
+    {
+      "id": "production_solaire",
+      "label": "Production solaire",
+      "value": 62.0,
+      "unit": "GWh",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "lowcarbonpower-mali"
+    },
+    {
+      "id": "production_biomasse",
+      "label": "Production biomasse et déchets",
+      "value": 54.0,
+      "unit": "GWh",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "lowcarbonpower-mali"
+    },
+    {
+      "id": "conso_par_habitant",
+      "label": "Consommation d'électricité par habitant",
+      "value": 90.0,
+      "unit": "kWh/habitant/an",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "lowcarbonpower-mali"
+    },
+    {
+      "id": "conso_par_habitant_cedeao",
+      "label": "Consommation d'électricité par habitant",
+      "value": 116.0,
+      "unit": "kWh/habitant/an",
+      "year": 2023,
+      "scope": "CEDEAO",
+      "source": "lowcarbonpower-mali"
+    },
+    {
+      "id": "conso_par_habitant_afrique",
+      "label": "Consommation d'électricité par habitant",
+      "value": 500.0,
+      "unit": "kWh/habitant/an",
+      "year": 2023,
+      "scope": "Afrique",
+      "source": "lowcarbonpower-mali"
+    },
+    {
+      "id": "conso_energie_tep",
+      "label": "Consommation d'énergie primaire par habitant",
+      "value": 0.3,
+      "unit": "tep/habitant",
+      "year": 2023,
+      "scope": "Mali",
+      "source": "enerdata-mali"
+    },
+    {
+      "id": "conso_energie_tep_assa",
+      "label": "Consommation d'énergie primaire par habitant",
+      "value": 0.6,
+      "unit": "tep/habitant",
+      "year": 2023,
+      "scope": "Afrique subsaharienne",
+      "source": "enerdata-mali"
+    },
+    {
+      "id": "croissance_demande",
+      "label": "Croissance annuelle de la demande d'électricité",
+      "value": 10.0,
+      "unit": "%/an",
+      "year": 2024,
+      "scope": "Mali",
+      "source": "wb-mali-esrap",
+      "reconcile": {
+        "kind": "dataset",
+        "dataset": "sector",
+        "path": [
+          "aggregates",
+          "demand_growth_rate"
+        ],
+        "scale": 0.01,
+        "tolerance": 0.15
+      }
+    },
+    {
+      "id": "pertes_transport_bamako",
+      "label": "Pertes du réseau de transport de Bamako",
+      "value": 8.5,
+      "unit": "%",
+      "year": 2024,
+      "scope": "Bamako",
+      "source": "wb-bamako-losses",
+      "caveat": "Pertes de transport seules; non comparables aux pertes totales transport plus distribution."
+    },
+    {
+      "id": "pertes_transport_bamako_cible",
+      "label": "Pertes du réseau de transport de Bamako, cible après renforcement",
+      "value": 4.5,
+      "unit": "%",
+      "year": 2028,
+      "scope": "Bamako",
+      "source": "wb-bamako-losses"
+    },
+    {
+      "id": "omvs_part_mali",
+      "label": "Part malienne de l'énergie de Manantali",
+      "value": 52.0,
+      "unit": "%",
+      "year": 2010,
+      "scope": "OMVS",
+      "source": "esmap-manantali"
+    },
+    {
+      "id": "omvs_mw_mali",
+      "label": "Puissance de Manantali revenant au Mali",
+      "value": 104.0,
+      "unit": "MW",
+      "year": 2010,
+      "scope": "OMVS",
+      "source": "esmap-manantali",
+      "reconcile": {
+        "kind": "plant",
+        "plant": "manantali",
+        "field": "capacity_mw",
+        "tolerance": 0.02
+      }
+    },
+    {
+      "id": "omvs_production_moyenne",
+      "label": "Production annuelle moyenne de Manantali",
+      "value": 802.0,
+      "unit": "GWh/an",
+      "year": 2010,
+      "scope": "OMVS",
+      "source": "esmap-manantali",
+      "reconcile": {
+        "kind": "plant_energy",
+        "plant": "manantali",
+        "divide_by_share": 0.52,
+        "tolerance": 0.35
+      }
+    },
+    {
+      "id": "minireseaux_nombre",
+      "label": "Mini-réseaux ruraux construits sous concession",
+      "value": 250.0,
+      "unit": "projets",
+      "year": 2022,
+      "scope": "Mali",
+      "source": "irena-minigrids-mali"
+    },
+    {
+      "id": "minireseaux_menages",
+      "label": "Ménages ruraux raccordés à un mini-réseau",
+      "value": 78000.0,
+      "unit": "ménages",
+      "year": 2022,
+      "scope": "Mali",
+      "source": "irena-minigrids-mali"
+    },
+    {
+      "id": "minireseaux_hybrides",
+      "label": "Mini-réseaux hybridés au solaire",
+      "value": 50.0,
+      "unit": "projets",
+      "year": 2022,
+      "scope": "Mali",
+      "source": "irena-minigrids-mali"
+    },
+    {
+      "id": "minireseau_tarif_energie",
+      "label": "Tarif d'un mini-réseau rural, énergie seule (Koury)",
+      "value": 250.0,
+      "unit": "FCFA/kWh",
+      "year": 2017,
+      "scope": "Mali rural",
+      "source": "factsreports-koury"
+    },
+    {
+      "id": "minireseau_tarif_tout_compris",
+      "label": "Tarif d'un mini-réseau rural, charges fixes comprises (Koury)",
+      "value": 335.0,
+      "unit": "FCFA/kWh",
+      "year": 2017,
+      "scope": "Mali rural",
+      "source": "factsreports-koury"
+    },
+    {
+      "id": "cuisson_bois",
+      "label": "Ménages cuisinant au bois de chauffe",
+      "value": 47.4,
+      "unit": "%",
+      "year": 2020,
+      "scope": "Mali",
+      "source": "instat-cuisson"
+    },
+    {
+      "id": "cuisson_charbon",
+      "label": "Ménages cuisinant au charbon de bois",
+      "value": 47.0,
+      "unit": "%",
+      "year": 2020,
+      "scope": "Mali",
+      "source": "instat-cuisson"
+    },
+    {
+      "id": "cuisson_biomasse_totale",
+      "label": "Population dépendant de la biomasse traditionnelle pour la cuisson",
+      "value": 94.0,
+      "unit": "%",
+      "year": 2020,
+      "scope": "Mali",
+      "source": "instat-cuisson"
+    },
+    {
+      "id": "ndc_enr_2030",
+      "label": "Objectif d'énergies renouvelables dans le mix électrique",
+      "value": 37.0,
+      "unit": "%",
+      "year": 2030,
+      "scope": "Mali",
+      "source": "mali-ndc"
+    },
+    {
+      "id": "ndc_acces_2030",
+      "label": "Objectif d'accès à l'électricité",
+      "value": 87.0,
+      "unit": "%",
+      "year": 2030,
+      "scope": "Mali",
+      "source": "mali-ndc"
+    },
+    {
+      "id": "ndc_emissions_energie",
+      "label": "Réduction des émissions du secteur énergie par rapport au tendanciel",
+      "value": 31.0,
+      "unit": "%",
+      "year": 2030,
+      "scope": "Mali",
+      "source": "mali-ndc"
+    },
+    {
+      "id": "ndc_cout_total",
+      "label": "Coût total de mise en œuvre de la CDN",
+      "value": 12340000000.0,
+      "unit": "USD",
+      "year": 2030,
+      "scope": "Mali",
+      "source": "mali-ndc"
+    },
+    {
+      "id": "blocus_debut",
+      "label": "Début du blocus des convois de carburant",
+      "value": 2025.67,
+      "unit": "année décimale",
+      "year": 2025,
+      "scope": "Mali",
+      "source": "jnim-blocus-carburant",
+      "caveat": "3 septembre 2025."
+    },
+    {
+      "id": "blocus_camions_detruits",
+      "label": "Camions-citernes détruits depuis le début du blocus",
+      "value": 300.0,
+      "unit": "camions",
+      "year": 2025,
+      "scope": "Mali",
+      "source": "jnim-blocus-carburant"
+    },
+    {
+      "id": "blocus_hausse_prix",
+      "label": "Hausse du prix du carburant au marché parallèle",
+      "value": 500.0,
+      "unit": "%",
+      "year": 2025,
+      "scope": "Bamako",
+      "source": "jnim-blocus-carburant"
+    },
+    {
+      "id": "croissance_pib",
+      "label": "Croissance du PIB",
+      "value": 5.0,
+      "unit": "%",
+      "year": 2025,
+      "scope": "Mali",
+      "source": "imf-mali-2025"
+    },
+    {
+      "id": "deficit_budgetaire",
+      "label": "Déficit budgétaire",
+      "value": 3.4,
+      "unit": "% du PIB",
+      "year": 2025,
+      "scope": "Mali",
+      "source": "imf-mali-2025"
+    },
+    {
+      "id": "ponction_budgetaire_totale",
+      "label": "Ponction budgétaire totale du secteur électrique",
+      "value": 125000000.0,
+      "unit": "USD/an",
+      "year": 2021,
+      "scope": "Mali",
+      "source": "wb-mali-esrap",
+      "reconcile": {
+        "kind": "dataset",
+        "dataset": "sector",
+        "path": [
+          "aggregates",
+          "fiscal_drain_usd_year"
+        ],
+        "tolerance": 0.05
+      },
+      "caveat": "Subvention directe, arriérés et emprunts garantis confondus."
+    }
+  ]
+}

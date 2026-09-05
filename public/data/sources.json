@@ -132,11 +132,221 @@
         "url": "docs/methodologie.md",
         "confidence": "faible",
         "caveat": "Valeur dérivée ou hypothèse de travail explicite, a remplacer dès qu'une donnée primaire est disponible. Jamais présentée comme un relevé officiel."
+      },
+      {
+        "id": "wb-wdi",
+        "title": "World Development Indicators — indicateurs énergie (EG.ELC.ACCS.ZS, EG.ELC.LOSS.ZS, EG.USE.ELEC.KH.PC)",
+        "publisher": "Banque mondiale",
+        "year": 2024,
+        "kind": "données",
+        "url": "https://data.worldbank.org/indicator/EG.ELC.ACCS.ZS?locations=ML",
+        "confidence": "haute",
+        "caveat": "Séries annuelles longues; le Mali y figure comme une ligne parmi 200 pays. Accès à l'électricité 54,5 % en 2023, minimum 4,29 % en 1997."
+      },
+      {
+        "id": "wb-enterprise-surveys",
+        "title": "Enterprise Surveys — Mali 2024 (coupures, générateurs, pertes de chiffre d'affaires)",
+        "publisher": "Banque mondiale",
+        "year": 2024,
+        "kind": "enquête",
+        "url": "https://microdata.worldbank.org/index.php/catalog/6693",
+        "confidence": "haute",
+        "caveat": "Enquête auprès des entreprises: nombre de coupures par mois, durée, part du chiffre d'affaires perdue, possession de groupe électrogène. Seule mesure directe du coût du délestage pour les entreprises maliennes."
+      },
+      {
+        "id": "ember-owid",
+        "title": "Données électricité Ember / Our World in Data — profil Mali",
+        "publisher": "Ember / Our World in Data",
+        "year": 2023,
+        "kind": "données",
+        "url": "https://ourworldindata.org/energy/country/mali",
+        "confidence": "haute",
+        "caveat": "Mix de production, intensité carbone, consommation par habitant. Le Mali y est une ligne d'un jeu mondial."
+      },
+      {
+        "id": "lowcarbonpower-mali",
+        "title": "Mali Electricity Generation Mix 2023",
+        "publisher": "Low Carbon Power",
+        "year": 2023,
+        "kind": "compilation",
+        "url": "https://lowcarbonpower.org/region/Mali",
+        "confidence": "moyenne",
+        "caveat": "41 % d'électricité bas carbone, intensité 391 gCO2eq/kWh, consommation ~90 kWh/habitant contre 116 en CEDEAO et 500 en Afrique."
+      },
+      {
+        "id": "trade-gov-mali-energy",
+        "title": "Mali Country Commercial Guide — Energy",
+        "publisher": "International Trade Administration (États-Unis)",
+        "year": 2025,
+        "kind": "rapport",
+        "url": "https://www.trade.gov/country-commercial-guides/mali-energy",
+        "confidence": "moyenne",
+        "caveat": "Capacité totale estimée à 866 MW; 66 % de la production 2023 au groupe diesel; solaire 2,7 % de la capacité."
+      },
+      {
+        "id": "imf-mali-2025",
+        "title": "Mali — Consultation au titre de l'article IV 2025",
+        "publisher": "Fonds monétaire international",
+        "year": 2025,
+        "kind": "rapport",
+        "url": "https://www.imf.org/en/publications/cr/issues/2025/09/10/mali-2025-article-iv-consultation-press-release-staff-report-and-statement-by-the-executive-570204",
+        "confidence": "haute",
+        "caveat": "Subvention d'État à EDM de l'ordre de 40 milliards FCFA par an en moyenne sur cinq ans, pour un prix de vente moyen de 97 FCFA/kWh. Croissance 5 % en 2025, déficit budgétaire 3,4 %."
+      },
+      {
+        "id": "gem-wapp",
+        "title": "Power Sector Transition in the West African Power Pool",
+        "publisher": "Global Energy Monitor",
+        "year": 2024,
+        "kind": "données",
+        "url": "https://www.gem.wiki/Power_Sector_Transition_in_the_West_African_Power_Pool",
+        "confidence": "moyenne",
+        "caveat": "Suivi unité par unité des centrales de la région; le Mali y figure parmi quatorze pays."
+      },
+      {
+        "id": "wapp-ecowas",
+        "title": "West African Power Pool — synchronisation régionale",
+        "publisher": "CEDEAO / WAPP",
+        "year": 2024,
+        "kind": "institutionnel",
+        "url": "https://www.ecowapp.org/",
+        "confidence": "moyenne",
+        "caveat": "Douze réseaux ouest-africains synchronisés, dont le Mali. Détermine le potentiel d'échange régional."
+      },
+      {
+        "id": "esmap-manantali",
+        "title": "The Potential of Regional Power Sector Integration — Manantali",
+        "publisher": "ESMAP / Banque mondiale",
+        "year": 2010,
+        "kind": "rapport",
+        "url": "https://www.esmap.org/sites/esmap.org/files/BN004-10_REISP-CD_Manantali-Generation.pdf",
+        "confidence": "haute",
+        "caveat": "Clé de répartition OMVS: Mali 52 %, Sénégal 33 %, Mauritanie 15 %; 104 MW pour le Mali. Production moyenne 767-802 GWh/an sur 2003-2010."
+      },
+      {
+        "id": "irena-minigrids-mali",
+        "title": "The Big Impact of Mini-Grids in Mali's Rural Areas",
+        "publisher": "IRENA",
+        "year": 2022,
+        "kind": "rapport",
+        "url": "https://www.irena.org/News/articles/2022/May/The-Big-Impact-of-Mini-Grids-in-Malis-Rural-Areas",
+        "confidence": "moyenne",
+        "caveat": "Environ 250 mini-réseaux, 78 000 ménages raccordés, une cinquantaine hybridés au solaire."
+      },
+      {
+        "id": "factsreports-koury",
+        "title": "Can rural electrification stimulate the local economy? Constraints and prospects in south-east Mali",
+        "publisher": "Field Actions Science Reports",
+        "year": 2017,
+        "kind": "recherche",
+        "url": "https://journals.openedition.org/factsreports/4132",
+        "confidence": "moyenne",
+        "caveat": "Tarif mini-réseau de Koury: 250 FCFA/kWh, 335 FCFA/kWh charges fixes comprises."
+      },
+      {
+        "id": "instat-cuisson",
+        "title": "Combustibles de cuisson des ménages maliens",
+        "publisher": "INSTAT Mali",
+        "year": 2020,
+        "kind": "enquête",
+        "url": "https://www.mdpi.com/2071-1050/16/1/455",
+        "confidence": "moyenne",
+        "caveat": "47,4 % de bois de chauffe, 47 % de charbon de bois, 3,3 % d'autres. Plus de 94 % de la population dépend de la biomasse traditionnelle."
+      },
+      {
+        "id": "mali-ndc",
+        "title": "Contribution déterminée au niveau national du Mali (CDN révisée)",
+        "publisher": "République du Mali / NDC Partnership",
+        "year": 2021,
+        "kind": "institutionnel",
+        "url": "https://ndcpartnership.org/country/mli",
+        "confidence": "haute",
+        "caveat": "37 % d'EnR dans le mix électrique en 2030, 87 % d'accès en 2030, -31 % d'émissions du secteur énergie par rapport au tendanciel. Coût total de la CDN: 12,34 milliards USD."
+      },
+      {
+        "id": "gem-solar-mali",
+        "title": "Fiches centrales solaires du Mali (Sanankoroba, Safo, Sikasso, Touna, Diéma)",
+        "publisher": "Wikipedia / Power Technology / Enerdata",
+        "year": 2025,
+        "kind": "compilation",
+        "url": "https://en.wikipedia.org/wiki/Sanankoroba_Solar_Power_Station",
+        "confidence": "moyenne",
+        "caveat": "Sanankoroba 200 MW (NovaWind/Rosatom, chantier mai 2024, mise en service annoncée mai 2025); Safo 100 MWc (partenariat chinois, lancé mai 2024); Sikasso 50 MW."
+      },
+      {
+        "id": "mining-hybrids",
+        "title": "Centrales hybrides des mines d'or maliennes (Syama, Fekola, Sadiola)",
+        "publisher": "pv magazine / Mining Weekly / Energy-Storage.News",
+        "year": 2024,
+        "kind": "presse",
+        "url": "https://www.energy-storage.news/large-scale-solar-plus-storage-project-commissioned-at-mali-gold-mine/",
+        "confidence": "moyenne",
+        "caveat": "Fekola: 68 MW thermique + 30 MW PV + 17,3 MW de batteries, économie annoncée de plus de 13 millions de litres de fioul par an. Syama: 70 MW hybride PV/batterie/HFO. Sadiola: 35 MW solaire prévus pour 2027."
+      },
+      {
+        "id": "jnim-blocus-carburant",
+        "title": "Blocus des convois de carburant vers Bamako",
+        "publisher": "France 24 / Al Jazeera / NPR",
+        "year": 2025,
+        "kind": "presse",
+        "url": "https://en.wikipedia.org/wiki/Mali_fuel_blockade",
+        "confidence": "moyenne",
+        "caveat": "Blocus annoncé le 3 septembre 2025; plus de 300 camions-citernes détruits sur les axes depuis le Sénégal, la Côte d'Ivoire et la Guinée; flambée des prix du carburant et coupures de courant."
+      },
+      {
+        "id": "gpp-mali-elec-2025",
+        "title": "Mali electricity prices, June 2025",
+        "publisher": "GlobalPetrolPrices",
+        "year": 2025,
+        "kind": "compilation",
+        "url": "https://www.globalpetrolprices.com/Mali/electricity_prices/",
+        "confidence": "moyenne",
+        "caveat": "Prix entreprises 94,93 FCFA/kWh (0,169 USD) en juin 2025, toutes taxes comprises; tarif ménages à 138 % du tarif entreprises."
+      },
+      {
+        "id": "esmap-tracking-sdg7",
+        "title": "Tracking SDG 7: The Energy Progress Report — profil Mali",
+        "publisher": "AIE / IRENA / Division statistique ONU / Banque mondiale / OMS",
+        "year": 2025,
+        "kind": "rapport",
+        "url": "https://trackingsdg7.esmap.org/country/mali",
+        "confidence": "haute",
+        "caveat": "Suivi annuel multi-agences de l'accès à l'électricité et à la cuisson propre; le Mali y est un profil parmi tous les pays."
+      },
+      {
+        "id": "rise-mali",
+        "title": "Regulatory Indicators for Sustainable Energy — Mali",
+        "publisher": "ESMAP / Banque mondiale",
+        "year": 2022,
+        "kind": "données",
+        "url": "https://rise.esmap.org/country/mali",
+        "confidence": "moyenne",
+        "caveat": "Note de 0 à 100 sur quatre piliers: accès, cuisson propre, efficacité énergétique, énergies renouvelables. Le Mali était pays pilote."
+      },
+      {
+        "id": "enerdata-mali",
+        "title": "Mali Energy Information",
+        "publisher": "Enerdata",
+        "year": 2024,
+        "kind": "compilation",
+        "url": "https://www.enerdata.net/estore/energy-market/mali/",
+        "confidence": "moyenne",
+        "caveat": "Consommation d'énergie ~0,3 tep/habitant en 2023 contre 0,6 en Afrique subsaharienne. Production partagée entre EDM, SOGEM, location, IPP et autoproducteurs."
+      },
+      {
+        "id": "wb-bamako-losses",
+        "title": "Projet de renforcement du réseau de Bamako — trajectoire de pertes",
+        "publisher": "Banque mondiale",
+        "year": 2023,
+        "kind": "rapport",
+        "url": "https://www.worldbank.org/en/news/press-release/2023/06/23/the-world-bank-strengthens-access-to-quality-electricity-in-mali",
+        "confidence": "haute",
+        "caveat": "Pertes du réseau de transport de Bamako projetées de 8,5 % en 2024 à 4,5 % en 2028 après renforcement."
       }
     ],
     "summary": {
-      "haute": 54,
-      "moyenne": 22,
+      "haute": 74,
+      "moyenne": 51,
       "faible": 32
     }
   }

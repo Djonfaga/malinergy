@@ -8,7 +8,7 @@ Trois questions decisionnelles sont traitees ici:
 2. *De combien le tarif s'ecarte-t-il du coût de fourniture?* — c'est l'écart qui
    se transforme mecaniquement en subvention budgétaire puis, quand elle n'est pas
    versee, en arriérés envers les fournisseurs.
-3. *Qui capté la subvention?* — une subvention adossée au kWh se répartit comme la
+3. *Qui capte la subvention?* — une subvention adossée au kWh se répartit comme la
    consommation, pas comme le besoin social.
 """
 
@@ -111,20 +111,32 @@ def cost_of_supply(registry: Registry) -> dict[str, float]:
 
     Le coût est reconstruit par le bas — recette moyenne plus subvention par kWh —
     de sorte que la subvention publiée et la grille tarifaire restent les deux
-    seules entrees exogenes.
+    seules entrées exogènes.
+
+    Deux niveaux de coût sont rendus, parce que deux sources mesurent deux choses
+    différentes. La **subvention budgétaire** est la ligne votée, documentée par le
+    FMI. La **ponction budgétaire totale** y ajoute les arriérés et les emprunts
+    garantis auprès des banques régionales. L'écart entre les deux n'est pas une
+    incertitude: c'est la part du déficit du secteur qui échappe au budget voté.
     """
     sales_kwh = registry.value("sector", "aggregates", "sales_gwh_year") * 1e6
-    subsidy_xof = registry.value(
-        "sector", "aggregates", "state_subsidy_usd_year"
+    subsidy_xof = registry.value("sector", "aggregates", "state_subsidy_xof_year")
+    drain_xof = registry.value(
+        "sector", "aggregates", "fiscal_drain_usd_year"
     ) * registry.value("sector", "fx", "xof_per_usd")
     revenue = average_revenue_per_kwh(registry)
     subsidy_per_kwh = subsidy_xof / sales_kwh
+    drain_per_kwh = drain_xof / sales_kwh
     return {
         "average_revenue_xof_per_kwh": revenue,
         "subsidy_xof_per_kwh": subsidy_per_kwh,
         "average_cost_xof_per_kwh": revenue + subsidy_per_kwh,
         "cost_recovery_ratio": revenue / (revenue + subsidy_per_kwh),
         "annual_subsidy_xof": subsidy_xof,
+        "annual_fiscal_drain_xof": drain_xof,
+        "drain_xof_per_kwh": drain_per_kwh,
+        "off_budget_xof": drain_xof - subsidy_xof,
+        "full_cost_xof_per_kwh": revenue + drain_per_kwh,
         "sales_kwh": sales_kwh,
     }
 

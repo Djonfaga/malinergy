@@ -1,0 +1,130 @@
+{
+  "schema": "malinergy/sector/1",
+  "snapshot": "2026-01",
+  "currency": "XOF",
+  "fx": {
+    "xof_per_usd": {
+      "value": 600.0,
+      "source": "malinergy-estimation",
+      "confidence": "moyenne",
+      "note": "Le franc CFA est arrimé à l'euro à 655,957; la parité dollar retenue est une moyenne de travail."
+    },
+    "xof_per_eur": {
+      "value": 655.957,
+      "source": "malinergy-estimation",
+      "confidence": "haute",
+      "note": "Parité fixe."
+    }
+  },
+  "note": "Agrégats macro du secteur. Ces valeurs pilotent tous les calculs dérivés; les remplacer par les états financiers EDM-SA ou les rapports CREE dès qu'ils sont publiés.",
+  "aggregates": {
+    "sales_gwh_year": {
+      "value": 1450.0,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    },
+    "generation_gwh_year": {
+      "value": 1780.0,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    },
+    "network_losses_share": {
+      "value": 0.185,
+      "source": "wb-mali-esrap",
+      "confidence": "moyenne"
+    },
+    "collection_rate": {
+      "value": 0.86,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    },
+    "access_rate_national": {
+      "value": 0.55,
+      "source": "wb-mali-esrap",
+      "confidence": "moyenne"
+    },
+    "access_rate_urban": {
+      "value": 0.86,
+      "source": "wb-mali-esrap",
+      "confidence": "moyenne"
+    },
+    "access_rate_rural": {
+      "value": 0.25,
+      "source": "wb-mali-esrap",
+      "confidence": "moyenne"
+    },
+    "demand_growth_rate": {
+      "value": 0.11,
+      "source": "wb-mali-esrap",
+      "confidence": "haute"
+    },
+    "peak_demand_mw": {
+      "value": 620.0,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    },
+    "suppressed_peak_mw": {
+      "value": 180.0,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    },
+    "state_subsidy_usd_year": {
+      "value": 125000000.0,
+      "source": "wb-mali-esrap",
+      "confidence": "haute"
+    },
+    "arrears_sogem_xof": {
+      "value": 54000000000.0,
+      "source": "apa-dette-omvs",
+      "confidence": "moyenne"
+    }
+  },
+  "fuel_prices": {
+    "hfo_xof_per_litre": {
+      "value": 620.0,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    },
+    "gasoil_xof_per_litre": {
+      "value": 900.0,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    },
+    "landlocked_premium_share": {
+      "value": 0.22,
+      "source": "malinergy-estimation",
+      "confidence": "faible",
+      "note": "Surcoût logistique du transport depuis Dakar/Abidjan déjà inclus dans les prix ci-dessus; exposé ici pour permettre l'analyse de sensibilité."
+    }
+  },
+  "value_of_lost_load": {
+    "menages_xof_per_kwh": {
+      "value": 350.0,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    },
+    "entreprises_xof_per_kwh": {
+      "value": 1400.0,
+      "source": "malinergy-estimation",
+      "confidence": "faible",
+      "note": "Approximé par le coût de l'autoproduction diesel de secours plus la perte de production; borne basse."
+    }
+  },
+  "finance": {
+    "wacc_public": {
+      "value": 0.08,
+      "source": "malinergy-estimation",
+      "confidence": "moyenne"
+    },
+    "wacc_ipp": {
+      "value": 0.11,
+      "source": "cif-mali-rei",
+      "confidence": "moyenne"
+    },
+    "wacc_menage": {
+      "value": 0.2,
+      "source": "malinergy-estimation",
+      "confidence": "faible"
+    }
+  }
+}

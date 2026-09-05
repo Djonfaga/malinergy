@@ -1,0 +1,135 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "cost_of_supply": {
+      "average_revenue_xof_per_kwh": 95.63232323232324,
+      "subsidy_xof_per_kwh": 51.724137931034484,
+      "average_cost_xof_per_kwh": 147.35646116335772,
+      "cost_recovery_ratio": 0.6489862913191592,
+      "annual_subsidy_xof": 75000000000.0,
+      "sales_kwh": 1450000000.0
+    },
+    "bill_ladder": [
+      {
+        "kwh": 25,
+        "total_xof": 2950.0,
+        "average_price_xof_per_kwh": 118.0
+      },
+      {
+        "kwh": 50,
+        "total_xof": 4720.0,
+        "average_price_xof_per_kwh": 94.4
+      },
+      {
+        "kwh": 75,
+        "total_xof": 7139.0,
+        "average_price_xof_per_kwh": 95.18666666666667
+      },
+      {
+        "kwh": 100,
+        "total_xof": 9558.0,
+        "average_price_xof_per_kwh": 95.58
+      },
+      {
+        "kwh": 150,
+        "total_xof": 16048.0,
+        "average_price_xof_per_kwh": 106.98666666666666
+      },
+      {
+        "kwh": 200,
+        "total_xof": 22538.0,
+        "average_price_xof_per_kwh": 112.69
+      },
+      {
+        "kwh": 300,
+        "total_xof": 38232.0,
+        "average_price_xof_per_kwh": 127.44
+      },
+      {
+        "kwh": 500,
+        "total_xof": 69620.0,
+        "average_price_xof_per_kwh": 139.24
+      },
+      {
+        "kwh": 1000,
+        "total_xof": 148090.0,
+        "average_price_xof_per_kwh": 148.09
+      }
+    ],
+    "subsidy_incidence": [
+      {
+        "category": "bt_domestique",
+        "label": "Basse tension — usage domestique général",
+        "segment": "menages",
+        "share_of_sales": 0.38,
+        "customers_share": 0.55,
+        "unit_revenue_xof_per_kwh": 92.42424242424242,
+        "unit_gap_xof_per_kwh": 54.9322187391153,
+        "annual_subsidy_xof": 30267652525.25253,
+        "share_of_subsidy": 0.4035687003367002
+      },
+      {
+        "category": "mt_industriel",
+        "label": "Moyenne tension — industrie et gros tertiaire",
+        "segment": "entreprises",
+        "share_of_sales": 0.4,
+        "customers_share": 0.01,
+        "unit_revenue_xof_per_kwh": 96.20833333333333,
+        "unit_gap_xof_per_kwh": 51.14812783002439,
+        "annual_subsidy_xof": 29665914141.414146,
+        "share_of_subsidy": 0.3955455218855218
+      },
+      {
+        "category": "bt_social",
+        "label": "Basse tension — tranche sociale",
+        "segment": "menages",
+        "share_of_sales": 0.07,
+        "customers_share": 0.34,
+        "unit_revenue_xof_per_kwh": 60.0,
+        "unit_gap_xof_per_kwh": 87.35646116335772,
+        "annual_subsidy_xof": 8866680808.08081,
+        "share_of_subsidy": 0.11822241077441076
+      },
+      {
+        "category": "bt_professionnel",
+        "label": "Basse tension — professionnel / petite entreprise",
+        "segment": "entreprises",
+        "share_of_sales": 0.11,
+        "customers_share": 0.08,
+        "unit_revenue_xof_per_kwh": 121.88888888888889,
+        "unit_gap_xof_per_kwh": 25.467572274468836,
+        "annual_subsidy_xof": 4062077777.777779,
+        "share_of_subsidy": 0.054161037037037035
+      },
+      {
+        "category": "ep_bt",
+        "label": "Éclairage public — basse tension",
+        "segment": "collectivites",
+        "share_of_sales": 0.02,
+        "customers_share": 0.01,
+        "unit_revenue_xof_per_kwh": 108.0,
+        "unit_gap_xof_per_kwh": 39.35646116335772,
+        "annual_subsidy_xof": 1141337373.7373738,
+        "share_of_subsidy": 0.015217831649831644
+      },
+      {
+        "category": "ep_mt",
+        "label": "Éclairage public — moyenne tension",
+        "segment": "collectivites",
+        "share_of_sales": 0.02,
+        "customers_share": 0.01,
+        "unit_revenue_xof_per_kwh": 113.0,
+        "unit_gap_xof_per_kwh": 34.35646116335772,
+        "annual_subsidy_xof": 996337373.737374,
+        "share_of_subsidy": 0.013284498316498314
+      }
+    ],
+    "targeting": {
+      "share_to_households": 0.521791111111111,
+      "share_to_social_tranche": 0.11822241077441076,
+      "social_customers_share": 0.34,
+      "targeting_ratio": 0.34771297286591396
+    }
+  }
+}

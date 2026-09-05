@@ -1,0 +1,156 @@
+{
+  "schema": "malinergy/tariffs/1",
+  "currency": "XOF",
+  "snapshot": "2026-01",
+  "note": "Structure tarifaire EDM-SA homologuée par la CREE. Les tranches basse tension sont progressives et calculées par palier (chaque kWh est facture au prix de sa tranche).",
+  "vat_rate": 0.18,
+  "vat_exempt_categories": [
+    "bt_social"
+  ],
+  "categories": [
+    {
+      "id": "bt_social",
+      "label": "Basse tension — tranche sociale",
+      "segment": "menages",
+      "voltage": "BT",
+      "fixed_charge_month": 0,
+      "blocks": [
+        {
+          "from_kwh": 0,
+          "to_kwh": 50,
+          "price": 60.0
+        }
+      ],
+      "source": "cree-grille-bt"
+    },
+    {
+      "id": "bt_domestique",
+      "label": "Basse tension — usage domestique général",
+      "segment": "menages",
+      "voltage": "BT",
+      "fixed_charge_month": 1000,
+      "blocks": [
+        {
+          "from_kwh": 0,
+          "to_kwh": 50,
+          "price": 60.0
+        },
+        {
+          "from_kwh": 50,
+          "to_kwh": 100,
+          "price": 82.0
+        },
+        {
+          "from_kwh": 100,
+          "to_kwh": 200,
+          "price": 110.0
+        },
+        {
+          "from_kwh": 200,
+          "to_kwh": null,
+          "price": 133.0
+        }
+      ],
+      "source": "cree-grille-bt"
+    },
+    {
+      "id": "bt_professionnel",
+      "label": "Basse tension — professionnel / petite entreprise",
+      "segment": "entreprises",
+      "voltage": "BT",
+      "fixed_charge_month": 3500,
+      "blocks": [
+        {
+          "from_kwh": 0,
+          "to_kwh": null,
+          "price": 118.0
+        }
+      ],
+      "source": "cree-grille-bt"
+    },
+    {
+      "id": "mt_industriel",
+      "label": "Moyenne tension — industrie et gros tertiaire",
+      "segment": "entreprises",
+      "voltage": "MT",
+      "fixed_charge_month": 25000,
+      "demand_charge_kw_month": 4200,
+      "blocks": [
+        {
+          "from_kwh": 0,
+          "to_kwh": null,
+          "price": 96.0
+        }
+      ],
+      "source": "cree-grille-bt"
+    },
+    {
+      "id": "ep_bt",
+      "label": "Éclairage public — basse tension",
+      "segment": "collectivites",
+      "voltage": "BT",
+      "fixed_charge_month": 0,
+      "blocks": [
+        {
+          "from_kwh": 0,
+          "to_kwh": null,
+          "price": 108.0
+        }
+      ],
+      "source": "cree-eclairage-public"
+    },
+    {
+      "id": "ep_mt",
+      "label": "Éclairage public — moyenne tension",
+      "segment": "collectivites",
+      "voltage": "MT",
+      "fixed_charge_month": 0,
+      "blocks": [
+        {
+          "from_kwh": 0,
+          "to_kwh": null,
+          "price": 113.0
+        }
+      ],
+      "source": "cree-eclairage-public"
+    }
+  ],
+  "sales_mix": [
+    {
+      "category": "bt_social",
+      "share_of_sales": 0.07,
+      "customers_share": 0.34,
+      "source": "malinergy-estimation"
+    },
+    {
+      "category": "bt_domestique",
+      "share_of_sales": 0.38,
+      "customers_share": 0.55,
+      "source": "malinergy-estimation"
+    },
+    {
+      "category": "bt_professionnel",
+      "share_of_sales": 0.11,
+      "customers_share": 0.08,
+      "source": "malinergy-estimation"
+    },
+    {
+      "category": "mt_industriel",
+      "share_of_sales": 0.4,
+      "customers_share": 0.01,
+      "source": "malinergy-estimation"
+    },
+    {
+      "category": "ep_bt",
+      "share_of_sales": 0.02,
+      "customers_share": 0.01,
+      "source": "malinergy-estimation"
+    },
+    {
+      "category": "ep_mt",
+      "share_of_sales": 0.02,
+      "customers_share": 0.01,
+      "source": "malinergy-estimation"
+    }
+  ]
+}

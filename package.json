@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "data": "python3 -m malinergy export",
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run data && vite build",
     "lint": "eslint .",
+    "test:py": "python3 -m unittest discover -s tests -t .",
     "preview": "vite preview"
   },
   "dependencies": {

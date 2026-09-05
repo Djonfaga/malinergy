@@ -12,6 +12,9 @@ license = {text = "CC-BY-4.0"}
 keywords = ["mali", "energie", "electricite", "edm-sa", "solaire", "politique publique"]
 dependencies = []
 
+[project.optional-dependencies]
+pdf = ["reportlab>=4"]
+
 [project.scripts]
 malinergy = "malinergy.cli:main"
 

@@ -87,7 +87,7 @@ def marginal_cost(
 ) -> float:
     """Coût variable de la derniere unite appelée.
 
-    Par defaut on se place à la pointe du soir sans solaire: c'est l'État de réseau
+    Par défaut on se place à la pointe du soir sans solaire: c'est l'état de réseau
     qui dimensionne le système et qui fixe la valeur d'un kWh économisé.
     """
     stack = merit_order(registry, demand_mw, solar_available=solar_available)

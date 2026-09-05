@@ -42,6 +42,7 @@ class Option:
     depends_on: list[str]
     unserved_gwh_addressed: float
     subsidy_relief_xof: float
+    fuel_exposure_reduction_mw: float
     rationale: str
     source: str
     blocking_conditions: list[str] = field(default_factory=list)
@@ -335,6 +336,7 @@ def evaluate(registry: Registry, intervention: dict) -> Option:
         depends_on=list(intervention.get("depends_on", [])),
         unserved_gwh_addressed=unserved_gwh,
         subsidy_relief_xof=relief,
+        fuel_exposure_reduction_mw=float(intervention.get("fuel_exposure_reduction_mw", 0.0)),
         rationale=rationale,
         source=intervention["source"],
         blocking_conditions=_blocking(registry, intervention.get("depends_on", [])),
@@ -424,6 +426,15 @@ def headline_findings(registry: Registry) -> list[str]:
     groups = by_category(registry)
     no_regret = sum(o.risk_adjusted_benefit for o in groups["sans regret"])
 
+    from malinergy.analysis import corpus
+
+    security = corpus.fuel_security(registry)
+    captive = corpus.captive_capacity(registry)
+    inequity = corpus.tariff_inequity(registry)
+    gap = corpus.energy_poverty_gap(registry)
+    exposure_cut = max(o.fuel_exposure_reduction_mw for o in portfolio(registry))
+    mini_grid_households = f"{inequity['mini_grid_households']:,.0f}".replace(",", " ")
+
     return [
         (
             f"Chaque kWh vendu rapporte {costs['average_revenue_xof_per_kwh']:.0f} FCFA et en "
@@ -456,5 +467,35 @@ def headline_findings(registry: Registry) -> list[str]:
             f"Les mesures sans regret identifiées valent {no_regret / 1e9:,.0f} milliards FCFA par "
             "an et ne dépendent d'aucune réforme non acquise. Elles portent sur l'énergie déjà "
             "produite: pertes, recouvrement, arriérés."
+        ),
+        (
+            f"{security['share_of_firm_capacity']:.0%} de la puissance ferme dépend d'un carburant "
+            f"acheminé par la route. Depuis septembre 2025, plus de {security['trucks_destroyed']:.0f} "
+            "camions-citernes ont été détruits sur ces axes. Le carburant importé n'est plus "
+            "seulement le poste le plus cher du parc: c'est le seul qu'un tiers peut interrompre. "
+            f"L'option qui retire le plus de puissance de cette dépendance en retire "
+            f"{exposure_cut:.0f} MW."
+        ),
+        (
+            f"Les mines d'or exploitent déjà {captive['total_operating_mw']:.0f} MW en autoproduction, "
+            f"soit {captive['ratio_to_edm_thermal']:.0%} de la capacité thermique d'EDM-SA, dont "
+            f"{captive['operating_solar_mw']:.0f} MW de solaire avec stockage. L'arbitrage que le "
+            "secteur public débat encore, des acteurs privés l'ont tranché sur leurs propres fonds "
+            "et sans subvention, parce qu'il est rentable."
+        ),
+        (
+            f"Un ménage raccordé au réseau paie {inequity['grid_household_xof_per_kwh']:.0f} FCFA/kWh "
+            f"et reçoit {inequity['subsidy_per_kwh_to_grid_customers']:.0f} FCFA/kWh de subvention. "
+            f"Les {mini_grid_households} ménages d'un mini-réseau rural paient "
+            f"{inequity['mini_grid_xof_per_kwh']:.0f} FCFA/kWh — "
+            f"{inequity['ratio_mini_grid_to_grid']:.1f} fois plus — et n'en reçoivent aucune. "
+            "La subvention à l'électricité est régressive dans sa géographie même."
+        ),
+        (
+            f"Le Mali consomme {gap['mali_kwh_per_capita']:.0f} kWh par habitant et par an, contre "
+            f"{gap['comparators']['Afrique']['kwh_per_capita']:.0f} en moyenne africaine. Rejoindre "
+            f"cette moyenne suppose de multiplier la consommation par "
+            f"{gap['comparators']['Afrique']['multiple']:.1f} à population constante: le problème "
+            "n'est pas d'ajuster le système existant, mais d'en construire un d'un autre ordre."
         ),
     ]

@@ -7,7 +7,16 @@ a arbitrer.
 
 from __future__ import annotations
 
-from malinergy.analysis import decisions, dispatch, lcoe, reforms, reliability, solar, tariff
+from malinergy.analysis import (
+    corpus,
+    decisions,
+    dispatch,
+    lcoe,
+    reforms,
+    reliability,
+    solar,
+    tariff,
+)
 from malinergy.datasets import Registry
 
 RISK_LABEL = {"faible": "faible", "moyen": "moyen", "eleve": "élevé"}
@@ -91,7 +100,7 @@ def section_tariff(registry: Registry) -> str:
             "",
             _table(["kWh/mois", "Facture (FCFA)", "Prix moyen (FCFA/kWh)"], ladder_rows),
             "",
-            "### Qui capté la subvention",
+            "### Qui capte la subvention",
             "",
             _table(
                 [
@@ -106,7 +115,7 @@ def section_tariff(registry: Registry) -> str:
             ),
             "",
             f"La tranche sociale représente {eff['social_customers_share']:.0%} des abonnés et "
-            f"capté {eff['share_to_social_tranche']:.0%} de la subvention. Une aide adossée au kWh "
+            f"capte {eff['share_to_social_tranche']:.0%} de la subvention. Une aide adossée au kWh "
             "se répartit comme la consommation, donc à l'inverse du besoin social.",
             "",
         ]
@@ -133,7 +142,7 @@ def section_supply(registry: Registry) -> str:
             "## Offre: ordre de mérite et équilibre de puissance",
             "",
             "L'empilement ci-dessous est calculé à la pointe du soir, solaire absent. C'est "
-            "l'État de réseau qui dimensionne le système et qui fixe la valeur économique d'un "
+            "l'état de réseau qui dimensionne le système et qui fixe la valeur économique d'un "
             "kWh économisé.",
             "",
             _table(
@@ -443,6 +452,130 @@ def section_provenance(registry: Registry) -> str:
     )
 
 
+def section_corpus(registry: Registry) -> str:
+    cov = corpus.coverage(registry)
+    rec = corpus.reconcile(registry)
+    diverging = corpus.divergences(registry)
+
+    rows = [
+        [
+            r.label[:52],
+            f"{r.published:,.2f}".replace(",", " "),
+            f"{r.internal:,.2f}".replace(",", " "),
+            f"{r.relative_gap:+.1%}",
+            r.verdict,
+            registry.source(r.source).publisher[:26],
+        ]
+        for r in rec
+    ]
+    lines = [
+        "## Corpus externe et réconciliation",
+        "",
+        f"{cov['count']} observations publiées, issues de {cov['distinct_sources']} sources "
+        f"distinctes, couvrant {cov['year_span'][0]} à {cov['year_span'][1]}. "
+        f"{cov['by_confidence'].get('haute', 0)} proviennent de sources de confiance haute. "
+        "Une partie vient de jeux de données mondiaux où le Mali n'est qu'une ligne parmi "
+        "deux cents pays — indicateurs de la Banque mondiale, suivi ODD 7, enquêtes "
+        "entreprises, registres régionaux de centrales.",
+        "",
+        f"Comparateurs disponibles : {', '.join(cov['comparators'])}.",
+        "",
+        "### Confrontation aux grandeurs calculées",
+        "",
+        "Chaque observation réconciliable est confrontée à la grandeur correspondante "
+        "calculée par Malinergy. Une plateforme qui empile des chiffres sans les confronter "
+        "accumule des contradictions sans le savoir.",
+        "",
+        _table(
+            ["Grandeur", "Valeur publiée", "Valeur Malinergy", "Écart", "Verdict", "Source"],
+            rows,
+        ),
+        "",
+        f"**Taux de concordance : {corpus.reconciliation_score(registry):.0%}.**",
+        "",
+    ]
+    resolved = [r for r in rec if r.resolution]
+    if resolved:
+        lines += ["### Ce que les divergences ont appris", ""]
+        for r in resolved:
+            lines.append(f"- **{r.label}** — {r.resolution}")
+        lines.append("")
+    if diverging:
+        lines += [
+            "Divergences non résolues : "
+            + ", ".join(f"{d.label} ({d.relative_gap:+.0%})" for d in diverging)
+            + ". Elles restent affichées plutôt que corrigées: une divergence signalée est "
+            "une question ouverte, une divergence lissée est une erreur cachée.",
+            "",
+        ]
+    return "\n".join(lines)
+
+
+def section_comparison(registry: Registry) -> str:
+    gap = corpus.energy_poverty_gap(registry)
+    inequity = corpus.tariff_inequity(registry)
+    captive = corpus.captive_capacity(registry)
+    security = corpus.fuel_security(registry)
+
+    rows = [["Mali", f"{gap['mali_kwh_per_capita']:.0f}", "1,0"]]
+    for scope, data in sorted(
+        gap["comparators"].items(), key=lambda kv: kv[1]["kwh_per_capita"]
+    ):
+        rows.append(
+            [
+                scope,
+                f"{data['kwh_per_capita']:.0f}",
+                f"{data['multiple']:.1f}".replace(".", ","),
+            ]
+        )
+
+    return "\n".join(
+        [
+            "## Le Mali dans son voisinage",
+            "",
+            "### Consommation d'électricité par habitant",
+            "",
+            _table(["Périmètre", "kWh/habitant/an", "Multiple du Mali"], rows),
+            "",
+            "### Qui paie quoi",
+            "",
+            f"- Abonné domestique raccordé au réseau : **{inequity['grid_household_xof_per_kwh']:.0f} FCFA/kWh**, "
+            f"dont {inequity['subsidy_per_kwh_to_grid_customers']:.0f} FCFA/kWh de subvention publique",
+            f"- Tranche sociale : **{inequity['social_tranche_xof_per_kwh']:.0f} FCFA/kWh**",
+            f"- Ménage d'un mini-réseau rural : **{inequity['mini_grid_xof_per_kwh']:.0f} FCFA/kWh**, "
+            f"sans subvention, soit {inequity['ratio_mini_grid_to_grid']:.1f} fois le tarif urbain",
+            "",
+            inequity["note"],
+            "",
+            "### Autoproduction minière",
+            "",
+            f"- Puissance en exploitation : **{captive['total_operating_mw']:.0f} MW** "
+            f"({captive['operating_thermal_mw']:.0f} MW thermique, {captive['operating_solar_mw']:.0f} MW "
+            f"solaire, {captive['operating_storage_mw']:.0f} MW de stockage)",
+            f"- Rapport à la capacité thermique d'EDM-SA : **{captive['ratio_to_edm_thermal']:.0%}**",
+            f"- Solaire déjà prévu en plus : **{captive['planned_solar_mw']:.0f} MW**",
+            f"- Carburant économisé documenté : **{captive['documented_fuel_saved_litres_year'] / 1e6:.0f} millions "
+            f"de litres par an**, soit environ {_md(captive['documented_fuel_saving_xof_year'])}",
+            "",
+            "Ces installations ne sont raccordées à rien. Elles constituent néanmoins la seule "
+            "démonstration à l'échelle industrielle, sur le sol malien, que le solaire avec "
+            "stockage remplace économiquement du fioul importé — arbitrage rendu sur fonds privés, "
+            "sans subvention et sans garantie publique.",
+            "",
+            "### Exposition à la rupture d'approvisionnement",
+            "",
+            f"- Puissance ferme dépendant d'un carburant acheminé par route : "
+            f"**{security['fuel_dependent_mw']:.0f} MW**, soit "
+            f"**{security['share_of_firm_capacity']:.0%}** du disponible",
+            f"- Camions-citernes détruits depuis septembre 2025 : **{security['trucks_destroyed']:.0f}**",
+            f"- Flambée du prix au marché parallèle : **+{security['parallel_market_price_surge_pct']:.0f} %**",
+            "",
+            security["note"],
+            "",
+        ]
+    )
+
+
 def build(registry: Registry) -> str:
     """Rapport complet en Markdown."""
     parts = [
@@ -452,11 +585,13 @@ def build(registry: Registry) -> str:
         f"Toutes les valeurs monétaires sont en francs CFA ({registry['sector']['currency']}).",
         "",
         section_findings(registry),
+        section_corpus(registry),
         section_tariff(registry),
         section_supply(registry),
         section_reliability(registry),
         section_solar(registry),
         section_lcoe(registry),
+        section_comparison(registry),
         section_reforms(registry),
         section_decisions(registry),
         section_provenance(registry),

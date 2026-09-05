@@ -7,9 +7,9 @@
       {
         "id": "cost_gap",
         "label": "Écart coût-tarif",
-        "value": "52",
+        "value": "28",
         "unit": "FCFA/kWh",
-        "detail": "75 Md FCFA par an à la charge du budget",
+        "detail": "40 Md FCFA par an à la charge du budget",
         "source": "Banque mondiale (2021) — Mali Electricity System Reinforcement and Access Expansion Project (P176633)",
         "confidence": "haute"
       },

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "data": "python3 -m malinergy export",
+    "pdf": "python3 -m malinergy pdf",
     "dev": "vite",
     "build": "npm run data && vite build",
     "lint": "eslint .",

@@ -1,0 +1,18 @@
+{
+  "schema": "malinergy/mines/1",
+  "snapshot": "2026-09",
+  "note": "Autoproduction des mines d'or maliennes. Ce parc est hors réseau interconnecté et n'apparaît dans aucun bilan d'EDM-SA, mais il est du même ordre de grandeur que la capacité thermique de l'opérateur national. Il constitue la seule démonstration à grande échelle, au Mali, de l'économie du solaire hybride.",
+  "sites": [
+    {"id": "fekola", "name": "Fekola (B2Gold)", "region": "Kayes", "thermal_mw": 68.0, "solar_mw": 30.0,
+     "storage_mw": 17.3, "commissioned": 2021, "fuel_saved_litres_year": 13000000.0,
+     "co2_avoided_t_year": 39000.0, "source": "mining-hybrids",
+     "note": "Présenté comme le plus grand système solaire-batterie hors réseau du secteur minier lors de sa mise en service; économies supérieures aux prévisions."},
+    {"id": "syama", "name": "Syama (Resolute Mining)", "region": "Sikasso", "thermal_mw": 40.0, "solar_mw": 20.0,
+     "storage_mw": 10.0, "commissioned": 2021, "fuel_saved_litres_year": null,
+     "co2_avoided_t_year": null, "source": "mining-hybrids",
+     "note": "Centrale hybride de 70 MW au total (PV, batteries, fioul lourd), remplaçant 28 MW de groupes diesel. Deuxième phase en 2023."},
+    {"id": "sadiola", "name": "Sadiola (Allied Gold)", "region": "Kayes", "thermal_mw": 0.0, "solar_mw": 35.0,
+     "storage_mw": 0.0, "commissioned": 2027, "fuel_saved_litres_year": null,
+     "co2_avoided_t_year": null, "source": "mining-hybrids", "note": "Projet annoncé pour 2027."}
+  ]
+}

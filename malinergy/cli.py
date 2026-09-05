@@ -14,7 +14,16 @@ import sys
 from pathlib import Path
 
 from malinergy import __version__, load_registry
-from malinergy.analysis import decisions, dispatch, lcoe, reforms, reliability, solar, tariff
+from malinergy.analysis import (
+    corpus,
+    decisions,
+    dispatch,
+    lcoe,
+    reforms,
+    reliability,
+    solar,
+    tariff,
+)
 from malinergy.datasets import DataError, Registry
 from malinergy.export import DEFAULT_OUT, write as export_write
 from malinergy.report import RISK_LABEL, build as build_report
@@ -235,6 +244,80 @@ def cmd_decisions(registry: Registry, args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_corpus(registry: Registry, args: argparse.Namespace) -> int:
+    cov = corpus.coverage(registry)
+    print(
+        f"{cov['count']} observations, {cov['distinct_sources']} sources, "
+        f"{cov['year_span'][0]}-{cov['year_span'][1]} — "
+        f"{cov['reconcilable']} réconciliables\n"
+    )
+    rows = [
+        [
+            o.label[:48],
+            f"{o.value:,.2f}".replace(",", " "),
+            o.unit[:18],
+            str(o.year),
+            o.scope[:20],
+            o.source[:22],
+        ]
+        for o in corpus.observations(registry)
+    ]
+    _print_table(["observation", "valeur", "unité", "année", "périmètre", "source"], rows)
+    return 0
+
+
+def cmd_reconcilier(registry: Registry, args: argparse.Namespace) -> int:
+    rows = [
+        [
+            r.label[:44],
+            f"{r.published:,.2f}".replace(",", " "),
+            f"{r.internal:,.2f}".replace(",", " "),
+            f"{r.relative_gap:+.1%}",
+            r.verdict,
+        ]
+        for r in corpus.reconcile(registry)
+    ]
+    _print_table(["grandeur", "publiée", "Malinergy", "écart", "verdict"], rows)
+    print(f"\nConcordance : {corpus.reconciliation_score(registry):.0%}")
+    for r in corpus.reconcile(registry):
+        if r.resolution:
+            print(f"\n> {r.label} — {r.resolution}")
+    return 0
+
+
+def cmd_comparer(registry: Registry, args: argparse.Namespace) -> int:
+    gap = corpus.energy_poverty_gap(registry)
+    print(f"Mali : {gap['mali_kwh_per_capita']:.0f} kWh/habitant/an")
+    for scope, data in sorted(
+        gap["comparators"].items(), key=lambda kv: kv[1]["kwh_per_capita"]
+    ):
+        print(f"  {scope:24s} {data['kwh_per_capita']:6.0f}  (x{data['multiple']:.1f})")
+
+    inequity = corpus.tariff_inequity(registry)
+    print("\nPrix payé par un ménage :")
+    print(f"  réseau, usage courant    {inequity['grid_household_xof_per_kwh']:6.0f} FCFA/kWh")
+    print(f"  tranche sociale          {inequity['social_tranche_xof_per_kwh']:6.0f} FCFA/kWh")
+    print(
+        f"  mini-réseau rural        {inequity['mini_grid_xof_per_kwh']:6.0f} FCFA/kWh "
+        f"(x{inequity['ratio_mini_grid_to_grid']:.1f}, sans subvention)"
+    )
+
+    captive = corpus.captive_capacity(registry)
+    print(
+        f"\nAutoproduction minière : {captive['total_operating_mw']:.0f} MW "
+        f"({captive['ratio_to_edm_thermal']:.0%} du thermique EDM-SA), dont "
+        f"{captive['operating_solar_mw']:.0f} MW solaire"
+    )
+
+    security = corpus.fuel_security(registry)
+    print(
+        f"Puissance ferme dépendant d'un convoi routier : "
+        f"{security['fuel_dependent_mw']:.0f} MW "
+        f"({security['share_of_firm_capacity']:.0%})"
+    )
+    return 0
+
+
 def cmd_rapport(registry: Registry, args: argparse.Namespace) -> int:
     markdown = build_report(registry)
     if args.sortie:
@@ -242,6 +325,18 @@ def cmd_rapport(registry: Registry, args: argparse.Namespace) -> int:
         print(f"rapport ecrit dans {args.sortie}")
     else:
         print(markdown)
+    return 0
+
+
+def cmd_pdf(registry: Registry, args: argparse.Namespace) -> int:
+    from malinergy.pdf import PdfUnavailable, build as build_pdf
+
+    try:
+        path = build_pdf(build_report(registry), args.sortie)
+    except PdfUnavailable as exc:
+        print(f"rendu PDF indisponible: {exc}", file=sys.stderr)
+        return 3
+    print(f"{path} ({path.stat().st_size / 1024:.0f} Ko)")
     return 0
 
 
@@ -316,15 +411,28 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("reformes", help="séquence des réformes et chaînons manquants").set_defaults(
         func=cmd_reformes
     )
-    sub.add_parser("decisions", help="options d'action classees").set_defaults(
+    sub.add_parser("decisions", help="options d'action classées").set_defaults(
         func=cmd_decisions
+    )
+    sub.add_parser("corpus", help="observations externes collectées").set_defaults(
+        func=cmd_corpus
+    )
+    sub.add_parser(
+        "reconcilier", help="confronter les grandeurs internes aux sources publiées"
+    ).set_defaults(func=cmd_reconcilier)
+    sub.add_parser("comparer", help="le Mali face à ses comparateurs").set_defaults(
+        func=cmd_comparer
     )
 
     p = sub.add_parser("rapport", help="rapport de décision complet en Markdown")
     p.add_argument("--sortie", type=Path, default=None)
     p.set_defaults(func=cmd_rapport)
 
-    p = sub.add_parser("export", help="exporter le JSON consomme par le site")
+    p = sub.add_parser("pdf", help="rapport de décision au format PDF imprimable")
+    p.add_argument("--sortie", type=Path, default=Path("public/assets/malinergy-rapport.pdf"))
+    p.set_defaults(func=cmd_pdf)
+
+    p = sub.add_parser("export", help="exporter le JSON consommé par le site")
     p.add_argument("--sortie", type=Path, default=DEFAULT_OUT)
     p.set_defaults(func=cmd_export)
 

@@ -13,7 +13,16 @@ from pathlib import Path
 from typing import Any
 
 from malinergy import __version__
-from malinergy.analysis import decisions, dispatch, lcoe, reforms, reliability, solar, tariff
+from malinergy.analysis import (
+    corpus,
+    decisions,
+    dispatch,
+    lcoe,
+    reforms,
+    reliability,
+    solar,
+    tariff,
+)
 from malinergy.datasets import Registry
 
 DEFAULT_OUT = Path("public/data")
@@ -141,6 +150,19 @@ def build_payloads(registry: Registry) -> dict[str, Any]:
                 for o in decisions.portfolio(registry)
             ],
             "plan": decisions.sequenced_plan(registry),
+        },
+        "corpus": {
+            "coverage": corpus.coverage(registry),
+            "observations": _plain(corpus.observations(registry)),
+            "reconciliation": [
+                {**_plain(r), "agrees": r.agrees, "verdict": r.verdict}
+                for r in corpus.reconcile(registry)
+            ],
+            "score": corpus.reconciliation_score(registry),
+            "energy_poverty_gap": corpus.energy_poverty_gap(registry),
+            "tariff_inequity": corpus.tariff_inequity(registry),
+            "captive_capacity": corpus.captive_capacity(registry),
+            "fuel_security": corpus.fuel_security(registry),
         },
         "sources": {
             "sources": registry["sources"]["sources"],

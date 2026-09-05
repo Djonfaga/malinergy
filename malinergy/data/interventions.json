@@ -1,7 +1,7 @@
 {
   "schema": "malinergy/interventions/1",
   "snapshot": "2026-01",
-  "note": "Options d'action évaluées par malinergy.analysis.decisions. Le bénéfice n'est PAS stocké ici: il est recalculé à partir des jeux de données par le modèle indiqué dans 'benefit_model'. Ne figurent ici que les paramètres de dimensionnement, de coût et de risque.",
+  "note": "Options d'action évaluées par malinergy.analysis.decisions. Le bénéfice n'est PAS stocké ici: il est recalculé à partir des jeux de données par le modèle indiqué dans 'benefit_model'. Ne figurent ici que les paramètres de dimensionnement, de coût et de risque. Le champ 'fuel_exposure_reduction_mw' mesure la puissance ferme qui cesse de dépendre d'un carburant acheminé par route — une dimension devenue décisive depuis le blocus des convois de septembre 2025.",
   "interventions": [
     {
       "id": "pertes_3pts",
@@ -18,7 +18,8 @@
         "comptage_recouvrement"
       ],
       "source": "wb-mali-esrap",
-      "note": "Comptage intelligent sur les gros clients, réhabilitation des départs BT, lutte contre les branchements irréguliers."
+      "note": "Comptage intelligent sur les gros clients, réhabilitation des départs BT, lutte contre les branchements irréguliers.",
+      "fuel_exposure_reduction_mw": 12.0
     },
     {
       "id": "recouvrement",
@@ -35,7 +36,8 @@
         "comptage_recouvrement"
       ],
       "source": "wb-mali-esrap",
-      "note": "Prépaiement, apurement des créances publiques, coupure effective des mauvais payeurs institutionnels."
+      "note": "Prépaiement, apurement des créances publiques, coupure effective des mauvais payeurs institutionnels.",
+      "fuel_exposure_reduction_mw": 0.0
     },
     {
       "id": "pv_reseau_200",
@@ -54,7 +56,8 @@
         "solvabilite_acheteur"
       ],
       "source": "afdb-desert-to-power-mali",
-      "note": "Capex indicatif porté par des IPP; le coût pour l'État est le PPA, pas l'investissement."
+      "note": "Capex indicatif porté par des IPP; le coût pour l'État est le PPA, pas l'investissement.",
+      "fuel_exposure_reduction_mw": 0.0
     },
     {
       "id": "pv_bess_100",
@@ -74,7 +77,8 @@
         "planification_moindre_cout"
       ],
       "source": "cif-mali-rei",
-      "note": "Seule option non thermique qui réduise le délestage du soir, où se concentre la gêne ressentie."
+      "note": "Seule option non thermique qui réduise le délestage du soir, où se concentre la gêne ressentie.",
+      "fuel_exposure_reduction_mw": 88.0
     },
     {
       "id": "sortie_location",
@@ -92,7 +96,8 @@
         "solvabilite_acheteur"
       ],
       "source": "malinergy-estimation",
-      "note": "Le poste de coût unitaire le plus élevé du parc; sa sortie suppose d'avoir mis la capacité de remplacement en service d'abord."
+      "note": "Le poste de coût unitaire le plus élevé du parc; sa sortie suppose d'avoir mis la capacité de remplacement en service d'abord.",
+      "fuel_exposure_reduction_mw": 66.0
     },
     {
       "id": "hybride_isoles",
@@ -109,7 +114,8 @@
         "cadre_minireseaux"
       ],
       "source": "wb-amader-concessions",
-      "note": "Substitue du gasoil acheminé par route à plus de 280 FCFA/kWh. Le risque porte sur la sécurité et la maintenance, pas sur l'économie."
+      "note": "Substitue du gasoil acheminé par route à plus de 280 FCFA/kWh. Le risque porte sur la sécurité et la maintenance, pas sur l'économie.",
+      "fuel_exposure_reduction_mw": 33.0
     },
     {
       "id": "ciblage_subvention",
@@ -128,7 +134,8 @@
         "regulateur_independant"
       ],
       "source": "malinergy-estimation",
-      "note": "Rendement budgétaire immédiat et élevé, coût politique tout aussi immédiat. A séquencer après une amélioration visible du service."
+      "note": "Rendement budgétaire immédiat et élevé, coût politique tout aussi immédiat. A séquencer après une amélioration visible du service.",
+      "fuel_exposure_reduction_mw": 0.0
     },
     {
       "id": "apurement_sogem",
@@ -145,7 +152,8 @@
         "solvabilite_acheteur"
       ],
       "source": "apa-dette-omvs",
-      "note": "Restaure l'accès à l'hydro partagé, l'énergie la moins chère du parc. Dépense de trésorerie, pas d'investissement."
+      "note": "Restaure l'accès à l'hydro partagé, l'énergie la moins chère du parc. Dépense de trésorerie, pas d'investissement.",
+      "fuel_exposure_reduction_mw": 25.0
     },
     {
       "id": "import_ci_plus",
@@ -163,7 +171,8 @@
         "planification_moindre_cout"
       ],
       "source": "wb-mali-esrap",
-      "note": "Dépend d'un excédent exportable côté ivoirien et du règlement régulier des factures."
+      "note": "Dépend d'un excédent exportable côté ivoirien et du règlement régulier des factures.",
+      "fuel_exposure_reduction_mw": 0.0
     },
     {
       "id": "antenne_segou_mopti",
@@ -181,7 +190,8 @@
         "planification_moindre_cout"
       ],
       "source": "malinergy-estimation",
-      "note": "Débloque simultanément l'alimentation du centre et la possibilité d'y implanter du solaire."
+      "note": "Débloque simultanément l'alimentation du centre et la possibilité d'y implanter du solaire.",
+      "fuel_exposure_reduction_mw": 8.0
     }
   ]
 }

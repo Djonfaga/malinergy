@@ -35,6 +35,7 @@ Trois conséquences, qui sont l'intérêt principal du projet :
 | `analysis/solar.py` | Le productible par site et le classement ressource / évacuation / absorption |
 | `analysis/reliability.py` | La mesure du délestage et son coût économique face au coût de l'éviter |
 | `analysis/reforms.py` | Les conditions structurelles acquises, défaites ou manquantes, et leur ordre de traitement |
+| `analysis/corpus.py` | Le corpus externe, sa couverture, et la confrontation de chaque grandeur interne aux valeurs publiées |
 | `analysis/decisions.py` | La synthèse : options classées en « sans regret », « conditionnel » et « à préparer » |
 
 ## Utilisation
@@ -43,6 +44,9 @@ Aucune dépendance externe : bibliothèque standard Python 3.10+ uniquement.
 
 ```bash
 python -m malinergy valider              # cohérence des jeux de données et des sources
+python -m malinergy corpus               # observations externes collectées
+python -m malinergy reconcilier          # confronter les calculs aux sources publiées
+python -m malinergy comparer             # le Mali face à ses comparateurs
 python -m malinergy tarifs               # vérité des couts et incidence de la subvention
 python -m malinergy facture 150          # facture mensuelle d'un abonné domestique
 python -m malinergy offre                # ordre de mérite et équilibre de puissance
@@ -53,9 +57,12 @@ python -m malinergy reformes             # séquence et chaînons manquants
 python -m malinergy decisions            # options d'action classées
 python -m malinergy rapport --sortie docs/rapport.md
 python -m malinergy export               # JSON consommé par le site
+python -m malinergy pdf                  # rapport imprimable dans public/assets/
 ```
 
-Le rapport complet est versionné dans [`docs/rapport.md`](docs/rapport.md).
+Le rapport complet est versionné dans [`docs/rapport.md`](docs/rapport.md), et sa version
+imprimable dans [`public/assets/malinergy-rapport.pdf`](public/assets/malinergy-rapport.pdf).
+Le rendu PDF demande une dépendance optionnelle : `pip install 'malinergy[pdf]'`.
 
 ### Tests
 
@@ -67,6 +74,23 @@ Les tests vérifient deux choses distinctes : que les formules sont justes (inva
 vérifiables à la main, comme le facteur d'annuité ou la tarification par palier) et que
 les conclusions qualitatives du rapport découlent bien des données — par exemple que le
 meilleur site solaire du pays n'est pas celui dont la ressource est la meilleure.
+
+## Le corpus externe et la réconciliation
+
+Le Mali est rarement le sujet d'un jeu de données : il est presque toujours une ligne parmi
+deux cents pays. La plateforme collecte ces observations — indicateurs de la Banque
+mondiale, rapports du FMI, suivi ODD 7, registres de centrales, enquêtes entreprises,
+comparaisons régionales — dans `malinergy/data/observations.json`, puis **confronte chacune
+à la grandeur correspondante qu'elle calcule elle-même**.
+
+C'est le mécanisme le plus utile du dépôt. Il a déjà produit une correction de fond (la
+subvention budgétaire et la ponction budgétaire totale sont deux grandeurs distinctes, que
+les sources confondaient), deux confirmations indépendantes du modèle tarifaire, et une
+divergence qui reste affichée faute d'être tranchée. Une divergence signalée est une
+question ouverte ; une divergence lissée est une erreur cachée.
+
+La campagne de collecte, ses limites et ce qui manque encore sont documentés dans
+[`docs/corpus.md`](docs/corpus.md).
 
 ## Le site
 
@@ -92,10 +116,12 @@ malinergy/
   cli.py           interface en ligne de commande
 docs/
   methodologie.md  comment chaque chiffre est obtenu, et ce qu'il ne permet pas de conclure
-  sources.md       lecture du registre des sources, et les cinq lacunes prioritaires
+  sources.md       lecture du registre des sources, et les lacunes prioritaires
+  corpus.md        la campagne de collecte externe, ses limites, ce qui manque
   rapport.md       rapport généré
 src/               interface React
 public/data/       JSON généré (ne pas éditer à la main)
+public/assets/     rapport PDF et ressources graphiques
 tests/
 ```
 

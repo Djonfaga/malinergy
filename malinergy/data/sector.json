@@ -68,15 +68,22 @@
       "source": "malinergy-estimation",
       "confidence": "faible"
     },
-    "state_subsidy_usd_year": {
-      "value": 125000000.0,
-      "source": "wb-mali-esrap",
-      "confidence": "haute"
-    },
     "arrears_sogem_xof": {
       "value": 54000000000.0,
       "source": "apa-dette-omvs",
       "confidence": "moyenne"
+    },
+    "state_subsidy_xof_year": {
+      "value": 40000000000.0,
+      "source": "imf-mali-2025",
+      "confidence": "haute",
+      "note": "Subvention budgétaire directe versée à EDM-SA, moyenne des cinq derniers exercices. C'est la ligne inscrite au budget, pas le coût complet pour l'État."
+    },
+    "fiscal_drain_usd_year": {
+      "value": 125000000.0,
+      "source": "wb-mali-esrap",
+      "confidence": "moyenne",
+      "note": "Ponction totale sur les finances publiques: subvention directe, arriérés accumulés et emprunts garantis auprès des banques régionales. Environ deux fois la subvention budgétaire seule — l'écart est précisément la part du déficit qui ne passe pas par le budget voté."
     }
   },
   "fuel_prices": {

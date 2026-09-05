@@ -1,0 +1,276 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "timeline": [
+      {
+        "year": 1960,
+        "title": "Création d'Énergie du Mali",
+        "category": "structure",
+        "summary": "Opérateur national verticalement intégré, monopole de production, transport et distribution.",
+        "status": "acquis",
+        "source": "energypedia-mali"
+      },
+      {
+        "year": 2000,
+        "title": "Création de la CREE",
+        "category": "regulation",
+        "summary": "Commission de Régulation de l'Électricité et de l'Eau, rattachée à la Primature, chargée de l'homologation tarifaire.",
+        "status": "acquis",
+        "source": "cree-grille-bt"
+      },
+      {
+        "year": 2000,
+        "title": "Ordonnance de mars 2000 portant réforme du secteur",
+        "category": "cadre_legal",
+        "summary": "Pose les principes de la réforme: séparation des rôles, ouverture à l'investissement privé, régulation indépendante.",
+        "status": "acquis",
+        "source": "energypedia-mali"
+      },
+      {
+        "year": 2000,
+        "title": "Privatisation partielle d'EDM (SAUR/IPS)",
+        "category": "structure",
+        "summary": "Concession à un partenaire stratégique SAUR (Bouygues) / IPS le 20 décembre 2000.",
+        "status": "renverse",
+        "source": "akdn-edm-ppp"
+      },
+      {
+        "year": 2003,
+        "title": "Création de l'AMADER",
+        "category": "acces",
+        "summary": "Agence dédiée à l'électrification rurale par concessions et mini-réseaux privés.",
+        "status": "acquis",
+        "source": "wb-amader-concessions"
+      },
+      {
+        "year": 2005,
+        "title": "Retrait de SAUR",
+        "category": "structure",
+        "summary": "Désaccord sur la trajectoire tarifaire; SAUR rétrocède ses parts à l'État et à l'AKFED. Retour à un contrôle public majoritaire.",
+        "status": "renverse",
+        "source": "akdn-edm-ppp"
+      },
+      {
+        "year": 2010,
+        "title": "Fin du monopole de production",
+        "category": "marche",
+        "summary": "Ouverture de la production indépendante (IPP); EDM-SA reste acheteur unique.",
+        "status": "acquis",
+        "source": "energypedia-mali"
+      },
+      {
+        "year": 2012,
+        "title": "Interconnexion 225 kV avec la Cote d'Ivoire",
+        "category": "infrastructure",
+        "summary": "Accès au marché régional; l'import devient une composante structurelle de l'équilibre offre-demande.",
+        "status": "acquis",
+        "source": "wb-mali-esrap"
+      },
+      {
+        "year": 2015,
+        "title": "Stratégie nationale des énergies renouvelables",
+        "category": "planification",
+        "summary": "Objectifs EnR et cadre d'appel à projets solaires.",
+        "status": "partiel",
+        "source": "afdb-desert-to-power-mali"
+      },
+      {
+        "year": 2019,
+        "title": "Programme de redressement financier d'EDM-SA",
+        "category": "finance",
+        "summary": "Restructuration de la dette, contrat de performance, trajectoire de vérité des coûts.",
+        "status": "partiel",
+        "source": "wb-mali-esrap",
+        "note": "Le chaînon le plus souvent interrompu: la trajectoire tarifaire est reportée à chaque tension sociale."
+      },
+      {
+        "year": 2020,
+        "title": "Feuille de route Desert to Power Mali",
+        "category": "planification",
+        "summary": "Cible solaire à l'échelle du Sahel, séquençage des projets PV et du renforcement réseau.",
+        "status": "partiel",
+        "source": "afdb-desert-to-power-mali"
+      },
+      {
+        "year": 2021,
+        "title": "Projet de renforcement du réseau et d'extension de l'accès",
+        "category": "infrastructure",
+        "summary": "Financement du transport, de la distribution et du raccordement de nouveaux abonnés.",
+        "status": "en_cours",
+        "source": "wb-mali-esrap"
+      },
+      {
+        "year": 2023,
+        "title": "Plan d'investissement d'intégration des EnR",
+        "category": "planification",
+        "summary": "Conditions techniques d'accueil du PV variable: stockage, réserve, contrôle de tension.",
+        "status": "partiel",
+        "source": "cif-mali-rei"
+      },
+      {
+        "year": 2025,
+        "title": "Arriérés envers la SOGEM et les fournisseurs régionaux",
+        "category": "finance",
+        "summary": "Environ 54 milliards FCFA d'impayés menaçant la disponibilité des ouvrages partagés OMVS.",
+        "status": "regression",
+        "source": "apa-dette-omvs"
+      },
+      {
+        "year": 2025,
+        "title": "Mise en service des premières grandes centrales PV",
+        "category": "infrastructure",
+        "summary": "Sanankoroba, Safo et unités associées; le PV devient une brique de base du mix.",
+        "status": "en_cours",
+        "source": "afdb-desert-to-power-mali"
+      }
+    ],
+    "cadence": {
+      "count": 15,
+      "span": [
+        1960,
+        2025
+      ],
+      "by_category": {
+        "structure": 3,
+        "regulation": 1,
+        "cadre_legal": 1,
+        "acces": 1,
+        "marche": 1,
+        "infrastructure": 3,
+        "planification": 3,
+        "finance": 2
+      },
+      "by_status": {
+        "acquis": 6,
+        "renverse": 2,
+        "partiel": 4,
+        "en_cours": 2,
+        "regression": 1
+      },
+      "reversal_rate": 0.2,
+      "reversed": [
+        {
+          "year": 2000,
+          "title": "Privatisation partielle d'EDM (SAUR/IPS)"
+        },
+        {
+          "year": 2005,
+          "title": "Retrait de SAUR"
+        },
+        {
+          "year": 2025,
+          "title": "Arriérés envers la SOGEM et les fournisseurs régionaux"
+        }
+      ]
+    },
+    "gaps": [
+      {
+        "id": "regulateur_independant",
+        "label": "Régulateur doté de l'autonomie de décision tarifaire",
+        "status": "partiel",
+        "why_it_matters": "Sans homologation effective, aucun signal-prix ne circule et l'écart coût-tarif se transforme en dette.",
+        "unlocks": [
+          "appels_offres_ipp",
+          "planification_moindre_cout",
+          "solvabilite_acheteur",
+          "subvention_ciblee",
+          "verite_des_couts"
+        ],
+        "leverage": 5,
+        "source": "wb-mali-esrap"
+      },
+      {
+        "id": "verite_des_couts",
+        "label": "Trajectoire pluriannuelle de convergence tarif-coût",
+        "status": "manquant",
+        "why_it_matters": "C'est la variable qui détermine si les économies de carburant profitent au budget ou disparaissent dans les arriérés.",
+        "unlocks": [
+          "appels_offres_ipp",
+          "planification_moindre_cout",
+          "solvabilite_acheteur",
+          "subvention_ciblee"
+        ],
+        "leverage": 4,
+        "source": "wb-mali-esrap"
+      },
+      {
+        "id": "comptage_recouvrement",
+        "label": "Comptage, facturation et recouvrement fiabilisés",
+        "status": "en_cours",
+        "why_it_matters": "Chaque point de pertes non techniques récupère vaut plusieurs milliards FCFA par an, sans nouvelle capacité.",
+        "unlocks": [
+          "appels_offres_ipp",
+          "planification_moindre_cout",
+          "solvabilite_acheteur"
+        ],
+        "leverage": 3,
+        "source": "wb-mali-esrap"
+      },
+      {
+        "id": "solvabilite_acheteur",
+        "label": "Solvabilité de l'acheteur unique (garantie de paiement)",
+        "status": "manquant",
+        "why_it_matters": "Détermine le WACC des IPP, donc le prix du kWh solaire pendant vingt ans.",
+        "unlocks": [
+          "appels_offres_ipp",
+          "planification_moindre_cout"
+        ],
+        "leverage": 2,
+        "source": "apa-dette-omvs"
+      },
+      {
+        "id": "subvention_ciblee",
+        "label": "Subvention ciblée sur les ménages pauvres plutôt que sur le kWh",
+        "status": "manquant",
+        "why_it_matters": "Une subvention au kWh bénéficie surtout aux gros consommateurs raccordés; le ciblage libère des marges budgétaires à impact social égal.",
+        "unlocks": [],
+        "leverage": 0,
+        "source": "malinergy-estimation"
+      },
+      {
+        "id": "appels_offres_ipp",
+        "label": "Appels d'offres compétitifs standardisés pour les IPP",
+        "status": "partiel",
+        "why_it_matters": "Le prix du PPA solaire dépend davantage de la qualité de la procédure et de la bancabilité que de la ressource.",
+        "unlocks": [],
+        "leverage": 0,
+        "source": "cif-mali-rei"
+      },
+      {
+        "id": "planification_moindre_cout",
+        "label": "Plan directeur de moindre coût révisé et publié",
+        "status": "partiel",
+        "why_it_matters": "En son absence, les décisions d'urgence (location de groupes) se substituent à la planification.",
+        "unlocks": [],
+        "leverage": 0,
+        "source": "cif-mali-rei"
+      },
+      {
+        "id": "cadre_minireseaux",
+        "label": "Cadre tarifaire et de sortie pour les mini-réseaux",
+        "status": "partiel",
+        "why_it_matters": "Conditionne l'électrification rurale privée et le sort des actifs lorsque le réseau principal arrive.",
+        "unlocks": [],
+        "leverage": 0,
+        "source": "wb-amader-concessions"
+      }
+    ],
+    "critical_path": [
+      "regulateur_independant",
+      "verite_des_couts",
+      "comptage_recouvrement",
+      "solvabilite_acheteur",
+      "subvention_ciblee",
+      "planification_moindre_cout",
+      "cadre_minireseaux",
+      "appels_offres_ipp"
+    ],
+    "completion_index": 0.275,
+    "lessons": [
+      "20% des décisions recensées ont été annulées ou ont régressé. Une réforme qui ne survit pas à un cycle politique ne produit aucun rendement: la séquence doit privilégier les mesures dont l'effet est visible avant l'échéance suivante.",
+      "Aucune mesure de la catégorie financière n'est arrivée à son terme. L'infrastructure a avancé, l'équilibre financier non — c'est pourquoi une capacité nouvelle se traduit par une dette nouvelle plutôt que par un service amélioré.",
+      "Indice de complétude des conditions structurelles: 28%. En dessous de la moitié, le rendement des investissements physiques reste capté par le déficit d'exploitation."
+    ]
+  }
+}

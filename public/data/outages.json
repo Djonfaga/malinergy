@@ -1,0 +1,419 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "series": [
+      {
+        "month": "2023-01",
+        "shedding_hours_per_day": 1.78,
+        "avg_shed_mw": 27.8,
+        "unserved_gwh": 1.5,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2023-02",
+        "shedding_hours_per_day": 2.21,
+        "avg_shed_mw": 35.8,
+        "unserved_gwh": 2.4,
+        "peak_demand_mw": 540
+      },
+      {
+        "month": "2023-03",
+        "shedding_hours_per_day": 3.06,
+        "avg_shed_mw": 53.7,
+        "unserved_gwh": 5.0,
+        "peak_demand_mw": 585
+      },
+      {
+        "month": "2023-04",
+        "shedding_hours_per_day": 4.08,
+        "avg_shed_mw": 76.5,
+        "unserved_gwh": 9.5,
+        "peak_demand_mw": 625
+      },
+      {
+        "month": "2023-05",
+        "shedding_hours_per_day": 4.59,
+        "avg_shed_mw": 88.1,
+        "unserved_gwh": 12.3,
+        "peak_demand_mw": 640
+      },
+      {
+        "month": "2023-06",
+        "shedding_hours_per_day": 3.91,
+        "avg_shed_mw": 70.4,
+        "unserved_gwh": 8.4,
+        "peak_demand_mw": 600
+      },
+      {
+        "month": "2023-07",
+        "shedding_hours_per_day": 2.55,
+        "avg_shed_mw": 41.7,
+        "unserved_gwh": 3.2,
+        "peak_demand_mw": 545
+      },
+      {
+        "month": "2023-08",
+        "shedding_hours_per_day": 1.7,
+        "avg_shed_mw": 26.5,
+        "unserved_gwh": 1.4,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2023-09",
+        "shedding_hours_per_day": 1.44,
+        "avg_shed_mw": 22.2,
+        "unserved_gwh": 1.0,
+        "peak_demand_mw": 515
+      },
+      {
+        "month": "2023-10",
+        "shedding_hours_per_day": 1.61,
+        "avg_shed_mw": 25.4,
+        "unserved_gwh": 1.2,
+        "peak_demand_mw": 525
+      },
+      {
+        "month": "2023-11",
+        "shedding_hours_per_day": 1.7,
+        "avg_shed_mw": 26.5,
+        "unserved_gwh": 1.4,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2023-12",
+        "shedding_hours_per_day": 1.7,
+        "avg_shed_mw": 26.3,
+        "unserved_gwh": 1.4,
+        "peak_demand_mw": 515
+      },
+      {
+        "month": "2024-01",
+        "shedding_hours_per_day": 2.84,
+        "avg_shed_mw": 44.3,
+        "unserved_gwh": 3.8,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2024-02",
+        "shedding_hours_per_day": 3.51,
+        "avg_shed_mw": 56.9,
+        "unserved_gwh": 6.1,
+        "peak_demand_mw": 540
+      },
+      {
+        "month": "2024-03",
+        "shedding_hours_per_day": 4.86,
+        "avg_shed_mw": 85.3,
+        "unserved_gwh": 12.6,
+        "peak_demand_mw": 585
+      },
+      {
+        "month": "2024-04",
+        "shedding_hours_per_day": 6.48,
+        "avg_shed_mw": 121.5,
+        "unserved_gwh": 23.9,
+        "peak_demand_mw": 625
+      },
+      {
+        "month": "2024-05",
+        "shedding_hours_per_day": 7.29,
+        "avg_shed_mw": 140.0,
+        "unserved_gwh": 31.0,
+        "peak_demand_mw": 640
+      },
+      {
+        "month": "2024-06",
+        "shedding_hours_per_day": 6.21,
+        "avg_shed_mw": 111.8,
+        "unserved_gwh": 21.1,
+        "peak_demand_mw": 600
+      },
+      {
+        "month": "2024-07",
+        "shedding_hours_per_day": 4.05,
+        "avg_shed_mw": 66.2,
+        "unserved_gwh": 8.2,
+        "peak_demand_mw": 545
+      },
+      {
+        "month": "2024-08",
+        "shedding_hours_per_day": 2.7,
+        "avg_shed_mw": 42.1,
+        "unserved_gwh": 3.5,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2024-09",
+        "shedding_hours_per_day": 2.29,
+        "avg_shed_mw": 35.4,
+        "unserved_gwh": 2.5,
+        "peak_demand_mw": 515
+      },
+      {
+        "month": "2024-10",
+        "shedding_hours_per_day": 2.56,
+        "avg_shed_mw": 40.3,
+        "unserved_gwh": 3.1,
+        "peak_demand_mw": 525
+      },
+      {
+        "month": "2024-11",
+        "shedding_hours_per_day": 2.7,
+        "avg_shed_mw": 42.1,
+        "unserved_gwh": 3.5,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2024-12",
+        "shedding_hours_per_day": 2.7,
+        "avg_shed_mw": 41.7,
+        "unserved_gwh": 3.4,
+        "peak_demand_mw": 515
+      },
+      {
+        "month": "2025-01",
+        "shedding_hours_per_day": 3.26,
+        "avg_shed_mw": 50.9,
+        "unserved_gwh": 5.0,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2025-02",
+        "shedding_hours_per_day": 4.03,
+        "avg_shed_mw": 65.3,
+        "unserved_gwh": 8.0,
+        "peak_demand_mw": 540
+      },
+      {
+        "month": "2025-03",
+        "shedding_hours_per_day": 5.58,
+        "avg_shed_mw": 97.9,
+        "unserved_gwh": 16.6,
+        "peak_demand_mw": 585
+      },
+      {
+        "month": "2025-04",
+        "shedding_hours_per_day": 7.44,
+        "avg_shed_mw": 139.5,
+        "unserved_gwh": 31.6,
+        "peak_demand_mw": 625
+      },
+      {
+        "month": "2025-05",
+        "shedding_hours_per_day": 8.37,
+        "avg_shed_mw": 160.7,
+        "unserved_gwh": 40.9,
+        "peak_demand_mw": 640
+      },
+      {
+        "month": "2025-06",
+        "shedding_hours_per_day": 7.13,
+        "avg_shed_mw": 128.3,
+        "unserved_gwh": 27.8,
+        "peak_demand_mw": 600
+      },
+      {
+        "month": "2025-07",
+        "shedding_hours_per_day": 4.65,
+        "avg_shed_mw": 76.0,
+        "unserved_gwh": 10.7,
+        "peak_demand_mw": 545
+      },
+      {
+        "month": "2025-08",
+        "shedding_hours_per_day": 3.1,
+        "avg_shed_mw": 48.4,
+        "unserved_gwh": 4.6,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2025-09",
+        "shedding_hours_per_day": 2.63,
+        "avg_shed_mw": 40.6,
+        "unserved_gwh": 3.2,
+        "peak_demand_mw": 515
+      },
+      {
+        "month": "2025-10",
+        "shedding_hours_per_day": 2.94,
+        "avg_shed_mw": 46.3,
+        "unserved_gwh": 4.1,
+        "peak_demand_mw": 525
+      },
+      {
+        "month": "2025-11",
+        "shedding_hours_per_day": 3.1,
+        "avg_shed_mw": 48.4,
+        "unserved_gwh": 4.6,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2025-12",
+        "shedding_hours_per_day": 3.1,
+        "avg_shed_mw": 47.9,
+        "unserved_gwh": 4.5,
+        "peak_demand_mw": 515
+      },
+      {
+        "month": "2026-01",
+        "shedding_hours_per_day": 3.04,
+        "avg_shed_mw": 47.4,
+        "unserved_gwh": 4.4,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": "2026-02",
+        "shedding_hours_per_day": 3.77,
+        "avg_shed_mw": 61.1,
+        "unserved_gwh": 7.0,
+        "peak_demand_mw": 540
+      },
+      {
+        "month": "2026-03",
+        "shedding_hours_per_day": 5.22,
+        "avg_shed_mw": 91.6,
+        "unserved_gwh": 14.5,
+        "peak_demand_mw": 585
+      },
+      {
+        "month": "2026-04",
+        "shedding_hours_per_day": 6.96,
+        "avg_shed_mw": 130.5,
+        "unserved_gwh": 27.6,
+        "peak_demand_mw": 625
+      },
+      {
+        "month": "2026-05",
+        "shedding_hours_per_day": 7.83,
+        "avg_shed_mw": 150.3,
+        "unserved_gwh": 35.8,
+        "peak_demand_mw": 640
+      },
+      {
+        "month": "2026-06",
+        "shedding_hours_per_day": 6.67,
+        "avg_shed_mw": 120.1,
+        "unserved_gwh": 24.4,
+        "peak_demand_mw": 600
+      }
+    ],
+    "by_year": [
+      {
+        "year": 2023,
+        "shedding_hours_per_day": 2.5275,
+        "unserved_gwh": 48.7,
+        "worst_month": "2023-05",
+        "worst_month_hours": 4.59
+      },
+      {
+        "year": 2024,
+        "shedding_hours_per_day": 4.015833333333333,
+        "unserved_gwh": 122.7,
+        "worst_month": "2024-05",
+        "worst_month_hours": 7.29
+      },
+      {
+        "year": 2025,
+        "shedding_hours_per_day": 4.610833333333334,
+        "unserved_gwh": 161.59999999999997,
+        "worst_month": "2025-05",
+        "worst_month_hours": 8.37
+      },
+      {
+        "year": 2026,
+        "shedding_hours_per_day": 5.581666666666667,
+        "unserved_gwh": 113.69999999999999,
+        "worst_month": "2026-05",
+        "worst_month_hours": 7.83
+      }
+    ],
+    "seasonality": [
+      {
+        "month": 1,
+        "shedding_hours_per_day": 2.73,
+        "avg_shed_mw": 42.6,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": 2,
+        "shedding_hours_per_day": 3.38,
+        "avg_shed_mw": 54.775,
+        "peak_demand_mw": 540
+      },
+      {
+        "month": 3,
+        "shedding_hours_per_day": 4.68,
+        "avg_shed_mw": 82.125,
+        "peak_demand_mw": 585
+      },
+      {
+        "month": 4,
+        "shedding_hours_per_day": 6.24,
+        "avg_shed_mw": 117.0,
+        "peak_demand_mw": 625
+      },
+      {
+        "month": 5,
+        "shedding_hours_per_day": 7.02,
+        "avg_shed_mw": 134.775,
+        "peak_demand_mw": 640
+      },
+      {
+        "month": 6,
+        "shedding_hours_per_day": 5.98,
+        "avg_shed_mw": 107.65,
+        "peak_demand_mw": 600
+      },
+      {
+        "month": 7,
+        "shedding_hours_per_day": 3.75,
+        "avg_shed_mw": 61.300000000000004,
+        "peak_demand_mw": 545
+      },
+      {
+        "month": 8,
+        "shedding_hours_per_day": 2.5,
+        "avg_shed_mw": 39.0,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": 9,
+        "shedding_hours_per_day": 2.12,
+        "avg_shed_mw": 32.733333333333334,
+        "peak_demand_mw": 515
+      },
+      {
+        "month": 10,
+        "shedding_hours_per_day": 2.37,
+        "avg_shed_mw": 37.33333333333333,
+        "peak_demand_mw": 525
+      },
+      {
+        "month": 11,
+        "shedding_hours_per_day": 2.5,
+        "avg_shed_mw": 39.0,
+        "peak_demand_mw": 520
+      },
+      {
+        "month": 12,
+        "shedding_hours_per_day": 2.5,
+        "avg_shed_mw": 38.63333333333333,
+        "peak_demand_mw": 515
+      }
+    ],
+    "critical_window": [
+      4,
+      5,
+      6
+    ],
+    "cost": {
+      "unserved_kwh": 145400000.0,
+      "household_cost_xof": 22900500000.0,
+      "business_cost_xof": 111958000000.0,
+      "total_cost_xof": 134858500000.0,
+      "average_voll_xof_per_kwh": 927.5
+    },
+    "caveat": "Série mensuelle de délestage sur le réseau interconnecté. Reconstruction Malinergy: les heures de délestage sont modélisées à partir de la saisonnalité hydrologique (étiage mars-juin), de la pointe de climatisation et de l'aggravation documentée du déficit 2023-2025. Ce n'est PAS un relevé d'exploitation EDM-SA. Remplacer par les rapports de dispatching dès qu'ils sont accessibles."
+  }
+}

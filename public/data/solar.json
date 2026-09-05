@@ -1,0 +1,192 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "sites": [
+      {
+        "id": "bamako",
+        "name": "Bamako",
+        "region": "District de Bamako",
+        "ghi": 5.75,
+        "specific_yield": 1718.87625,
+        "capacity_factor": 0.19621875,
+        "grid_km": 0.0,
+        "local_peak_mw": 380.0,
+        "interconnection_cost_xof_per_kw": 0.0,
+        "resource_score": 0.5223214285714292,
+        "evacuation_score": 1.0,
+        "absorption_score": 1.0,
+        "score": 0.8805803571428573,
+        "verdict": "priorité réseau interconnecté"
+      },
+      {
+        "id": "kayes",
+        "name": "Kayes",
+        "region": "Kayes",
+        "ghi": 5.95,
+        "specific_yield": 1778.66325,
+        "capacity_factor": 0.20304375,
+        "grid_km": 8.0,
+        "local_peak_mw": 45.0,
+        "interconnection_cost_xof_per_kw": 7200.0,
+        "resource_score": 0.8705357142857157,
+        "evacuation_score": 0.992,
+        "absorption_score": 0.34412360080584264,
+        "score": 0.7348771888534739,
+        "verdict": "priorité réseau interconnecté"
+      },
+      {
+        "id": "segou",
+        "name": "Ségou",
+        "region": "Ségou",
+        "ghi": 5.9,
+        "specific_yield": 1763.7165000000002,
+        "capacity_factor": 0.20133750000000003,
+        "grid_km": 15.0,
+        "local_peak_mw": 60.0,
+        "interconnection_cost_xof_per_kw": 13500.0,
+        "resource_score": 0.7834821428571451,
+        "evacuation_score": 0.985,
+        "absorption_score": 0.39735970711951313,
+        "score": 0.7289464332061159,
+        "verdict": "priorité réseau interconnecté"
+      },
+      {
+        "id": "mopti",
+        "name": "Mopti",
+        "region": "Mopti",
+        "ghi": 6.05,
+        "specific_yield": 1715.81025,
+        "capacity_factor": 0.19586875,
+        "grid_km": 40.0,
+        "local_peak_mw": 25.0,
+        "interconnection_cost_xof_per_kw": 36000.0,
+        "resource_score": 0.5044642857142861,
+        "evacuation_score": 0.96,
+        "absorption_score": 0.2564945880212885,
+        "score": 0.5998891772360225,
+        "verdict": "conditionné au renforcement de l'antenne"
+      },
+      {
+        "id": "koutiala",
+        "name": "Koutiala",
+        "region": "Sikasso",
+        "ghi": 5.6,
+        "specific_yield": 1674.0359999999998,
+        "capacity_factor": 0.1911,
+        "grid_km": 20.0,
+        "local_peak_mw": 30.0,
+        "interconnection_cost_xof_per_kw": 18000.0,
+        "resource_score": 0.26116071428571325,
+        "evacuation_score": 0.98,
+        "absorption_score": 0.28097574347450816,
+        "score": 0.5556316887875061,
+        "verdict": "priorité réseau interconnecté"
+      },
+      {
+        "id": "sikasso",
+        "name": "Sikasso",
+        "region": "Sikasso",
+        "ghi": 5.45,
+        "specific_yield": 1629.19575,
+        "capacity_factor": 0.18598125000000001,
+        "grid_km": 10.0,
+        "local_peak_mw": 55.0,
+        "interconnection_cost_xof_per_kw": 9000.0,
+        "resource_score": 0.0,
+        "evacuation_score": 0.99,
+        "absorption_score": 0.3804429551263411,
+        "score": 0.5291550342942194,
+        "verdict": "second rang"
+      },
+      {
+        "id": "nioro",
+        "name": "Nioro du Sahel",
+        "region": "Kayes",
+        "ghi": 6.0,
+        "specific_yield": 1701.6300000000003,
+        "capacity_factor": 0.19425000000000003,
+        "grid_km": 120.0,
+        "local_peak_mw": 8.0,
+        "interconnection_cost_xof_per_kw": 108000.0,
+        "resource_score": 0.4218750000000022,
+        "evacuation_score": 0.88,
+        "absorption_score": 0.14509525002200233,
+        "score": 0.5082520875077015,
+        "verdict": "conditionné au renforcement de l'antenne"
+      },
+      {
+        "id": "kidal",
+        "name": "Kidal",
+        "region": "Kidal",
+        "ghi": 6.35,
+        "specific_yield": 1800.8917499999998,
+        "capacity_factor": 0.20558124999999997,
+        "grid_km": 999.0,
+        "local_peak_mw": 4.0,
+        "interconnection_cost_xof_per_kw": 900000.0,
+        "resource_score": 1.0,
+        "evacuation_score": 0.0,
+        "absorption_score": 0.10259783520851541,
+        "score": 0.2859092423229804,
+        "verdict": "hybride PV-diesel-stockage en système isolé"
+      },
+      {
+        "id": "tombouctou",
+        "name": "Tombouctou",
+        "region": "Tombouctou",
+        "ghi": 6.25,
+        "specific_yield": 1772.53125,
+        "capacity_factor": 0.20234375,
+        "grid_km": 999.0,
+        "local_peak_mw": 12.0,
+        "interconnection_cost_xof_per_kw": 900000.0,
+        "resource_score": 0.8348214285714296,
+        "evacuation_score": 0.0,
+        "absorption_score": 0.17770466332772772,
+        "score": 0.2709019893075621,
+        "verdict": "hybride PV-diesel-stockage en système isolé"
+      },
+      {
+        "id": "gao",
+        "name": "Gao",
+        "region": "Gao",
+        "ghi": 6.2,
+        "specific_yield": 1758.351,
+        "capacity_factor": 0.20072500000000001,
+        "grid_km": 999.0,
+        "local_peak_mw": 15.0,
+        "interconnection_cost_xof_per_kw": 900000.0,
+        "resource_score": 0.7522321428571443,
+        "evacuation_score": 0.0,
+        "absorption_score": 0.19867985355975656,
+        "score": 0.2575959844602009,
+        "verdict": "hybride PV-diesel-stockage en système isolé"
+      }
+    ],
+    "spread": {
+      "yield_spread_share": 0.10538696777228873,
+      "interconnection_spread_ratio": 125.0,
+      "cheapest_interconnection_xof_per_kw": 7200.0,
+      "dearest_interconnection_xof_per_kw": 900000.0,
+      "best_site": "kidal",
+      "worst_site": "sikasso"
+    },
+    "assumptions": {
+      "performance_ratio": {
+        "value": 0.78,
+        "source": "afdb-desert-to-power-mali",
+        "note": "Inclut température, salissure, câblage, onduleur. Le derating poussière est plus sévère au nord (harmattan)."
+      },
+      "soiling_extra_loss_north": {
+        "value": 0.04,
+        "source": "malinergy-estimation"
+      },
+      "tilt_gain": {
+        "value": 1.05,
+        "source": "gsa-mali",
+        "note": "Gain plan incliné optimal fixé par rapport à l'horizontal."
+      }
+    }
+  }
+}

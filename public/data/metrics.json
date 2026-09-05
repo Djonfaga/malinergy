@@ -1,0 +1,45 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "snapshot": "2026-01",
+    "metrics": [
+      {
+        "id": "cost_gap",
+        "label": "Écart coût-tarif",
+        "value": "52",
+        "unit": "FCFA/kWh",
+        "detail": "75 Md FCFA par an à la charge du budget",
+        "source": "Banque mondiale (2021) — Mali Electricity System Reinforcement and Access Expansion Project (P176633)",
+        "confidence": "haute"
+      },
+      {
+        "id": "firm_margin",
+        "label": "Marge de puissance ferme",
+        "value": "-131",
+        "unit": "MW à la pointe du soir",
+        "detail": "489 MW disponibles pour 620 MW appelés",
+        "source": "Malinergy (2026) — Estimation Malinergy",
+        "confidence": "faible"
+      },
+      {
+        "id": "unserved",
+        "label": "Énergie non fournie",
+        "value": "145",
+        "unit": "GWh sur douze mois",
+        "detail": "10.0% des ventes, 4.4 h de délestage par jour",
+        "source": "Malinergy (2026) — Estimation Malinergy",
+        "confidence": "faible"
+      },
+      {
+        "id": "access",
+        "label": "Accès à l'électricité",
+        "value": "55%",
+        "unit": "de la population",
+        "detail": "pertes réseau 18.5%",
+        "source": "Banque mondiale (2021) — Mali Electricity System Reinforcement and Access Expansion Project (P176633)",
+        "confidence": "moyenne"
+      }
+    ]
+  }
+}

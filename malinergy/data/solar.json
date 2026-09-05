@@ -1,0 +1,153 @@
+{
+  "schema": "malinergy/solar/1",
+  "snapshot": "2026-01",
+  "note": "Irradiation globale horizontale moyenne journalière de long terme (kWh/m2/j) et paramètres de conversion PV.",
+  "pv_assumptions": {
+    "performance_ratio": {
+      "value": 0.78,
+      "source": "afdb-desert-to-power-mali",
+      "note": "Inclut température, salissure, câblage, onduleur. Le derating poussière est plus sévère au nord (harmattan)."
+    },
+    "soiling_extra_loss_north": {
+      "value": 0.04,
+      "source": "malinergy-estimation"
+    },
+    "tilt_gain": {
+      "value": 1.05,
+      "source": "gsa-mali",
+      "note": "Gain plan incliné optimal fixé par rapport à l'horizontal."
+    }
+  },
+  "sites": [
+    {
+      "id": "bamako",
+      "name": "Bamako",
+      "region": "District de Bamako",
+      "lat": 12.65,
+      "lon": -8.0,
+      "ghi_kwh_m2_day": 5.75,
+      "grid_km": 0,
+      "grid_voltage": "225 kV",
+      "local_peak_mw": 380,
+      "arid_north": false,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "segou",
+      "name": "Ségou",
+      "region": "Ségou",
+      "lat": 13.44,
+      "lon": -6.27,
+      "ghi_kwh_m2_day": 5.9,
+      "grid_km": 15,
+      "grid_voltage": "150 kV",
+      "local_peak_mw": 60,
+      "arid_north": false,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "sikasso",
+      "name": "Sikasso",
+      "region": "Sikasso",
+      "lat": 11.32,
+      "lon": -5.67,
+      "ghi_kwh_m2_day": 5.45,
+      "grid_km": 10,
+      "grid_voltage": "225 kV",
+      "local_peak_mw": 55,
+      "arid_north": false,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "kayes",
+      "name": "Kayes",
+      "region": "Kayes",
+      "lat": 14.45,
+      "lon": -11.44,
+      "ghi_kwh_m2_day": 5.95,
+      "grid_km": 8,
+      "grid_voltage": "225 kV",
+      "local_peak_mw": 45,
+      "arid_north": false,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "koutiala",
+      "name": "Koutiala",
+      "region": "Sikasso",
+      "lat": 12.39,
+      "lon": -5.46,
+      "ghi_kwh_m2_day": 5.6,
+      "grid_km": 20,
+      "grid_voltage": "150 kV",
+      "local_peak_mw": 30,
+      "arid_north": false,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "mopti",
+      "name": "Mopti",
+      "region": "Mopti",
+      "lat": 14.49,
+      "lon": -4.2,
+      "ghi_kwh_m2_day": 6.05,
+      "grid_km": 40,
+      "grid_voltage": "33 kV",
+      "local_peak_mw": 25,
+      "arid_north": true,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "tombouctou",
+      "name": "Tombouctou",
+      "region": "Tombouctou",
+      "lat": 16.77,
+      "lon": -3.01,
+      "ghi_kwh_m2_day": 6.25,
+      "grid_km": 999,
+      "grid_voltage": "isole",
+      "local_peak_mw": 12,
+      "arid_north": true,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "gao",
+      "name": "Gao",
+      "region": "Gao",
+      "lat": 16.27,
+      "lon": -0.04,
+      "ghi_kwh_m2_day": 6.2,
+      "grid_km": 999,
+      "grid_voltage": "isole",
+      "local_peak_mw": 15,
+      "arid_north": true,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "kidal",
+      "name": "Kidal",
+      "region": "Kidal",
+      "lat": 18.44,
+      "lon": 1.41,
+      "ghi_kwh_m2_day": 6.35,
+      "grid_km": 999,
+      "grid_voltage": "isole",
+      "local_peak_mw": 4,
+      "arid_north": true,
+      "source": "gsa-mali"
+    },
+    {
+      "id": "nioro",
+      "name": "Nioro du Sahel",
+      "region": "Kayes",
+      "lat": 15.23,
+      "lon": -9.59,
+      "ghi_kwh_m2_day": 6.0,
+      "grid_km": 120,
+      "grid_voltage": "33 kV",
+      "local_peak_mw": 8,
+      "arid_north": true,
+      "source": "gsa-mali"
+    }
+  ]
+}

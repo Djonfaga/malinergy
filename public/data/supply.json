@@ -1,0 +1,177 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "balance": {
+      "peak_demand_mw": 620.0,
+      "suppressed_demand_mw": 180.0,
+      "latent_peak_mw": 800.0,
+      "available_daytime_mw": 704.3,
+      "available_firm_mw": 488.7,
+      "firm_margin_mw": -131.3,
+      "latent_firm_gap_mw": 311.3
+    },
+    "merit_order": [
+      {
+        "id": "selingue",
+        "name": "Sélingué",
+        "technology": "hydro",
+        "available_mw": 30.799999999999997,
+        "cumulative_mw": 30.799999999999997,
+        "variable_cost_xof_per_kwh": 14.0,
+        "dispatched_mw": 30.799999999999997
+      },
+      {
+        "id": "sotuba",
+        "name": "Sotuba",
+        "technology": "hydro",
+        "available_mw": 3.3800000000000003,
+        "cumulative_mw": 34.18,
+        "variable_cost_xof_per_kwh": 14.0,
+        "dispatched_mw": 3.3800000000000003
+      },
+      {
+        "id": "gouina",
+        "name": "Gouina",
+        "technology": "hydro",
+        "available_mw": 38.080000000000005,
+        "cumulative_mw": 72.26,
+        "variable_cost_xof_per_kwh": 16.0,
+        "dispatched_mw": 38.080000000000005
+      },
+      {
+        "id": "felou",
+        "name": "Félou",
+        "technology": "hydro",
+        "available_mw": 22.139999999999997,
+        "cumulative_mw": 94.4,
+        "variable_cost_xof_per_kwh": 16.0,
+        "dispatched_mw": 22.139999999999997
+      },
+      {
+        "id": "manantali",
+        "name": "Manantali",
+        "technology": "hydro",
+        "available_mw": 78.0,
+        "cumulative_mw": 172.4,
+        "variable_cost_xof_per_kwh": 18.0,
+        "dispatched_mw": 78.0
+      },
+      {
+        "id": "solaire_ipp",
+        "name": "Solaire PV sous contrat (IPP)",
+        "technology": "solar_pv",
+        "available_mw": 0.0,
+        "cumulative_mw": 172.4,
+        "variable_cost_xof_per_kwh": 55.0,
+        "dispatched_mw": 0.0
+      },
+      {
+        "id": "import_ci",
+        "name": "Import Côte d'Ivoire (interconnexion 225 kV)",
+        "technology": "import",
+        "available_mw": 105.0,
+        "cumulative_mw": 277.4,
+        "variable_cost_xof_per_kwh": 88.0,
+        "dispatched_mw": 105.0
+      },
+      {
+        "id": "thermique_hfo_edm",
+        "name": "Centrales HFO EDM (Balingue, Darsalam, Sirakoro)",
+        "technology": "thermal_hfo",
+        "available_mw": 117.8,
+        "cumulative_mw": 395.2,
+        "variable_cost_xof_per_kwh": 172.0,
+        "dispatched_mw": 117.8
+      },
+      {
+        "id": "location_diesel",
+        "name": "Groupes loués (diesel/HFO)",
+        "technology": "thermal_rental",
+        "available_mw": 93.5,
+        "cumulative_mw": 488.7,
+        "variable_cost_xof_per_kwh": 235.0,
+        "dispatched_mw": 93.5
+      }
+    ],
+    "fuel_bill": {
+      "total_xof": 192967817296.16147,
+      "by_technology_xof": {
+        "hydro": 7688279271.107234,
+        "thermal_hfo": 58234854921.86334,
+        "thermal_rental": 56147861100.917435,
+        "thermal_isolated": 22533327209.470554,
+        "solar_pv": 15904773455.351301,
+        "import": 32458721337.45164
+      },
+      "average_generation_cost_xof_per_kwh": 108.40888612143902
+    },
+    "lcoe": [
+      {
+        "id": "pv_utility",
+        "name": "PV au sol raccordé réseau",
+        "technology": "solar_pv",
+        "capacity_factor": 0.20133750000000003,
+        "capital_component": 35.00841879525929,
+        "fixed_opex_component": 6.236830012079605,
+        "fuel_component": 0.0,
+        "lead_time_months": 18,
+        "source": "cif-mali-rei",
+        "total": 41.245248807338896,
+        "fuel_share": 0.0
+      },
+      {
+        "id": "hydro_kenie",
+        "name": "Hydro Kénié (42 MW)",
+        "technology": "hydro",
+        "capacity_factor": 0.45,
+        "capital_component": 55.31111615969606,
+        "fixed_opex_component": 8.117706747843734,
+        "fuel_component": 0.0,
+        "lead_time_months": 60,
+        "source": "omvs-sogem",
+        "total": 63.4288229075398,
+        "fuel_share": 0.0
+      },
+      {
+        "id": "pv_bess",
+        "name": "PV + stockage 4 h",
+        "technology": "solar_bess",
+        "capacity_factor": 0.18925725000000002,
+        "capital_component": 74.22920917254774,
+        "fixed_opex_component": 11.460325940958656,
+        "fuel_component": 0.0,
+        "lead_time_months": 24,
+        "source": "cif-mali-rei",
+        "total": 85.6895351135064,
+        "fuel_share": 0.0
+      },
+      {
+        "id": "hfo_neuf",
+        "name": "Groupe HFO neuf",
+        "technology": "thermal_hfo",
+        "capacity_factor": 0.55,
+        "capital_component": 15.22075349785563,
+        "fixed_opex_component": 5.3964300539643,
+        "fuel_component": 172.0,
+        "lead_time_months": 30,
+        "source": "malinergy-estimation",
+        "total": 192.61718355181992,
+        "fuel_share": 0.8929629061559128
+      },
+      {
+        "id": "location_diesel_nouvelle",
+        "name": "Location de groupes (contrat 3 ans)",
+        "technology": "thermal_rental",
+        "capacity_factor": 0.4,
+        "capital_component": 0.0,
+        "fixed_opex_component": 32.534246575342465,
+        "fuel_component": 235.0,
+        "lead_time_months": 4,
+        "source": "malinergy-estimation",
+        "total": 267.5342465753425,
+        "fuel_share": 0.8783922171018945
+      }
+    ]
+  }
+}

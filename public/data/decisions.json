@@ -1,0 +1,285 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "findings": [
+      "Chaque kWh vendu rapporte 96 FCFA et en coûte 147. L'écart de 52 FCFA/kWh n'est pas un choix tarifaire: c'est une dette de 75 milliards FCFA par an qui se reporte sur le budget, puis sur les fournisseurs.",
+      "Le délestage a coûté environ 135 milliards FCFA à l'économie sur douze mois, pour 145 GWh non fournis (10.0% des ventes). Subir un kWh manquant coûte 3.9 fois plus cher que le produire au coût marginal: l'inaction est l'option la plus chère du tableau.",
+      "Le déficit est un déficit de puissance ferme, pas d'énergie: 489 MW disponibles le soir contre 620 MW de pointe et 800 MW de demande latente. Ajouter du solaire sans stockage réduit la facture de carburant sans réduire le délestage du soir.",
+      "L'irradiation ne varie que de 11% entre le meilleur et le moins bon site du pays, alors que le coût de raccordement varie d'un facteur 125. Choisir un site pour son ensoleillement plutôt que pour son raccordement, c'est optimiser la variable la moins importante.",
+      "Les mesures sans regret identifiées valent 18 milliards FCFA par an et ne dépendent d'aucune réforme non acquise. Elles portent sur l'énergie déjà produite: pertes, recouvrement, arriérés."
+    ],
+    "options": [
+      {
+        "id": "pv_bess_100",
+        "name": "100 MW de PV avec stockage 4 h pour la pointe du soir",
+        "lever": "production",
+        "annual_benefit_xof": 79299859000.0,
+        "capex_xof": 98000000000.0,
+        "lead_time_months": 24,
+        "risk": "moyen",
+        "depends_on": [
+          "solvabilite_acheteur",
+          "planification_moindre_cout"
+        ],
+        "unserved_gwh_addressed": 72.7,
+        "subsidy_relief_xof": 17541209000.0,
+        "rationale": "100 MW / 4 h restituent l'énergie à l'heure où le parc appelle son kWh à 235 FCFA et où le délestage coûte 928 FCFA/kWh à l'économie. C'est la seule option non thermique qui agisse sur la pointe du soir.",
+        "source": "cif-mali-rei",
+        "blocking_conditions": [
+          "solvabilite_acheteur"
+        ],
+        "risk_adjusted_benefit": 63439887200.0,
+        "payback_years": 1.235815564312668,
+        "category": "conditionnel"
+      },
+      {
+        "id": "pv_reseau_200",
+        "name": "200 MW de PV raccordé sur les sites les mieux placés",
+        "lever": "production",
+        "annual_benefit_xof": 63493794000.00001,
+        "capex_xof": 104000000000.0,
+        "lead_time_months": 18,
+        "risk": "faible",
+        "depends_on": [
+          "appels_offres_ipp",
+          "solvabilite_acheteur"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 63493794000.00001,
+        "rationale": "200 MW produisant 353 GWh/an déplacent un kWh à 235 FCFA pour un PPA à 55 FCFA. Le gain est du carburant, pas de la capacité: la pointe du soir reste inchangée.",
+        "source": "afdb-desert-to-power-mali",
+        "blocking_conditions": [
+          "solvabilite_acheteur"
+        ],
+        "risk_adjusted_benefit": 60319104300.00001,
+        "payback_years": 1.6379553567077751,
+        "category": "conditionnel"
+      },
+      {
+        "id": "import_ci_plus",
+        "name": "Porter la capacité d'import à 250 MW (renforcement 225 kV)",
+        "lever": "reseau",
+        "annual_benefit_xof": 70824600000.00002,
+        "capex_xof": 88000000000.0,
+        "lead_time_months": 42,
+        "risk": "moyen",
+        "depends_on": [
+          "solvabilite_acheteur",
+          "planification_moindre_cout"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 70824600000.00002,
+        "rationale": "100 MW de transit supplémentaire à 88 FCFA/kWh contre 235 FCFA/kWh en local. Le gain suppose un excédent exportable côté ivoirien et le paiement régulier des factures.",
+        "source": "wb-mali-esrap",
+        "blocking_conditions": [
+          "solvabilite_acheteur"
+        ],
+        "risk_adjusted_benefit": 56659680000.000015,
+        "payback_years": 1.2425061348740407,
+        "category": "conditionnel"
+      },
+      {
+        "id": "ciblage_subvention",
+        "name": "Remplacer la subvention au kWh par une subvention ciblée",
+        "lever": "tarif",
+        "annual_benefit_xof": 50706716666.66667,
+        "capex_xof": 4000000000.0,
+        "lead_time_months": 12,
+        "risk": "eleve",
+        "depends_on": [
+          "verite_des_couts",
+          "subvention_ciblee",
+          "regulateur_independant"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 50706716666.66667,
+        "rationale": "Aujourd'hui 52% de la subvention va aux ménages, mais seulement 12% à la tranche sociale, qui représente 34% des abonnés. Cibler le soutien sur les ménages les plus modestes libère l'essentiel de l'enveloppe à impact social équivalent.",
+        "source": "malinergy-estimation",
+        "blocking_conditions": [
+          "verite_des_couts",
+          "subvention_ciblee"
+        ],
+        "risk_adjusted_benefit": 30424030000.000004,
+        "payback_years": 0.0788850129322118,
+        "category": "conditionnel"
+      },
+      {
+        "id": "antenne_segou_mopti",
+        "name": "Passer l'antenne Ségou-Mopti en 150 kV",
+        "lever": "reseau",
+        "annual_benefit_xof": 21907130420.0,
+        "capex_xof": 71000000000.0,
+        "lead_time_months": 42,
+        "risk": "moyen",
+        "depends_on": [
+          "planification_moindre_cout"
+        ],
+        "unserved_gwh_addressed": 11.632,
+        "subsidy_relief_xof": 21907130420.0,
+        "rationale": "L'antenne 33 kV plafonne à 18 MW: le centre du pays est délesté faute de transit et n'a aucune marge pour accueillir du solaire. Le passage en 150 kV dégage 72 MW et rend raccordables environ 36 MW de PV local.",
+        "source": "malinergy-estimation",
+        "blocking_conditions": [],
+        "risk_adjusted_benefit": 17525704336.0,
+        "payback_years": 3.240953910384398,
+        "category": "a preparer"
+      },
+      {
+        "id": "pertes_3pts",
+        "name": "Ramener les pertes réseau de 18,5 % à 15,5 %",
+        "lever": "exploitation",
+        "annual_benefit_xof": 16940818812.121212,
+        "capex_xof": 78000000000.0,
+        "lead_time_months": 24,
+        "risk": "moyen",
+        "depends_on": [
+          "comptage_recouvrement"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 16940818812.121212,
+        "rationale": "3 points de pertes récupérés représentent 53 GWh: du carburant non brûlé au coût marginal (235 FCFA/kWh) et de l'énergie désormais facturée.",
+        "source": "wb-mali-esrap",
+        "blocking_conditions": [],
+        "risk_adjusted_benefit": 13552655049.69697,
+        "payback_years": 4.6042638708933445,
+        "category": "a preparer"
+      },
+      {
+        "id": "sortie_location",
+        "name": "Sortir des groupes loués au profit de capacité propre et d'import",
+        "lever": "production",
+        "annual_benefit_xof": 22093632000.0,
+        "capex_xof": 62000000000.0,
+        "lead_time_months": 30,
+        "risk": "eleve",
+        "depends_on": [
+          "planification_moindre_cout",
+          "solvabilite_acheteur"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 22093632000.0,
+        "rationale": "Le loyer de capacité (8 Md FCFA/an sur la part remplacée) est payé en devises et disparaît intégralement. Le kWh loué passe de 235 à 172 FCFA.",
+        "source": "malinergy-estimation",
+        "blocking_conditions": [
+          "solvabilite_acheteur"
+        ],
+        "risk_adjusted_benefit": 13256179200.0,
+        "payback_years": 2.8062384672651377,
+        "category": "conditionnel"
+      },
+      {
+        "id": "apurement_sogem",
+        "name": "Apurer les arriérés envers la SOGEM et les fournisseurs régionaux",
+        "lever": "finance",
+        "annual_benefit_xof": 11017351785.6,
+        "capex_xof": 54000000000.0,
+        "lead_time_months": 12,
+        "risk": "faible",
+        "depends_on": [
+          "solvabilite_acheteur"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 11017351785.6,
+        "rationale": "Rétablir l'accès normal à l'hydro partagé substitue environ 50 GWh à 16 FCFA/kWh à du thermique à 235 FCFA/kWh. La dépense est un apurement de trésorerie, pas un investissement.",
+        "source": "apa-dette-omvs",
+        "blocking_conditions": [
+          "solvabilite_acheteur"
+        ],
+        "risk_adjusted_benefit": 10466484196.32,
+        "payback_years": 4.90135933306401,
+        "category": "conditionnel"
+      },
+      {
+        "id": "hybride_isoles",
+        "name": "Hybridation PV + stockage des centres isolés du nord",
+        "lever": "acces",
+        "annual_benefit_xof": 15176700000.0,
+        "capex_xof": 46000000000.0,
+        "lead_time_months": 20,
+        "risk": "eleve",
+        "depends_on": [
+          "cadre_minireseaux"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 15176700000.0,
+        "rationale": "Les centres isolés produisent à 280 FCFA/kWh avec du gasoil acheminé par route. Hybrider 55% de cette énergie à environ 105 FCFA/kWh supprime aussi la vulnérabilité logistique.",
+        "source": "wb-amader-concessions",
+        "blocking_conditions": [],
+        "risk_adjusted_benefit": 9106020000.0,
+        "payback_years": 3.0309619350715242,
+        "category": "sans regret"
+      },
+      {
+        "id": "recouvrement",
+        "name": "Porter le taux de recouvrement de 86 % à 94 %",
+        "lever": "exploitation",
+        "annual_benefit_xof": 11093349494.949492,
+        "capex_xof": 12000000000.0,
+        "lead_time_months": 18,
+        "risk": "moyen",
+        "depends_on": [
+          "comptage_recouvrement"
+        ],
+        "unserved_gwh_addressed": 0.0,
+        "subsidy_relief_xof": 11093349494.949492,
+        "rationale": "Passer de 86% à 94% de recouvrement sur des ventes déjà réalisées: aucune capacité nouvelle, aucun kWh supplémentaire à produire.",
+        "source": "wb-mali-esrap",
+        "blocking_conditions": [],
+        "risk_adjusted_benefit": 8874679595.959593,
+        "payback_years": 1.081729193284975,
+        "category": "sans regret"
+      }
+    ],
+    "plan": [
+      {
+        "horizon": "0-18 mois — récupérer ce qui existe déjà",
+        "logic": "Aucune de ces mesures ne demande de capacité nouvelle. Elles portent sur l'énergie déjà produite et déjà vendue, et leur rendement est immédiat.",
+        "annual_benefit_xof": 8874679595.959593,
+        "capex_xof": 12000000000.0,
+        "options": [
+          "recouvrement"
+        ],
+        "reform_prerequisites": [
+          "regulateur_independant",
+          "verite_des_couts",
+          "comptage_recouvrement"
+        ]
+      },
+      {
+        "horizon": "18-36 mois — substituer le carburant importé",
+        "logic": "Le solaire raccordé et la sortie des groupes loués attaquent le poste de coût dominant. Leur rendement suppose un acheteur solvable: c'est la condition à lever en parallèle, pas après.",
+        "annual_benefit_xof": 200564359946.01697,
+        "capex_xof": 446000000000.0,
+        "options": [
+          "pv_bess_100",
+          "pv_reseau_200",
+          "ciblage_subvention",
+          "pertes_3pts",
+          "sortie_location",
+          "apurement_sogem",
+          "hybride_isoles"
+        ],
+        "reform_prerequisites": [
+          "regulateur_independant",
+          "verite_des_couts",
+          "comptage_recouvrement"
+        ]
+      },
+      {
+        "horizon": "36 mois et au-delà — lever les contraintes physiques",
+        "logic": "Réseau de transport et interconnexion: ces ouvrages ne résolvent pas la crise courante mais déterminent si la décennie suivante se joue sur du solaire bon marché ou sur du diesel.",
+        "annual_benefit_xof": 74185384336.00002,
+        "capex_xof": 159000000000.0,
+        "options": [
+          "import_ci_plus",
+          "antenne_segou_mopti"
+        ],
+        "reform_prerequisites": [
+          "regulateur_independant",
+          "verite_des_couts",
+          "comptage_recouvrement"
+        ]
+      }
+    ]
+  }
+}

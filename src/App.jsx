@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import DataPanel from './components/DataPanel';
+import DecisionBoard from './components/DecisionBoard';
 import { Pillars, LatestGrid, Footer } from './components/Sections';
 import './styles/colors_and_type.css';
 
@@ -39,6 +40,7 @@ function App() {
             <Pillars setRoute={setRoute}/>
             <LatestGrid />
             <DataPanel />
+            <DecisionBoard />
           </>
         ) : (
           <Subpage route={route} setRoute={setRoute}/>

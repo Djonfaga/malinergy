@@ -1,0 +1,143 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "sources": [
+      {
+        "id": "cree-grille-bt",
+        "title": "Grille tarifaire basse tension homologuée par la CREE",
+        "publisher": "Commission de Régulation de l'Électricité et de l'Eau (CREE)",
+        "year": 2019,
+        "kind": "réglementaire",
+        "url": "https://www.edmsa.ml/",
+        "confidence": "moyenne",
+        "caveat": "Grille de référence publiée 2019, reprise par la presse spécialisée. Les tranches sont stables mais les niveaux doivent être revérifiés à chaque homologation."
+      },
+      {
+        "id": "cree-eclairage-public",
+        "title": "Tarification de l'éclairage public aux collectivités",
+        "publisher": "CREE / EDM-SA",
+        "year": 2020,
+        "kind": "réglementaire",
+        "url": "http://bamada.net/eclairage-public-et-redevance-les-precisions-de-ledm-sa",
+        "confidence": "moyenne",
+        "caveat": "113 FCFA HT/kWh en moyenne tension, 108 FCFA HT/kWh en basse tension."
+      },
+      {
+        "id": "wb-mali-esrap",
+        "title": "Mali Electricity System Reinforcement and Access Expansion Project (P176633)",
+        "publisher": "Banque mondiale",
+        "year": 2021,
+        "kind": "rapport",
+        "url": "https://documents1.worldbank.org/curated/en/397151627676502492/pdf/Concept-Project-Information-Document-PID-Mali-Electricity-System-Reinforcement-and-Access-Expansion-Project-P176633.pdf",
+        "confidence": "haute",
+        "caveat": "Déficit structurel du secteur, subvention de l'ordre de 100-150 MUSD/an, croissance de la demande ~10-12 %/an."
+      },
+      {
+        "id": "afdb-desert-to-power-mali",
+        "title": "Desert to Power — Feuille de route Mali",
+        "publisher": "Banque africaine de développement",
+        "year": 2020,
+        "kind": "rapport",
+        "url": "https://www.afdb.org/sites/default/files/2024/08/23/desert-to-power_dtp_roadmap_mali-en_oct2020.pdf",
+        "confidence": "haute",
+        "caveat": "Ressource solaire, pipeline PV, contraintes de réseau."
+      },
+      {
+        "id": "energypedia-mali",
+        "title": "Mali Energy Situation",
+        "publisher": "energypedia",
+        "year": 2024,
+        "kind": "compilation",
+        "url": "https://energypedia.info/wiki/Mali_Energy_Situation",
+        "confidence": "moyenne",
+        "caveat": "Compilation secondaire; utile pour l'historique institutionnel et les ordres de grandeur."
+      },
+      {
+        "id": "omvs-sogem",
+        "title": "Amenagements hydroélectriques OMVS (Manantali, Félou, Gouina) et clé de répartition",
+        "publisher": "OMVS / SOGEM",
+        "year": 2022,
+        "kind": "institutionnel",
+        "url": "https://en.wikipedia.org/wiki/Manantali_Dam",
+        "confidence": "moyenne",
+        "caveat": "Puissances installées documentées; la part malienne suit la clé de répartition OMVS (Mali ~52 % Manantali, ~34 % Gouina, ~43 % Félou selon les années)."
+      },
+      {
+        "id": "apa-dette-omvs",
+        "title": "Arriérés de paiement du Mali envers les infrastructures partagées du fleuve Sénégal",
+        "publisher": "APA News",
+        "year": 2025,
+        "kind": "presse",
+        "url": "https://apanews.net/malis-mounting-cfa54-billion-debt-threatens-shared-senegal-river-energy-infrastructure/",
+        "confidence": "moyenne",
+        "caveat": "Arriérés estimés à ~54 milliards FCFA envers la SOGEM; risque sur la disponibilité de l'hydro partagé."
+      },
+      {
+        "id": "cif-mali-rei",
+        "title": "Mali Renewable Energy Intégration (REI) Investment Plan",
+        "publisher": "Climate Investment Funds",
+        "year": 2023,
+        "kind": "rapport",
+        "url": "https://www.cif.org/sites/cif_enc/files/2023-12/revised_mali_rei_investment_plan_modular_approach_december.pdf",
+        "confidence": "haute",
+        "caveat": "Contraintes d'intégration des EnR variables, besoins de stockage et de renforcement réseau."
+      },
+      {
+        "id": "akdn-edm-ppp",
+        "title": "Partenariat public-privé EDM — IPS (WA) / République du Mali",
+        "publisher": "Aga Khan Development Network",
+        "year": 2010,
+        "kind": "institutionnel",
+        "url": "https://the.akdn/en/resources-media/whats-new/news-release/energie-du-mali-agreement-signed-public-private-partnership-between-ips-wa-and",
+        "confidence": "haute",
+        "caveat": "Chronologie de la privatisation de 2000 (SAUR/IPS), du retrait de SAUR et de la recomposition de l'actionnariat."
+      },
+      {
+        "id": "wb-amader-concessions",
+        "title": "Évaluation of Rural Électrification Concessions in Mali (AMADER)",
+        "publisher": "Banque mondiale",
+        "year": 2017,
+        "kind": "rapport",
+        "url": "https://documents1.worldbank.org/curated/en/839491498159507682/txt/116644-WP-PUBLIC-P150241-45p-Detailed-Case-Study-Mali.txt",
+        "confidence": "haute",
+        "caveat": "Modèle de concessions rurales, coûts des mini-réseaux, tarifs hors périmètre EDM."
+      },
+      {
+        "id": "gsa-mali",
+        "title": "Global Solar Atlas — Mali (GHI, PVOUT)",
+        "publisher": "Banque mondiale / Solargis",
+        "year": 2024,
+        "kind": "données",
+        "url": "https://globalsolaratlas.info/",
+        "confidence": "haute",
+        "caveat": "GHI journalier moyen long terme par localité; incertitude ~4 % sur la ressource."
+      },
+      {
+        "id": "gpp-mali-prix",
+        "title": "Mali — prix de l'électricité",
+        "publisher": "GlobalPetrolPrices",
+        "year": 2025,
+        "kind": "compilation",
+        "url": "https://www.globalpetrolprices.com/Mali/electricity_prices/",
+        "confidence": "faible",
+        "caveat": "Moyennes agrégées, utiles pour un ordre de grandeur seulement."
+      },
+      {
+        "id": "malinergy-estimation",
+        "title": "Estimation Malinergy",
+        "publisher": "Malinergy",
+        "year": 2026,
+        "kind": "estimation",
+        "url": "docs/methodologie.md",
+        "confidence": "faible",
+        "caveat": "Valeur dérivée ou hypothèse de travail explicite, a remplacer dès qu'une donnée primaire est disponible. Jamais présentée comme un relevé officiel."
+      }
+    ],
+    "summary": {
+      "haute": 54,
+      "moyenne": 22,
+      "faible": 32
+    }
+  }
+}

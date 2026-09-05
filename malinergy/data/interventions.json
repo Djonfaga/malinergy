@@ -1,0 +1,187 @@
+{
+  "schema": "malinergy/interventions/1",
+  "snapshot": "2026-01",
+  "note": "Options d'action évaluées par malinergy.analysis.decisions. Le bénéfice n'est PAS stocké ici: il est recalculé à partir des jeux de données par le modèle indiqué dans 'benefit_model'. Ne figurent ici que les paramètres de dimensionnement, de coût et de risque.",
+  "interventions": [
+    {
+      "id": "pertes_3pts",
+      "name": "Ramener les pertes réseau de 18,5 % à 15,5 %",
+      "lever": "exploitation",
+      "benefit_model": "loss_reduction",
+      "params": {
+        "points": 3.0
+      },
+      "capex_xof": 78000000000,
+      "lead_time_months": 24,
+      "risk": "moyen",
+      "depends_on": [
+        "comptage_recouvrement"
+      ],
+      "source": "wb-mali-esrap",
+      "note": "Comptage intelligent sur les gros clients, réhabilitation des départs BT, lutte contre les branchements irréguliers."
+    },
+    {
+      "id": "recouvrement",
+      "name": "Porter le taux de recouvrement de 86 % à 94 %",
+      "lever": "exploitation",
+      "benefit_model": "collection_improvement",
+      "params": {
+        "target_rate": 0.94
+      },
+      "capex_xof": 12000000000,
+      "lead_time_months": 18,
+      "risk": "moyen",
+      "depends_on": [
+        "comptage_recouvrement"
+      ],
+      "source": "wb-mali-esrap",
+      "note": "Prépaiement, apurement des créances publiques, coupure effective des mauvais payeurs institutionnels."
+    },
+    {
+      "id": "pv_reseau_200",
+      "name": "200 MW de PV raccordé sur les sites les mieux placés",
+      "lever": "production",
+      "benefit_model": "solar_fuel_displacement",
+      "params": {
+        "mw": 200,
+        "site": "segou"
+      },
+      "capex_xof": 104000000000,
+      "lead_time_months": 18,
+      "risk": "faible",
+      "depends_on": [
+        "appels_offres_ipp",
+        "solvabilite_acheteur"
+      ],
+      "source": "afdb-desert-to-power-mali",
+      "note": "Capex indicatif porté par des IPP; le coût pour l'État est le PPA, pas l'investissement."
+    },
+    {
+      "id": "pv_bess_100",
+      "name": "100 MW de PV avec stockage 4 h pour la pointe du soir",
+      "lever": "production",
+      "benefit_model": "solar_bess_peak",
+      "params": {
+        "mw": 100,
+        "storage_hours": 4,
+        "site": "bamako"
+      },
+      "capex_xof": 98000000000,
+      "lead_time_months": 24,
+      "risk": "moyen",
+      "depends_on": [
+        "solvabilite_acheteur",
+        "planification_moindre_cout"
+      ],
+      "source": "cif-mali-rei",
+      "note": "Seule option non thermique qui réduise le délestage du soir, où se concentre la gêne ressentie."
+    },
+    {
+      "id": "sortie_location",
+      "name": "Sortir des groupes loués au profit de capacité propre et d'import",
+      "lever": "production",
+      "benefit_model": "rental_exit",
+      "params": {
+        "replaced_share": 0.6
+      },
+      "capex_xof": 62000000000,
+      "lead_time_months": 30,
+      "risk": "eleve",
+      "depends_on": [
+        "planification_moindre_cout",
+        "solvabilite_acheteur"
+      ],
+      "source": "malinergy-estimation",
+      "note": "Le poste de coût unitaire le plus élevé du parc; sa sortie suppose d'avoir mis la capacité de remplacement en service d'abord."
+    },
+    {
+      "id": "hybride_isoles",
+      "name": "Hybridation PV + stockage des centres isolés du nord",
+      "lever": "acces",
+      "benefit_model": "isolated_hybrid",
+      "params": {
+        "solar_share": 0.55
+      },
+      "capex_xof": 46000000000,
+      "lead_time_months": 20,
+      "risk": "eleve",
+      "depends_on": [
+        "cadre_minireseaux"
+      ],
+      "source": "wb-amader-concessions",
+      "note": "Substitue du gasoil acheminé par route à plus de 280 FCFA/kWh. Le risque porte sur la sécurité et la maintenance, pas sur l'économie."
+    },
+    {
+      "id": "ciblage_subvention",
+      "name": "Remplacer la subvention au kWh par une subvention ciblée",
+      "lever": "tarif",
+      "benefit_model": "subsidy_targeting",
+      "params": {
+        "protected_share": 0.3
+      },
+      "capex_xof": 4000000000,
+      "lead_time_months": 12,
+      "risk": "eleve",
+      "depends_on": [
+        "verite_des_couts",
+        "subvention_ciblee",
+        "regulateur_independant"
+      ],
+      "source": "malinergy-estimation",
+      "note": "Rendement budgétaire immédiat et élevé, coût politique tout aussi immédiat. A séquencer après une amélioration visible du service."
+    },
+    {
+      "id": "apurement_sogem",
+      "name": "Apurer les arriérés envers la SOGEM et les fournisseurs régionaux",
+      "lever": "finance",
+      "benefit_model": "arrears_settlement",
+      "params": {
+        "availability_gain": 0.06
+      },
+      "capex_xof": 54000000000,
+      "lead_time_months": 12,
+      "risk": "faible",
+      "depends_on": [
+        "solvabilite_acheteur"
+      ],
+      "source": "apa-dette-omvs",
+      "note": "Restaure l'accès à l'hydro partagé, l'énergie la moins chère du parc. Dépense de trésorerie, pas d'investissement."
+    },
+    {
+      "id": "import_ci_plus",
+      "name": "Porter la capacité d'import à 250 MW (renforcement 225 kV)",
+      "lever": "reseau",
+      "benefit_model": "import_expansion",
+      "params": {
+        "additional_mw": 100
+      },
+      "capex_xof": 88000000000,
+      "lead_time_months": 42,
+      "risk": "moyen",
+      "depends_on": [
+        "solvabilite_acheteur",
+        "planification_moindre_cout"
+      ],
+      "source": "wb-mali-esrap",
+      "note": "Dépend d'un excédent exportable côté ivoirien et du règlement régulier des factures."
+    },
+    {
+      "id": "antenne_segou_mopti",
+      "name": "Passer l'antenne Ségou-Mopti en 150 kV",
+      "lever": "reseau",
+      "benefit_model": "transmission_debottleneck",
+      "params": {
+        "line": "segou->mopti",
+        "new_transfer_mw": 90
+      },
+      "capex_xof": 71000000000,
+      "lead_time_months": 42,
+      "risk": "moyen",
+      "depends_on": [
+        "planification_moindre_cout"
+      ],
+      "source": "malinergy-estimation",
+      "note": "Débloque simultanément l'alimentation du centre et la possibilité d'y implanter du solaire."
+    }
+  ]
+}

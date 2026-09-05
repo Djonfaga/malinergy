@@ -1,0 +1,189 @@
+{
+  "generated_by": "malinergy 0.1.0",
+  "snapshot": "2026-01",
+  "data": {
+    "nodes": [
+      {
+        "id": "bamako",
+        "name": "Bamako (Kodialani, Sirakoro, Balingue)",
+        "kind": "charge+production",
+        "voltage_kv": 225,
+        "peak_mw": 380,
+        "on_grid": true
+      },
+      {
+        "id": "kayes",
+        "name": "Kayes",
+        "kind": "charge+production",
+        "voltage_kv": 225,
+        "peak_mw": 45,
+        "on_grid": true
+      },
+      {
+        "id": "manantali",
+        "name": "Manantali",
+        "kind": "production",
+        "voltage_kv": 225,
+        "peak_mw": 0,
+        "on_grid": true
+      },
+      {
+        "id": "segou",
+        "name": "Ségou",
+        "kind": "charge",
+        "voltage_kv": 150,
+        "peak_mw": 60,
+        "on_grid": true
+      },
+      {
+        "id": "sikasso",
+        "name": "Sikasso",
+        "kind": "charge",
+        "voltage_kv": 225,
+        "peak_mw": 55,
+        "on_grid": true
+      },
+      {
+        "id": "koutiala",
+        "name": "Koutiala",
+        "kind": "charge",
+        "voltage_kv": 150,
+        "peak_mw": 30,
+        "on_grid": true
+      },
+      {
+        "id": "mopti",
+        "name": "Mopti-Sévaré",
+        "kind": "charge",
+        "voltage_kv": 33,
+        "peak_mw": 25,
+        "on_grid": true
+      },
+      {
+        "id": "ferkessedougou",
+        "name": "Ferkessedougou (CIV)",
+        "kind": "interconnexion",
+        "voltage_kv": 225,
+        "peak_mw": 0,
+        "on_grid": true
+      },
+      {
+        "id": "tombouctou",
+        "name": "Tombouctou",
+        "kind": "systeme isole",
+        "voltage_kv": 15,
+        "peak_mw": 12,
+        "on_grid": false
+      },
+      {
+        "id": "gao",
+        "name": "Gao",
+        "kind": "systeme isole",
+        "voltage_kv": 15,
+        "peak_mw": 15,
+        "on_grid": false
+      },
+      {
+        "id": "kidal",
+        "name": "Kidal",
+        "kind": "systeme isole",
+        "voltage_kv": 15,
+        "peak_mw": 4,
+        "on_grid": false
+      },
+      {
+        "id": "nioro",
+        "name": "Nioro du Sahel",
+        "kind": "systeme isole",
+        "voltage_kv": 33,
+        "peak_mw": 8,
+        "on_grid": false
+      }
+    ],
+    "lines": [
+      {
+        "from": "manantali",
+        "to": "kayes",
+        "voltage_kv": 225,
+        "length_km": 90,
+        "transfer_mw": 200,
+        "source": "omvs-sogem"
+      },
+      {
+        "from": "kayes",
+        "to": "bamako",
+        "voltage_kv": 225,
+        "length_km": 480,
+        "transfer_mw": 180,
+        "source": "omvs-sogem"
+      },
+      {
+        "from": "bamako",
+        "to": "segou",
+        "voltage_kv": 150,
+        "length_km": 235,
+        "transfer_mw": 90,
+        "source": "wb-mali-esrap"
+      },
+      {
+        "from": "segou",
+        "to": "koutiala",
+        "voltage_kv": 150,
+        "length_km": 130,
+        "transfer_mw": 60,
+        "source": "wb-mali-esrap"
+      },
+      {
+        "from": "koutiala",
+        "to": "sikasso",
+        "voltage_kv": 225,
+        "length_km": 140,
+        "transfer_mw": 120,
+        "source": "wb-mali-esrap"
+      },
+      {
+        "from": "sikasso",
+        "to": "ferkessedougou",
+        "voltage_kv": 225,
+        "length_km": 240,
+        "transfer_mw": 150,
+        "source": "wb-mali-esrap"
+      },
+      {
+        "from": "segou",
+        "to": "mopti",
+        "voltage_kv": 33,
+        "length_km": 280,
+        "transfer_mw": 18,
+        "source": "malinergy-estimation",
+        "note": "Antenne 33 kV très longue: chute de tension et pertes élevées, premier goulet identifié vers le centre du pays."
+      }
+    ],
+    "constraints": [
+      {
+        "id": "axe_segou_mopti",
+        "label": "Antenne Ségou-Mopti saturée en 33 kV",
+        "impact": "Limite l'alimentation du centre et empêche d'y raccorder du solaire au-delà de ~15 MW.",
+        "source": "malinergy-estimation"
+      },
+      {
+        "id": "transit_kayes_bamako",
+        "label": "Transit Kayes-Bamako proche de sa limite en hydraulicité haute",
+        "impact": "L'énergie hydro OMVS la moins chère ne peut pas toujours atteindre la charge de Bamako.",
+        "source": "wb-mali-esrap"
+      },
+      {
+        "id": "inertie_ri",
+        "label": "Faible inertie et absence de réserve rapide",
+        "impact": "Plafonne le taux de pénétration instantané du PV sans stockage ni compensateurs synchrones.",
+        "source": "cif-mali-rei"
+      },
+      {
+        "id": "isoles_nord",
+        "label": "Quatre chefs-lieux du nord hors réseau interconnecté",
+        "impact": "Production diesel à plus de 280 FCFA/kWh, dépendante d'une logistique routière vulnérable.",
+        "source": "wb-amader-concessions"
+      }
+    ]
+  }
+}

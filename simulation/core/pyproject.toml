@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mali-energy-core"
+version = "1.0.0"
+description = "Canonical data layer for the Mali power-system simulation benchmark"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "djonfaga" }]
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "requests>=2.31",
+    "pvlib>=0.11",
+]
+
+[project.optional-dependencies]
+plots = ["matplotlib>=3.8"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mali-energy = "mali_energy.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mali_energy*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

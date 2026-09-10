@@ -1,0 +1,34 @@
+id,name,vn_kv,zone,latitude,longitude,type,in_service,source,confidence,note
+BUS_MANANTALI_225,Manantali 225 kV,225.0,Kayes,13.190,-10.460,transmission,TRUE,omvs,reported,OMVS hydro switchyard; system slack in the base case
+BUS_BAFOULABE_225,Bafoulabe 225 kV,225.0,Kayes,13.810,-10.830,transmission,TRUE,omvs,reported,Tap point on the Manantali-Kayes corridor
+BUS_GOUINA_225,Gouina 225 kV,225.0,Kayes,14.000,-11.090,transmission,TRUE,omvs,reported,Gouina hydro switchyard
+BUS_FELOU_225,Felou 225 kV,225.0,Kayes,14.360,-11.510,transmission,TRUE,omvs,reported,Felou run-of-river switchyard
+BUS_KAYES_225,Kayes 225 kV,225.0,Kayes,14.440,-11.440,transmission,TRUE,omvs,reported,Regional hub and Senegal interconnection point
+BUS_KAYES_33,Kayes 33 kV,33.0,Kayes,14.440,-11.440,distribution,TRUE,edm-sa,estimated,Kayes distribution busbar
+BUS_KITA_225,Kita 225 kV,225.0,Kayes,13.050,-9.490,transmission,TRUE,omvs,reported,Kita substation on the Manantali-Bamako corridor
+BUS_KITA_33,Kita 33 kV,33.0,Kayes,13.050,-9.490,distribution,TRUE,edm-sa,estimated,Kita distribution and solar plant connection
+BUS_KODIALANI_225,Bamako Kodialani 225 kV,225.0,Bamako,12.630,-7.980,transmission,TRUE,edm-sa,reported,Main 225 kV entry into Bamako
+BUS_KODIALANI_150,Bamako Kodialani 150 kV,150.0,Bamako,12.630,-7.980,transmission,TRUE,edm-sa,estimated,225/150 kV interface
+BUS_SIRAKORO_225,Bamako Sirakoro 225 kV,225.0,Bamako,12.550,-7.900,transmission,TRUE,edm-sa,estimated,Second Bamako 225 kV node closing the ring
+BUS_SIRAKORO_33,Bamako Sirakoro 33 kV,33.0,Bamako,12.550,-7.900,distribution,TRUE,edm-sa,estimated,Eastern Bamako distribution busbar
+BUS_KATI_225,Kati 225 kV,225.0,Koulikoro,12.750,-8.070,transmission,TRUE,edm-sa,reported,Northern Bamako node and large PV connection point
+BUS_LAFIABOUGOU_33,Bamako Lafiabougou 33 kV,33.0,Bamako,12.640,-8.040,distribution,TRUE,edm-sa,estimated,North-western Bamako distribution busbar
+BUS_BADALABOUGOU_33,Bamako Badalabougou 33 kV,33.0,Bamako,12.620,-7.990,distribution,TRUE,edm-sa,estimated,Right-bank Bamako distribution busbar
+BUS_FALADIE_33,Bamako Faladie 33 kV,33.0,Bamako,12.590,-7.940,distribution,TRUE,edm-sa,estimated,Southern Bamako distribution busbar
+BUS_SOTUBA_150,Sotuba 150 kV,150.0,Bamako,12.660,-7.930,transmission,TRUE,edm-sa,estimated,Sotuba hydro and thermal connection point
+BUS_SOTUBA_33,Sotuba 33 kV,33.0,Bamako,12.660,-7.930,distribution,TRUE,edm-sa,estimated,Sotuba distribution busbar
+BUS_BALINGUE_150,Balingue 150 kV,150.0,Bamako,12.600,-7.960,transmission,TRUE,edm-sa,estimated,Bamako thermal generation busbar
+BUS_SELINGUE_150,Selingue 150 kV,150.0,Sikasso,11.640,-8.230,transmission,TRUE,edm-sa,reported,Selingue hydro switchyard
+BUS_BOUGOUNI_150,Bougouni 150 kV,150.0,Sikasso,11.420,-7.480,transmission,TRUE,edm-sa,estimated,Sub-transmission node south of Bamako
+BUS_SEGOU_225,Segou 225 kV,225.0,Segou,13.440,-6.260,transmission,TRUE,wapp,reported,Node on the Bamako-Sikasso-Ferkessedougou corridor
+BUS_SEGOU_33,Segou 33 kV,33.0,Segou,13.440,-6.260,distribution,TRUE,edm-sa,estimated,Segou distribution and PV connection
+BUS_MARKALA_33,Markala 33 kV,33.0,Segou,13.680,-6.070,distribution,TRUE,edm-sa,estimated,Irrigation and agro-industrial load at the Markala barrage
+BUS_KOUTIALA_225,Koutiala 225 kV,225.0,Sikasso,12.390,-5.460,transmission,TRUE,wapp,reported,Corridor substation serving the cotton belt
+BUS_KOUTIALA_33,Koutiala 33 kV,33.0,Sikasso,12.390,-5.460,distribution,TRUE,edm-sa,estimated,Koutiala distribution busbar
+BUS_SIKASSO_225,Sikasso 225 kV,225.0,Sikasso,11.320,-5.660,transmission,TRUE,wapp,reported,Terminal of the Cote d'Ivoire interconnection
+BUS_SIKASSO_33,Sikasso 33 kV,33.0,Sikasso,11.320,-5.660,distribution,TRUE,edm-sa,estimated,Sikasso distribution busbar
+BUS_FERKE_225,Ferkessedougou 225 kV (CI),225.0,External,9.600,-5.190,external,TRUE,wapp,reported,Cote d'Ivoire side of the interconnection; modelled as an infeed
+BUS_MATAM_225,Senegal interconnection 225 kV,225.0,External,15.660,-13.250,external,TRUE,wapp,reported,OMVS interconnection towards Senegal; modelled as an infeed
+BUS_MOPTI_225,Mopti-Sevare 225 kV,225.0,Mopti,14.510,-4.100,transmission,FALSE,wapp,estimated,Segou-Mopti extension; out of service in the base case
+BUS_MOPTI_33,Mopti-Sevare 33 kV,33.0,Mopti,14.510,-4.100,distribution,FALSE,edm-sa,estimated,Mopti distribution busbar; isolated diesel centre in the base case
+BUS_FOMI_225,Guinea interconnection 225 kV,225.0,External,10.500,-9.000,external,FALSE,wapp,estimated,Planned Guinea link; out of service in the base case

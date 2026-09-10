@@ -74,15 +74,32 @@ class StudyConfig:
     peak_to_average_ratio: float = 1.42
     #: Aggregate power factor of distribution loads (inductive).
     load_power_factor: float = 0.92
-    #: Transmission + distribution technical losses assumed when back-casting
-    #: bus demand from delivered energy.
+    #: Total technical and commercial losses between generation and the meter.
+    #: Split below, because only part of it is inside the modelled network.
     network_loss_fraction: float = 0.185
+    #: Losses that the load flow itself computes, i.e. those occurring on the
+    #: 225 kV, 150 kV and 33 kV network represented in the catalogue. The
+    #: dispatch covers this share; the load flow then reproduces it.
+    transmission_loss_fraction: float = 0.040
     voltage_limits_pu: tuple[float, float] = VOLTAGE_LIMITS_PU
     loading_limit_pct: float = LOADING_LIMIT_NORMAL_PCT
     slack_bus: str = "BUS_MANANTALI_225"
     scenario: str = "base"
     notes: str = ""
     extra: dict = field(default_factory=dict)
+
+    @property
+    def distribution_loss_fraction(self) -> float:
+        """Losses below 33 kV, which the catalogue does not represent.
+
+        Bus demands are grossed up by this share so that the modelled network
+        carries the current those losses actually draw. Applying the whole
+        loss fraction to the dispatch instead would inject roughly 18 % more
+        generation than the modelled network consumes, and the surplus would
+        vanish into the slack bus.
+        """
+        remaining = (1.0 - self.network_loss_fraction) / (1.0 - self.transmission_loss_fraction)
+        return max(0.0, 1.0 - remaining)
 
     def with_(self, **changes) -> "StudyConfig":
         """Return a copy with ``changes`` applied (frozen dataclasses)."""

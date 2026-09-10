@@ -49,13 +49,19 @@ def national_to_utility(config: StudyConfig) -> dict[str, float]:
         raise ValueError(f"no demand figure for {config.year} in the OWID extract")
 
     served_gwh = national_twh * 1000.0 * config.utility_demand_share
+    # Energy that has to enter the modelled network: what customers consume
+    # plus the losses of the low-voltage network below it.
+    network_gwh = served_gwh / (1.0 - config.distribution_loss_fraction)
     generated_gwh = served_gwh / (1.0 - config.network_loss_fraction)
-    average_mw = served_gwh * 1000.0 / 8760.0
+    average_mw = network_gwh * 1000.0 / 8760.0
     return {
         "year": config.year,
         "national_demand_twh": national_twh,
         "utility_share": config.utility_demand_share,
         "utility_energy_gwh": served_gwh,
+        "network_entry_energy_gwh": network_gwh,
+        "distribution_loss_fraction": config.distribution_loss_fraction,
+        "transmission_loss_fraction": config.transmission_loss_fraction,
         "generation_required_gwh": generated_gwh,
         "average_demand_mw": average_mw,
         "peak_demand_mw": average_mw * config.peak_to_average_ratio,
@@ -107,7 +113,7 @@ def allocate_peak(
             station=ZONE_STATION.get(bus.zone, "Bamako"),
             config=config,
         )
-        series[load_id] = model.series(summary["utility_energy_gwh"] * weight)
+        series[load_id] = model.series(summary["network_entry_energy_gwh"] * weight)
 
     total = pd.concat(series.values(), axis=1).sum(axis=1)
     peak_time = total.idxmax()
@@ -150,7 +156,7 @@ def allocate_timeseries(
             station=ZONE_STATION.get(bus.zone, "Bamako"),
             config=config,
         )
-        columns[load_id] = model.series(summary["utility_energy_gwh"] * weight)
+        columns[load_id] = model.series(summary["network_entry_energy_gwh"] * weight)
 
     frame = pd.DataFrame(columns)
     if freq:

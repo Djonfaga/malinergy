@@ -167,7 +167,10 @@ def dispatch(
     and rental sets.
     """
     solar_cache = solar_cache if solar_cache is not None else {}
-    required = demand_mw / (1.0 - config.network_loss_fraction)
+    # Only the losses of the modelled network have to be generated on top of
+    # the bus demands: the demands themselves already carry the low-voltage
+    # losses downstream of them.
+    required = demand_mw / (1.0 - config.transmission_loss_fraction)
 
     setpoints: dict[str, GeneratorSetpoint] = {}
     remaining = required
@@ -269,7 +272,7 @@ def dispatch(
 
     balance = {
         "demand_mw": round(demand_mw, 3),
-        "losses_allowance_mw": round(required - demand_mw, 3),
+        "transmission_loss_allowance_mw": round(required - demand_mw, 3),
         "generation_required_mw": round(required, 3),
         "hydro_mw": round(sum(v for k, v in dispatched.items() if catalog.generators[k].technology == "hydro"), 3),
         "solar_mw": round(sum(v for k, v in dispatched.items() if catalog.generators[k].technology == "solar"), 3),
@@ -361,6 +364,8 @@ def build_case(
             "scenario": config.scenario,
             "utility_demand_share": config.utility_demand_share,
             "network_loss_fraction": config.network_loss_fraction,
+            "transmission_loss_fraction": config.transmission_loss_fraction,
+            "distribution_loss_fraction": round(config.distribution_loss_fraction, 6),
             "base_mva": BASE_MVA,
             "frequency_hz": NOMINAL_FREQUENCY_HZ,
             "slack_bus": config.slack_bus,

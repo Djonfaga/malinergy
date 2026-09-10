@@ -16,13 +16,24 @@ consistent with a hydro-thermal system.
 *Sensitivity: high and linear.* Every megawatt in the study scales with it.
 *Replace with:* EDM-SA energy sold plus network losses, from the annual report.
 
-**Peak to average ratio — 1.42, and network losses — 18.5 %**
-The ratio is the inverse of a 0.70 load factor, typical of a West African
-utility with a strong evening residential peak. Losses at 18.5 % are in the
-range the World Bank reports for Mali and include both technical and
-commercial losses.
-*Sensitivity: moderate.* Losses shift generation requirement, not demand.
+**Peak to average ratio — 1.42**
+The inverse of a 0.70 load factor, typical of a West African utility with a
+strong evening residential peak.
 *Replace with:* CREE monitoring reports.
+
+**Losses — 18.5 % total, of which 4.0 % on the modelled network**
+Total losses of 18.5 % are in the range the World Bank reports for Mali and
+cover technical and commercial losses alike. The split matters more than the
+total. The catalogue stops at 33 kV, so only about 4 % of the energy is lost
+inside it; the remaining 15 % happens below, on medium- and low-voltage
+feeders that are not represented. Bus demands are therefore grossed up by the
+distribution share, and the dispatch covers only the transmission share.
+Applying the full 18.5 % to the dispatch instead injects roughly 18 % more
+generation than the modelled network consumes, and the surplus disappears into
+the slack bus — which makes every generator output and every line flow wrong
+while the load flow still converges and looks respectable.
+*Sensitivity: high on flows, moderate on the balance.*
+*Replace with:* EDM-SA loss statistics by voltage level.
 
 **Bus weights**
 Allocation between load centres follows the concentration of demand in Bamako

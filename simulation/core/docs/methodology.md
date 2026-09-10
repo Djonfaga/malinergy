@@ -18,11 +18,20 @@ comparison is about.
 ```
 national electricity demand         measured (OWID / Ember / Energy Institute)
   x utility share                   assumption, documented, validated
-  / (1 - network losses)            assumption, documented
+  / (1 - distribution losses)       the share lost below the modelled network
   x bus weight                      assumption, documented
   x hourly shape                    modelled from class, calendar, temperature
   = hourly demand per bus
+  / (1 - transmission losses)       covered by the dispatch, recomputed by the load flow
+  = generation to schedule
 ```
+
+The loss fraction is split rather than applied whole. The catalogue represents
+the network down to 33 kV, so only about four points of the eighteen and a half
+per cent of total losses occur inside it. Grossing the bus demands up by the
+distribution share and letting the dispatch cover only the transmission share
+keeps the load flow self-consistent: the losses it computes are the losses the
+dispatch scheduled.
 
 The level comes from measurement and the shape from a model. Inverting that —
 taking a peak figure from a report and inventing an annual energy — hides the

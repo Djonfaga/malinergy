@@ -3,6 +3,7 @@ TR_KOD_225_150,Kodialani 225/150 kV,BUS_KODIALANI_225,BUS_KODIALANI_150,150.0,12
 TR_KOD_150_33,Kodialani 150/33 kV,BUS_KODIALANI_150,BUS_BADALABOUGOU_33,33.0,11.0,0.45,35.0,0.4,YNd11,hv,0,-8,8,1.25,3,TRUE,edm-sa,estimated,Bamako central distribution transformation
 TR_KAT_225_33,Kati 225/33 kV,BUS_KATI_225,BUS_LAFIABOUGOU_33,63.0,13.0,0.4,55.0,0.35,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Serves north-western Bamako and the Kati PV plant
 TR_SIR_225_33,Sirakoro 225/33 kV,BUS_SIRAKORO_225,BUS_SIRAKORO_33,63.0,13.0,0.4,55.0,0.35,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Eastern Bamako transformation
+TR_FAL_150_33,Faladie 150/33 kV,BUS_BALINGUE_150,BUS_FALADIE_33,63.0,11.0,0.45,45.0,0.4,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Southern Bamako transformation from the Balingue busbar
 TR_SOT_150_33,Sotuba 150/33 kV,BUS_SOTUBA_150,BUS_SOTUBA_33,40.0,11.0,0.45,28.0,0.4,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Sotuba transformation
 TR_KAY_225_33,Kayes 225/33 kV,BUS_KAYES_225,BUS_KAYES_33,63.0,13.0,0.4,55.0,0.35,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Kayes regional transformation
 TR_KIT_225_33,Kita 225/33 kV,BUS_KITA_225,BUS_KITA_33,40.0,12.0,0.42,35.0,0.4,YNd11,hv,0,-8,8,1.25,1,TRUE,edm-sa,estimated,Kita transformation and PV connection

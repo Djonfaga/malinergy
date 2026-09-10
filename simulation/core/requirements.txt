@@ -1,0 +1,9 @@
+# Core data layer
+numpy>=1.26
+pandas>=2.1
+requests>=2.31
+pvlib>=0.11
+
+# Optional: figures and tests
+matplotlib>=3.8
+pytest>=8.0

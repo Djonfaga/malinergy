@@ -1,0 +1,14 @@
+id,name,bus,zone,weight,customer_class,power_factor,source,confidence,note
+LD_BKO_BADALA,Bamako centre and right bank,BUS_BADALABOUGOU_33,Bamako,0.180,urban_mixed,0.92,edm-sa,estimated,Administrative and commercial core
+LD_BKO_LAFIA,Bamako north-west,BUS_LAFIABOUGOU_33,Bamako,0.150,urban_residential,0.92,edm-sa,estimated,Dense residential districts
+LD_BKO_FALADIE,Bamako south,BUS_FALADIE_33,Bamako,0.130,urban_residential,0.92,edm-sa,estimated,Expanding southern districts
+LD_BKO_SIRAKORO,Bamako east and industrial zone,BUS_SIRAKORO_33,Bamako,0.120,industrial,0.88,edm-sa,estimated,Industrial estate and eastern districts
+LD_BKO_SOTUBA,Bamako Sotuba and industrial estate,BUS_SOTUBA_33,Bamako,0.070,industrial,0.88,edm-sa,estimated,Historic industrial zone
+LD_KAYES,Kayes,BUS_KAYES_33,Kayes,0.070,urban_mixed,0.92,edm-sa,estimated,Regional capital with the hottest climate in the country
+LD_KITA,Kita,BUS_KITA_33,Kayes,0.020,urban_mixed,0.92,edm-sa,estimated,Regional town
+LD_SEGOU,Segou,BUS_SEGOU_33,Segou,0.060,urban_mixed,0.92,edm-sa,estimated,Regional capital
+LD_MARKALA,Markala irrigation and agro-industry,BUS_MARKALA_33,Segou,0.025,agricultural,0.85,edm-sa,estimated,Pumping load with a strong seasonal signature
+LD_KOUTIALA,Koutiala,BUS_KOUTIALA_33,Sikasso,0.040,industrial,0.88,edm-sa,estimated,Cotton ginning and processing
+LD_SIKASSO,Sikasso,BUS_SIKASSO_33,Sikasso,0.070,urban_mixed,0.92,edm-sa,estimated,Regional capital in the wettest region
+LD_BOUGOUNI,Bougouni,BUS_BOUGOUNI_150,Sikasso,0.020,urban_mixed,0.92,edm-sa,estimated,Sub-transmission connected town
+LD_MOPTI,Mopti-Sevare,BUS_MOPTI_33,Mopti,0.045,urban_mixed,0.92,edm-sa,estimated,Isolated diesel centre in the base case

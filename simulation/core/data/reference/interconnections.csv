@@ -1,0 +1,4 @@
+id,name,bus,partner,capacity_mw,direction,typical_import_mw,in_service,source,confidence,note
+XC_CIV,Cote d'Ivoire interconnection,BUS_FERKE_225,Cote d'Ivoire,200.0,import,120.0,TRUE,wapp,reported,Firm and non-firm energy through the WAPP corridor
+XC_SEN,Senegal / OMVS interconnection,BUS_MATAM_225,Senegal,150.0,bidirectional,-30.0,TRUE,omvs,reported,Exchange of the OMVS hydro shares; negative means export
+XC_GIN,Guinea interconnection,BUS_FOMI_225,Guinea,200.0,import,0.0,FALSE,wapp,estimated,Planned link; scenario asset

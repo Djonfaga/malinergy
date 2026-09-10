@@ -1,0 +1,5 @@
+customer_class,base_night,morning_peak,midday,evening_peak,weekend_factor,cooling_sensitivity,description,source,confidence
+urban_residential,0.52,0.78,0.72,1.00,1.02,0.55,Evening dominated demand with lighting fans and television,edm-sa,estimated
+urban_mixed,0.55,0.88,0.85,1.00,0.96,0.50,Mixed residential commercial and administrative feeder,edm-sa,estimated
+industrial,0.72,1.00,0.98,0.86,0.72,0.25,Two shift industrial load with limited evening component,edm-sa,estimated
+agricultural,0.35,0.95,0.90,0.60,0.98,0.10,Irrigation pumping concentrated in the dry season,edm-sa,estimated

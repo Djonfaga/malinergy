@@ -1,0 +1,12 @@
+id,name,hv_bus,lv_bus,sn_mva,vk_percent,vkr_percent,pfe_kw,i0_percent,vector_group,tap_side,tap_neutral,tap_min,tap_max,tap_step_percent,parallel,in_service,source,confidence,note
+TR_KOD_225_150,Kodialani 225/150 kV,BUS_KODIALANI_225,BUS_KODIALANI_150,150.0,12.5,0.35,90.0,0.25,YNyn0,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Autotransformer bank feeding the Bamako 150 kV network
+TR_KOD_150_33,Kodialani 150/33 kV,BUS_KODIALANI_150,BUS_BADALABOUGOU_33,33.0,11.0,0.45,35.0,0.4,YNd11,hv,0,-8,8,1.25,3,TRUE,edm-sa,estimated,Bamako central distribution transformation
+TR_KAT_225_33,Kati 225/33 kV,BUS_KATI_225,BUS_LAFIABOUGOU_33,63.0,13.0,0.4,55.0,0.35,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Serves north-western Bamako and the Kati PV plant
+TR_SIR_225_33,Sirakoro 225/33 kV,BUS_SIRAKORO_225,BUS_SIRAKORO_33,63.0,13.0,0.4,55.0,0.35,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Eastern Bamako transformation
+TR_SOT_150_33,Sotuba 150/33 kV,BUS_SOTUBA_150,BUS_SOTUBA_33,40.0,11.0,0.45,28.0,0.4,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Sotuba transformation
+TR_KAY_225_33,Kayes 225/33 kV,BUS_KAYES_225,BUS_KAYES_33,63.0,13.0,0.4,55.0,0.35,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Kayes regional transformation
+TR_KIT_225_33,Kita 225/33 kV,BUS_KITA_225,BUS_KITA_33,40.0,12.0,0.42,35.0,0.4,YNd11,hv,0,-8,8,1.25,1,TRUE,edm-sa,estimated,Kita transformation and PV connection
+TR_SEG_225_33,Segou 225/33 kV,BUS_SEGOU_225,BUS_SEGOU_33,63.0,13.0,0.4,55.0,0.35,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Segou regional transformation
+TR_KOU_225_33,Koutiala 225/33 kV,BUS_KOUTIALA_225,BUS_KOUTIALA_33,40.0,12.0,0.42,35.0,0.4,YNd11,hv,0,-8,8,1.25,1,TRUE,edm-sa,estimated,Koutiala transformation
+TR_SIK_225_33,Sikasso 225/33 kV,BUS_SIKASSO_225,BUS_SIKASSO_33,63.0,13.0,0.4,55.0,0.35,YNd11,hv,0,-8,8,1.25,2,TRUE,edm-sa,estimated,Sikasso regional transformation
+TR_MOP_225_33,Mopti 225/33 kV,BUS_MOPTI_225,BUS_MOPTI_33,40.0,12.0,0.42,35.0,0.4,YNd11,hv,0,-8,8,1.25,1,FALSE,edm-sa,estimated,Out of service in the base case

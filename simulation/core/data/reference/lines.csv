@@ -1,0 +1,26 @@
+id,name,from_bus,to_bus,vn_kv,circuits,conductor,tower,length_km,route_factor,in_service,commissioned,source,confidence,note
+LN_MAN_BAF_225,Manantali - Bafoulabe 225 kV,BUS_MANANTALI_225,BUS_BAFOULABE_225,225.0,2,ASTER 570,225kV-double-vertical,,1.15,TRUE,2001,omvs,reported,OMVS export corridor built with the Manantali plant
+LN_BAF_GOU_225,Bafoulabe - Gouina 225 kV,BUS_BAFOULABE_225,BUS_GOUINA_225,225.0,1,ASTER 570,225kV-single-flat,,1.15,TRUE,2021,omvs,reported,Built with the Gouina scheme
+LN_GOU_FEL_225,Gouina - Felou 225 kV,BUS_GOUINA_225,BUS_FELOU_225,225.0,1,ASTER 570,225kV-single-flat,,1.15,TRUE,2013,omvs,reported,Links the two run-of-river plants downstream of Manantali
+LN_FEL_KAY_225,Felou - Kayes 225 kV,BUS_FELOU_225,BUS_KAYES_225,225.0,1,ASTER 366,225kV-single-flat,,1.10,TRUE,2013,omvs,reported,Short feed into the Kayes hub
+LN_KAY_MAT_225,Kayes - Senegal 225 kV,BUS_KAYES_225,BUS_MATAM_225,225.0,1,ASTER 570,225kV-single-flat,,1.15,TRUE,2002,omvs,reported,OMVS interconnection towards Senegal
+LN_MAN_KIT_225,Manantali - Kita 225 kV,BUS_MANANTALI_225,BUS_KITA_225,225.0,1,ASTER 570,225kV-single-flat,,1.15,TRUE,2001,omvs,reported,Southern arm of the OMVS network towards Bamako
+LN_KIT_KOD_225,Kita - Bamako Kodialani 225 kV,BUS_KITA_225,BUS_KODIALANI_225,225.0,1,ASTER 570,225kV-single-flat,,1.15,TRUE,2001,omvs,reported,Main import path into Bamako from the west
+LN_KOD_KAT_225,Kodialani - Kati 225 kV,BUS_KODIALANI_225,BUS_KATI_225,225.0,2,ASTER 570,225kV-double-vertical,,1.20,TRUE,2018,edm-sa,estimated,Urban double-circuit link north of Bamako
+LN_KOD_SIR_225,Kodialani - Sirakoro 225 kV,BUS_KODIALANI_225,BUS_SIRAKORO_225,225.0,2,ASTER 570,225kV-double-vertical,,1.25,TRUE,2018,edm-sa,estimated,Closes the Bamako 225 kV ring
+LN_SIR_SEG_225,Sirakoro - Segou 225 kV,BUS_SIRAKORO_225,BUS_SEGOU_225,225.0,1,ASTER 570,225kV-single-flat,,1.12,TRUE,2011,wapp,reported,First section of the Cote d'Ivoire interconnection
+LN_SEG_KOU_225,Segou - Koutiala 225 kV,BUS_SEGOU_225,BUS_KOUTIALA_225,225.0,1,ASTER 570,225kV-single-flat,,1.12,TRUE,2011,wapp,reported,Cotton-belt section of the interconnection
+LN_KOU_SIK_225,Koutiala - Sikasso 225 kV,BUS_KOUTIALA_225,BUS_SIKASSO_225,225.0,1,ASTER 570,225kV-single-flat,,1.12,TRUE,2011,wapp,reported,Southern section of the interconnection
+LN_SIK_FER_225,Sikasso - Ferkessedougou 225 kV,BUS_SIKASSO_225,BUS_FERKE_225,225.0,1,ASTER 570,225kV-single-flat,,1.15,TRUE,2011,wapp,reported,Cote d'Ivoire interconnection; main import path in the dry season
+LN_SEG_MOP_225,Segou - Mopti 225 kV,BUS_SEGOU_225,BUS_MOPTI_225,225.0,1,ASTER 366,225kV-single-flat,,1.15,FALSE,,wapp,estimated,Extension towards Mopti; out of service in the base case
+LN_KOD_FOM_225,Bamako - Guinea 225 kV,BUS_KODIALANI_225,BUS_FOMI_225,225.0,1,ASTER 570,225kV-single-flat,,1.15,FALSE,,wapp,estimated,Planned Guinea interconnection; out of service in the base case
+LN_KOD_SOT_150,Kodialani - Sotuba 150 kV,BUS_KODIALANI_150,BUS_SOTUBA_150,150.0,1,ASTER 366,150kV-single-flat,,1.25,TRUE,1990,edm-sa,estimated,Urban 150 kV link along the Niger
+LN_KOD_BAL_150,Kodialani - Balingue 150 kV,BUS_KODIALANI_150,BUS_BALINGUE_150,150.0,2,ASTER 366,150kV-single-flat,,1.25,TRUE,2003,edm-sa,estimated,Feeds the Bamako thermal station
+LN_BAL_SEL_150,Balingue - Selingue 150 kV,BUS_BALINGUE_150,BUS_SELINGUE_150,150.0,1,ASTER 366,150kV-single-flat,,1.18,TRUE,1982,edm-sa,reported,Original Selingue evacuation line
+LN_SEL_BOU_150,Selingue - Bougouni 150 kV,BUS_SELINGUE_150,BUS_BOUGOUNI_150,150.0,1,ASTER 228,150kV-single-flat,,1.18,TRUE,2005,edm-sa,estimated,Sub-transmission towards the south
+LN_KAY_KAY33,Kayes 225/33 feeder,BUS_KAYES_33,BUS_KITA_33,33.0,1,ASTER 147,33kV-pin,180.0,1.0,FALSE,,edm-sa,estimated,Historic 33 kV link; open in the base case
+LN_BKO_LAF_33,Kodialani - Lafiabougou 33 kV,BUS_BADALABOUGOU_33,BUS_LAFIABOUGOU_33,33.0,2,ASTER 228,33kV-pin,,1.35,TRUE,,edm-sa,estimated,Urban 33 kV cable-equivalent link
+LN_BKO_FAL_33,Badalabougou - Faladie 33 kV,BUS_BADALABOUGOU_33,BUS_FALADIE_33,33.0,2,ASTER 228,33kV-pin,,1.35,TRUE,,edm-sa,estimated,Urban 33 kV link on the right bank
+LN_BKO_SOT_33,Sotuba - Faladie 33 kV,BUS_SOTUBA_33,BUS_FALADIE_33,33.0,1,ASTER 228,33kV-pin,,1.35,TRUE,,edm-sa,estimated,Ties the Sotuba busbar into the eastern network
+LN_SIR_SOT_33,Sirakoro - Sotuba 33 kV,BUS_SIRAKORO_33,BUS_SOTUBA_33,33.0,1,ASTER 228,33kV-pin,,1.35,TRUE,,edm-sa,estimated,Eastern Bamako 33 kV tie
+LN_SEG_MAR_33,Segou - Markala 33 kV,BUS_SEGOU_33,BUS_MARKALA_33,33.0,1,ASTER 147,33kV-pin,,1.20,TRUE,,edm-sa,estimated,Feeds the Markala irrigation scheme

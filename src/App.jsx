@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import DataPanel from './components/DataPanel';
+import SimulationTools from './components/SimulationTools';
 import { Pillars, LatestGrid, Footer } from './components/Sections';
 import './styles/colors_and_type.css';
 
@@ -11,17 +12,28 @@ function Subpage({ route, setRoute }) {
     econ: { eyebrow: 'Économie',    h1: "Comprendre l'économie du secteur", dek: 'Tarifs, subventions, importations, investissements, financements publics et privés.' },
     eng:  { eyebrow: 'Ingénierie',  h1: 'Production, réseau, technologies', dek: 'Panorama technique du système électrique malien, des centrales aux mini-réseaux villageois.' },
     gov:  { eyebrow: 'Gouvernance', h1: 'Régulateurs, ministères, réformes', dek: 'Cartographie des institutions, textes en vigueur, décisions récentes de la CREE.' },
+    sim:  { eyebrow: 'Ingénierie · Simulation', h1: 'Les outils de simulation du secteur', dek: "PowerFactory, OpenModelica, pandapower, pandapipes et Simscape Electrical : ce que chacun sait faire, ce qu'il coûte, et à quel moment d'une étude malienne il intervient." },
   };
   const p = map[route] || map.data;
   return (
-    <div className="subpage" style={{padding: 'var(--s-12) var(--s-5)', maxWidth: 1200, margin: '0 auto'}}>
-      <div className="eyebrow">{p.eyebrow}</div>
-      <h1 style={{fontSize: 40, marginBottom: 'var(--s-5)'}}>{p.h1}</h1>
-      <p className="lead" style={{fontSize: 20, color: 'var(--fg-muted)', maxWidth: '60ch', marginBottom: 'var(--s-8)'}}>{p.dek}</p>
-      <div style={{display:'flex', gap:12}}>
-        <button className="btn btn-primary" onClick={()=>setRoute('home')}>← Retour à l{'\u2019'}accueil</button>
-        <button className="btn btn-secondary">S'abonner à cette rubrique</button>
+    <div className="subpage">
+      <div className="subpage-head" style={{padding: 'var(--s-12) var(--s-5) 0', maxWidth: 1200, margin: '0 auto'}}>
+        <div className="eyebrow">{p.eyebrow}</div>
+        <h1 style={{fontSize: 40, marginBottom: 'var(--s-5)'}}>{p.h1}</h1>
+        <p className="lead" style={{fontSize: 20, color: 'var(--fg-muted)', maxWidth: '60ch', marginBottom: 'var(--s-8)'}}>{p.dek}</p>
+        <div style={{display:'flex', gap:12, flexWrap:'wrap'}}>
+          <button className="btn btn-primary" onClick={()=>setRoute('home')}>← Retour à l{'’'}accueil</button>
+          {route === 'eng' && (
+            <button className="btn btn-secondary" onClick={()=>setRoute('sim')}>Outils de simulation →</button>
+          )}
+          {route === 'sim' && (
+            <button className="btn btn-secondary" onClick={()=>setRoute('eng')}>← Rubrique Ingénierie</button>
+          )}
+          <button className="btn btn-secondary">S'abonner à cette rubrique</button>
+        </div>
       </div>
+      {route === 'sim' && <SimulationTools />}
+      {route !== 'sim' && <div style={{height: 'var(--s-12)'}} />}
     </div>
   );
 }

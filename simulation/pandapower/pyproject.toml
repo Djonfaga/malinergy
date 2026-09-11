@@ -25,3 +25,9 @@ mali-pandapower = "mali_pandapower.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["mali_pandapower*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Same-named test modules in sibling branches collide under the default import
+# mode once every branch is checked out together, as it is in sim/benchmark.
+addopts = "--import-mode=importlib"

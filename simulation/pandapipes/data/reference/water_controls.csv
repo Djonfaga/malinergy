@@ -1,0 +1,3 @@
+id,name,type,from_node,to_node,controlled_node,setpoint,unit,in_service,source,confidence,note,peak_in_service
+FC_DJICORONI,Djicoroni production setpoint,flow,WN_DJICORONI_PLANT,WN_DJICORONI_FC,,2400.0,m3_per_h,True,somagep,estimated,Historic plant runs at a set output; Kabala follows the remaining demand,FALSE
+PRV_RIGHT_BANK,Right bank pressure reducing valve,pressure,WN_PRV_INLET,WN_PRV_RIGHT,WN_PRV_RIGHT,4.5,bar,True,somagep,estimated,Holds 55 m of head below the station instead of the 125 m the escarpment would otherwise impose,TRUE

@@ -1,0 +1,24 @@
+id,name,type,latitude,longitude,elevation_m,pressure_bar,district,in_service,source,confidence,note
+WN_NIGER_KABALA,Niger river intake at Kabala,source,12.530,-8.010,325.0,1.0,Kabala,TRUE,somagep,reported,Raw water intake of the Kabala treatment plant
+WN_KABALA_PLANT,Kabala treatment plant outlet,plant,12.535,-8.005,330.0,1.0,Kabala,TRUE,somagep,reported,Phase one nominal output 144 000 cubic metres per day
+WN_KABALA_JCT,Kabala junction,junction,12.560,-8.000,335.0,1.0,Kabala,TRUE,somagep,estimated,Tie point of the Kabala transmission main
+WN_NIGER_DJICORONI,Niger river intake at Djicoroni,source,12.620,-8.035,325.0,1.0,Djicoroni,TRUE,somagep,reported,Historic Bamako intake and treatment plant
+WN_DJICORONI_PLANT,Djicoroni treatment plant outlet,plant,12.622,-8.033,332.0,1.0,Djicoroni,TRUE,somagep,reported,Original Bamako production plant
+WN_DJICORONI_FC,Djicoroni production control,junction,12.623,-8.032,332.0,1.0,Djicoroni,TRUE,somagep,estimated,Point at which the plant output is set
+WN_MAGNAMBOUGOU_PLANT,Magnambougou plant outlet,plant,12.605,-7.935,335.0,1.0,Magnambougou,TRUE,somagep,estimated,Left bank production serving the eastern districts
+WN_CENTRE_JCT,Central junction,junction,12.625,-8.010,345.0,1.0,Bamako,TRUE,somagep,estimated,Distribution manifold on the right bank
+WN_POINTG_PUMP,Point G pump discharge,junction,12.627,-8.009,346.0,1.0,Bamako,TRUE,somagep,estimated,Discharge manifold of the Point G booster station
+WN_POINTG_RES,Point G reservoir,reservoir,12.655,-8.005,470.0,1.0,Point G,TRUE,somagep,reported,High level service reservoir on the Point G escarpment
+WN_PRV_INLET,Pressure reducing station inlet,junction,12.6445,-8.0105,356.0,1.0,Bamako,TRUE,somagep,estimated,Foot of the Point G gravity main
+WN_PRV_RIGHT,Right bank pressure reducing station,junction,12.645,-8.010,355.0,1.0,Bamako,TRUE,somagep,estimated,Breaks the 125 m of static head between Point G and the districts below
+WN_LAFIA_DEM,Lafiabougou demand node,demand,12.640,-8.040,345.0,1.0,Lafiabougou,TRUE,somagep,estimated,North western districts
+WN_HAMDALLAYE_DEM,Hamdallaye demand node,demand,12.635,-8.020,350.0,1.0,Hamdallaye,TRUE,somagep,estimated,Central right bank districts
+WN_BADALA_DEM,Badalabougou demand node,demand,12.618,-7.992,340.0,1.0,Badalabougou,TRUE,somagep,estimated,Administrative and commercial core
+WN_FALADIE_PUMP,Faladie pump discharge,junction,12.600,-7.960,346.0,1.0,Bamako,TRUE,somagep,estimated,Discharge manifold of the Faladie booster station
+WN_FALADIE_RES,Faladie reservoir,reservoir,12.592,-7.945,395.0,1.0,Faladie,TRUE,somagep,estimated,Southern service reservoir
+WN_FALADIE_DEM,Faladie demand node,demand,12.588,-7.938,352.0,1.0,Faladie,TRUE,somagep,estimated,Expanding southern districts
+WN_MAGNAM_DEM,Magnambougou demand node,demand,12.603,-7.930,345.0,1.0,Magnambougou,TRUE,somagep,estimated,Dense left bank districts
+WN_SOTUBA_DEM,Sotuba industrial demand node,demand,12.658,-7.928,338.0,1.0,Sotuba,TRUE,somagep,estimated,Industrial estate water demand
+WN_KATI_PUMP,Kati transfer pump discharge,junction,12.660,-8.010,471.0,1.0,Point G,TRUE,somagep,estimated,Discharge manifold of the Kati transfer pumps
+WN_KATI_RES,Kati reservoir,reservoir,12.745,-8.070,490.0,1.0,Kati,TRUE,somagep,estimated,Northern high level storage above the town
+WN_KATI_DEM,Kati demand node,demand,12.748,-8.075,420.0,1.0,Kati,TRUE,somagep,estimated,Northern satellite town

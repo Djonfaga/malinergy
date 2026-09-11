@@ -1,0 +1,15 @@
+id,name,from_node,to_node,diameter_mm,length_km,material,roughness_mm,parallel,in_service,source,confidence,note,peak_in_service
+WP_KABALA_MAIN,Kabala transmission main,WN_KABALA_PLANT,WN_KABALA_JCT,1200,,ductile_iron,0.26,1,True,somagep,estimated,Transmission main from the Kabala plant,FALSE
+WP_JCT_CENTRE,Kabala junction to central manifold,WN_KABALA_JCT,WN_CENTRE_JCT,1200,,ductile_iron,0.26,1,True,somagep,estimated,Main feeding the right bank distribution,FALSE
+WP_DJICORONI_CENTRE,Djicoroni plant to central manifold,WN_DJICORONI_FC,WN_CENTRE_JCT,900,,ductile_iron,0.26,1,True,somagep,estimated,Historic transmission main,FALSE
+WP_POINTG_RISING,Point G rising main,WN_POINTG_PUMP,WN_POINTG_RES,1000,,steel,0.05,1,True,somagep,estimated,Rising main to the high level reservoir,FALSE
+WP_POINTG_PRV,Point G reservoir to the pressure reducing station,WN_POINTG_RES,WN_PRV_INLET,1200,,ductile_iron,0.26,1,True,somagep,estimated,Gravity main down the escarpment,TRUE
+WP_PRV_LAFIA,Pressure reducing station to Lafiabougou,WN_PRV_RIGHT,WN_LAFIA_DEM,700,,ductile_iron,0.26,1,True,somagep,estimated,Gravity distribution,TRUE
+WP_PRV_HAMDA,Pressure reducing station to Hamdallaye,WN_PRV_RIGHT,WN_HAMDALLAYE_DEM,700,,ductile_iron,0.26,1,True,somagep,estimated,Gravity distribution,TRUE
+WP_PRV_BADALA,Pressure reducing station to Badalabougou,WN_PRV_RIGHT,WN_BADALA_DEM,700,,ductile_iron,0.26,1,True,somagep,estimated,Gravity distribution to the administrative core,TRUE
+WP_FALADIE_RISING,Faladie rising main,WN_FALADIE_PUMP,WN_FALADIE_RES,700,,ductile_iron,0.26,1,True,somagep,estimated,Southern rising main,FALSE
+WP_FALADIE_DEM,Faladie reservoir to demand,WN_FALADIE_RES,WN_FALADIE_DEM,700,,ductile_iron,0.26,1,True,somagep,estimated,Gravity distribution,TRUE
+WP_MAGNAM_DEM,Magnambougou plant to demand,WN_MAGNAMBOUGOU_PLANT,WN_MAGNAM_DEM,800,,ductile_iron,0.26,1,True,somagep,estimated,Left bank distribution,TRUE
+WP_MAGNAM_SOTUBA,Magnambougou to Sotuba industrial estate,WN_MAGNAM_DEM,WN_SOTUBA_DEM,400,,ductile_iron,0.26,1,True,somagep,estimated,Industrial supply,TRUE
+WP_KATI_TRANSFER,Kati transfer main,WN_KATI_PUMP,WN_KATI_RES,400,,ductile_iron,0.26,1,True,somagep,estimated,Northern transfer main,FALSE
+WP_KATI_DEM,Kati reservoir to demand,WN_KATI_RES,WN_KATI_DEM,400,,ductile_iron,0.26,1,True,somagep,estimated,Gravity distribution,TRUE

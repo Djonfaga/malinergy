@@ -19,3 +19,7 @@ mali-simscape = "mali_simscape.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["mali_simscape*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"

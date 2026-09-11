@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mali-simscape"
+version = "1.0.0"
+description = "Converter studies for the Malian photovoltaic fleet, in Simscape Electrical and Python"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "djonfaga" }]
+dependencies = ["mali-energy-core", "numpy>=1.26", "pandas>=2.1", "scipy>=1.11"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mali-simscape = "mali_simscape.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mali_simscape*"]

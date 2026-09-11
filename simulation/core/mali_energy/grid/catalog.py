@@ -22,6 +22,7 @@ from .schema import (
     Interconnection,
     Line,
     Load,
+    Shunt,
     Transformer,
     haversine_km,
 )
@@ -246,6 +247,30 @@ def load_catalog(
             note=_str(row.get("note")),
         )
 
+    # -- shunt compensation ------------------------------------------------
+    for row in _read("shunts.csv", directory).to_dict("records"):
+        sid = _str(row["id"])
+        bus = require_bus(_str(row["bus"]), f"shunt {sid}")
+        steps = int(_float(row.get("steps"), 1)) or 1
+        in_service_steps = int(_float(row.get("steps_in_service"), steps))
+        if not 0 <= in_service_steps <= steps:
+            raise CatalogError(
+                f"shunt {sid}: {in_service_steps} steps in service out of {steps} installed"
+            )
+        catalog.shunts[sid] = Shunt(
+            id=sid,
+            name=_str(row["name"]),
+            bus=bus.id,
+            q_mvar_per_step=_float(row["q_mvar_per_step"]),
+            steps=steps,
+            steps_in_service=in_service_steps,
+            type=_str(row.get("type"), "capacitor"),
+            in_service=_bool(row.get("in_service")),
+            source=_str(row.get("source")),
+            confidence=_str(row.get("confidence")),
+            note=_str(row.get("note")),
+        )
+
     # -- interconnections --------------------------------------------------
     for row in _read("interconnections.csv", directory).to_dict("records"):
         xid = _str(row["id"])
@@ -283,6 +308,8 @@ def load_catalog(
         "transformers": len(catalog.transformers),
         "generators": len(catalog.generators),
         "loads": len(catalog.loads),
+        "shunts": len(catalog.shunts),
+        "installed_compensation_mvar": catalog.installed_compensation_mvar(),
     }
     return catalog
 
@@ -300,6 +327,7 @@ def data_card(catalog: GridCatalog) -> DataCard:
         catalog.transformers.values(),
         catalog.generators.values(),
         catalog.loads.values(),
+        catalog.shunts.values(),
         catalog.interconnections.values(),
     )
     for group in groups:

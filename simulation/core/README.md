@@ -35,9 +35,19 @@ mali-energy fetch --pvgis        # add satellite solar series per plant
 mali-energy validate             # check the catalogue before trusting it
 mali-energy build                # write build/mali_network.json and build/mali_case.json
 mali-energy case dry_peak        # print one operating point
+mali-energy gaps                 # every row still based on an engineering estimate
 mali-energy inventory            # checksums of everything downloaded
 pytest simulation/core           # 32 checks on physics, calibration and schema
 ```
+
+## Replacing the placeholder data
+
+187 of the 224 catalogue rows are engineering estimates. That is the expected
+state of a study built from published material, and the repository is designed
+around substituting them rather than around hiding them: `mali-energy gaps`
+lists every one with the note explaining what it stands for, and
+`docs/replacing_data.md` sets out the workflow — edit the CSV, change the
+confidence, register the source, re-run. Nothing downstream needs touching.
 
 ## The four operating points
 

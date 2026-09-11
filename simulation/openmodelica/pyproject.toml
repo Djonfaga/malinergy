@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mali-openmodelica"
+version = "1.0.0"
+description = "Dynamic models of the Malian power system in Modelica, with a SciPy reference"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "djonfaga" }]
+dependencies = ["mali-energy-core", "numpy>=1.26", "pandas>=2.1", "scipy>=1.11"]
+
+[project.optional-dependencies]
+openmodelica = ["OMPython>=3.5"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mali-openmodelica = "mali_openmodelica.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mali_openmodelica*"]

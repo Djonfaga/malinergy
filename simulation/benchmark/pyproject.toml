@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mali-benchmark"
+version = "1.0.0"
+description = "Cross-tool comparison for the Malian power system study"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "djonfaga" }]
+dependencies = ["mali-energy-core", "pandas>=2.1"]
+
+[project.optional-dependencies]
+all = ["mali-pandapower", "mali-pandapipes", "mali-openmodelica", "mali-simscape", "mali-powerfactory"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mali-benchmark = "mali_benchmark.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mali_benchmark*"]

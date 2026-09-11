@@ -8,6 +8,7 @@ from .schema import (  # noqa: F401
     Interconnection,
     Line,
     Load,
+    Shunt,
     Transformer,
 )
 
@@ -22,5 +23,6 @@ __all__ = [
     "Transformer",
     "Generator",
     "Load",
+    "Shunt",
     "Interconnection",
 ]

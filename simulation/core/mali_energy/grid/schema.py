@@ -163,6 +163,40 @@ class Load:
 
 
 @dataclass
+class Shunt:
+    """A switchable capacitor or reactor bank.
+
+    Malian distribution substations carry capacitor banks, and leaving them
+    out of a network model is not a harmless simplification: without them the
+    peak case cannot hold voltage in Bamako once generator reactive limits are
+    enforced, and the load flow either collapses or converges only because the
+    limits were ignored.
+    """
+
+    id: str
+    name: str
+    bus: str
+    q_mvar_per_step: float
+    steps: int = 1
+    steps_in_service: int = 1
+    type: str = "capacitor"
+    in_service: bool = True
+    source: str = ""
+    confidence: str = ""
+    note: str = ""
+
+    @property
+    def installed_mvar(self) -> float:
+        return self.q_mvar_per_step * self.steps
+
+    @property
+    def connected_mvar(self) -> float:
+        """Reactive power delivered at nominal voltage; positive is capacitive."""
+        sign = 1.0 if self.type == "capacitor" else -1.0
+        return sign * self.q_mvar_per_step * self.steps_in_service
+
+
+@dataclass
 class Interconnection:
     id: str
     name: str
@@ -186,6 +220,7 @@ class GridCatalog:
     transformers: dict[str, Transformer] = field(default_factory=dict)
     generators: dict[str, Generator] = field(default_factory=dict)
     loads: dict[str, Load] = field(default_factory=dict)
+    shunts: dict[str, Shunt] = field(default_factory=dict)
     interconnections: dict[str, Interconnection] = field(default_factory=dict)
     hydro_availability: dict[str, dict[int, float]] = field(default_factory=dict)
     meta: dict = field(default_factory=dict)
@@ -210,6 +245,9 @@ class GridCatalog:
         factor = (lambda g: g.mali_share) if mali_share else (lambda g: 1.0)
         return sum(g.capacity_mw * factor(g) for g in gens)
 
+    def installed_compensation_mvar(self) -> float:
+        return sum(s.installed_mvar for s in self.shunts.values() if s.in_service)
+
     def system_inertia_mws(self) -> float:
         return sum(g.stored_energy_mws for g in self.active_generators() if g.provides_inertia)
 
@@ -221,6 +259,7 @@ class GridCatalog:
             "transformers": [asdict(t) for t in self.transformers.values()],
             "generators": [asdict(g) for g in self.generators.values()],
             "loads": [asdict(l) for l in self.loads.values()],
+            "shunts": [asdict(s) for s in self.shunts.values()],
             "interconnections": [asdict(x) for x in self.interconnections.values()],
             "hydro_availability": {
                 k: {str(m): v for m, v in months.items()}

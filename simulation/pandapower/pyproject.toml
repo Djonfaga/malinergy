@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mali-pandapower"
+version = "1.0.0"
+description = "pandapower studies of the Malian interconnected network"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "djonfaga" }]
+dependencies = [
+    "mali-energy-core",
+    "pandapower>=3.0",
+    "numpy>=1.26",
+    "pandas>=2.1",
+]
+
+[project.optional-dependencies]
+plots = ["matplotlib>=3.8"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mali-pandapower = "mali_pandapower.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mali_pandapower*"]

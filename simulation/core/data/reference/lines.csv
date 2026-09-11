@@ -23,4 +23,4 @@ LN_BKO_LAF_33,Kodialani - Lafiabougou 33 kV,BUS_BADALABOUGOU_33,BUS_LAFIABOUGOU_
 LN_BKO_FAL_33,Badalabougou - Faladie 33 kV,BUS_BADALABOUGOU_33,BUS_FALADIE_33,33.0,2,ASTER 228,33kV-pin,,1.35,TRUE,,edm-sa,estimated,Urban 33 kV link on the right bank
 LN_BKO_SOT_33,Sotuba - Faladie 33 kV,BUS_SOTUBA_33,BUS_FALADIE_33,33.0,1,ASTER 228,33kV-pin,,1.35,TRUE,,edm-sa,estimated,Ties the Sotuba busbar into the eastern network
 LN_SIR_SOT_33,Sirakoro - Sotuba 33 kV,BUS_SIRAKORO_33,BUS_SOTUBA_33,33.0,1,ASTER 228,33kV-pin,,1.35,TRUE,,edm-sa,estimated,Eastern Bamako 33 kV tie
-LN_SEG_MAR_33,Segou - Markala 33 kV,BUS_SEGOU_33,BUS_MARKALA_33,33.0,1,ASTER 147,33kV-pin,,1.20,TRUE,,edm-sa,estimated,Feeds the Markala irrigation scheme
+LN_SEG_MAR_33,Segou - Markala 33 kV,BUS_SEGOU_33,BUS_MARKALA_33,33.0,2,ASTER 228,33kV-pin,,1.20,TRUE,,edm-sa,estimated,Double circuit feeder to the Markala irrigation scheme; a single circuit of smaller section cannot hold the voltage over this distance

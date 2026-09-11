@@ -1,0 +1,13 @@
+id,name,bus,q_mvar_per_step,steps,steps_in_service,type,in_service,source,confidence,note
+SH_BKO_BADALA,Badalabougou capacitor bank,BUS_BADALABOUGOU_33,4.8,5,5,capacitor,TRUE,edm-sa,estimated,Sized to bring the local power factor from 0.92 to about 0.98 at peak
+SH_BKO_LAFIA,Lafiabougou capacitor bank,BUS_LAFIABOUGOU_33,4.8,4,4,capacitor,TRUE,edm-sa,estimated,Sized to bring the local power factor from 0.92 to about 0.98 at peak
+SH_BKO_FALADIE,Faladie capacitor bank,BUS_FALADIE_33,4.8,4,4,capacitor,TRUE,edm-sa,estimated,Sized to bring the local power factor from 0.92 to about 0.98 at peak
+SH_BKO_SIRAKORO,Sirakoro capacitor bank,BUS_SIRAKORO_33,4.8,5,5,capacitor,TRUE,edm-sa,estimated,Industrial feeder at 0.88 power factor needs more compensation per megawatt
+SH_BKO_SOTUBA,Sotuba capacitor bank,BUS_SOTUBA_33,4.8,3,3,capacitor,TRUE,edm-sa,estimated,Industrial feeder compensation
+SH_KAYES,Kayes capacitor bank,BUS_KAYES_33,4.8,2,2,capacitor,TRUE,edm-sa,estimated,Regional substation compensation
+SH_KITA,Kita capacitor bank,BUS_KITA_33,2.4,1,1,capacitor,TRUE,edm-sa,estimated,Regional substation compensation
+SH_SEGOU,Segou capacitor bank,BUS_SEGOU_33,4.8,2,2,capacitor,TRUE,edm-sa,estimated,Regional substation compensation
+SH_MARKALA,Markala capacitor bank,BUS_MARKALA_33,2.4,2,2,capacitor,TRUE,edm-sa,estimated,Pumping load at 0.85 power factor at the end of a long feeder
+SH_KOUTIALA,Koutiala capacitor bank,BUS_KOUTIALA_33,4.8,2,2,capacitor,TRUE,edm-sa,estimated,Cotton industry compensation
+SH_SIKASSO,Sikasso capacitor bank,BUS_SIKASSO_33,4.8,2,2,capacitor,TRUE,edm-sa,estimated,Regional substation compensation
+SH_BOUGOUNI,Bougouni capacitor bank,BUS_BOUGOUNI_150,2.4,2,2,capacitor,TRUE,edm-sa,estimated,Compensation at the end of the southern sub-transmission spur

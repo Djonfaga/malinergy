@@ -10,6 +10,7 @@ rather than to two people building two different networks.
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -17,6 +18,15 @@ import pandapower as pp
 
 from mali_energy.config import BASE_MVA, NOMINAL_FREQUENCY_HZ
 from mali_energy.exchange import load_exchange
+
+#: Smallest machine allowed to regulate the voltage of its busbar, in MVA.
+#:
+#: Sotuba is 5.7 MW on a 150 kV busbar. Declaring it a voltage-controlled node
+#: asks a 6.7 MVA machine to hold the voltage of the Bamako transmission
+#: network: the load flow then demands 148 Mvar from it, and once reactive
+#: limits are enforced the case diverges. Machines below this threshold inject
+#: at their rated power factor instead, which is how they are actually run.
+VOLTAGE_CONTROL_MIN_MVA = 20.0
 
 
 @dataclass
@@ -31,6 +41,7 @@ class BuildResult:
     gen_index: dict[str, int] = field(default_factory=dict)
     sgen_index: dict[str, int] = field(default_factory=dict)
     load_index: dict[str, int] = field(default_factory=dict)
+    shunt_index: dict[str, int] = field(default_factory=dict)
     ext_grid_index: dict[str, int] = field(default_factory=dict)
     notes: list[str] = field(default_factory=list)
 
@@ -139,7 +150,12 @@ def build(
             pfe_kw=trafo["pfe_kw"],
             i0_percent=trafo["i0_percent"],
             shift_degree=330.0 if trafo["vector_group"].endswith("11") else 0.0,
-            vector_group=trafo["vector_group"].replace("N", "").replace("n", ""),
+            # pandapower wants the vector group without the clock number, which
+            # it takes separately as shift_degree. The neutral letters must be
+            # kept: an earthed star and an unearthed one have entirely
+            # different zero-sequence behaviour, and dropping the N silently
+            # changes every earth-fault current in the study.
+            vector_group=re.sub(r"\d+$", "", trafo["vector_group"]),
             tap_side=trafo["tap_side"],
             tap_neutral=trafo["tap_neutral"],
             tap_min=trafo["tap_min"],
@@ -175,6 +191,31 @@ def build(
             const_i_percent=0.0,
         )
         result.load_index[load_id] = index
+
+    # -- shunt compensation ------------------------------------------------
+    for shunt in network.get("shunts", []):
+        if shunt["bus"] not in result.bus_index:
+            continue
+        if not shunt["in_service"] and not include_out_of_service:
+            continue
+        bus = result.bus_index[shunt["bus"]]
+        sign = 1.0 if shunt["type"] == "capacitor" else -1.0
+        index = pp.create_shunt(
+            net,
+            bus=bus,
+            # pandapower multiplies q_mvar by the step number, so q_mvar is the
+            # rating of one step and the number of connected steps goes in
+            # "step". It also takes q_mvar as consumed reactive power, so a
+            # capacitor bank carries a negative value.
+            q_mvar=-sign * shunt["q_mvar_per_step"],
+            p_mw=0.0,
+            vn_kv=net.bus.at[bus, "vn_kv"],
+            step=max(int(shunt["steps_in_service"]), 1),
+            max_step=shunt["steps"],
+            name=shunt["id"],
+            in_service=bool(shunt["in_service"]) and shunt["steps_in_service"] > 0,
+        )
+        result.shunt_index[shunt["id"]] = index
 
     # -- generation --------------------------------------------------------
     generators = {g["id"]: g for g in network["generators"]}
@@ -222,10 +263,32 @@ def build(
                 rx_min=0.1,
                 x0x_max=3.0,
                 r0x0_max=0.1,
+                x0x_min=3.0,
+                r0x0_min=0.1,
             )
             result.ext_grid_index[gen_id] = index
             slack_assigned = True
             result.notes.append(f"{gen_id} carries the slack at {bus_id}")
+            continue
+
+        if record["sn_mva"] < VOLTAGE_CONTROL_MIN_MVA:
+            index = pp.create_sgen(
+                net,
+                bus=bus,
+                p_mw=setpoint["p_mw"],
+                q_mvar=setpoint["p_mw"] * math.tan(math.acos(record["cos_phi"])),
+                sn_mva=record["sn_mva"],
+                name=gen_id,
+                type=setpoint["technology"],
+                in_service=bool(record["in_service"]) and setpoint["p_mw"] > 0,
+                k=1.8,
+                current_source=False,
+            )
+            result.sgen_index[gen_id] = index
+            result.notes.append(
+                f"{gen_id} ({record['sn_mva']:.1f} MVA) injects at its rated power "
+                "factor rather than regulating voltage"
+            )
             continue
 
         index = pp.create_gen(
@@ -266,20 +329,43 @@ def build(
             result.ext_grid_index[link["id"]] = index
             slack_assigned = True
             continue
-        # A scheduled interchange is a fixed injection, not a swing bus:
-        # modelling a neighbour as an infinite bus would hide the Malian
-        # deficit inside the interconnection.
-        index = pp.create_sgen(
+        # A neighbouring system is a voltage source delivering a scheduled
+        # power: a PV bus, not a swing bus and not a plain injection.
+        #
+        # Modelling it as an infinite bus would let Cote d'Ivoire absorb the
+        # Malian deficit and the study would report a system that never sheds
+        # load. Modelling it as a fixed injection at a radial dead-end busbar
+        # is just as wrong in the other direction: pushing 90 MW down 228 km of
+        # line from a bus with no voltage support drives that bus to 1.4 pu.
+        index = pp.create_gen(
             net,
             bus=bus,
             p_mw=flow,
-            q_mvar=0.0,
+            vm_pu=1.0,
             sn_mva=link["capacity_mw"],
             name=link["id"],
-            type="interconnection",
+            min_p_mw=-link["capacity_mw"],
+            max_p_mw=link["capacity_mw"],
+            # A neighbouring national grid is a stiff node. Limiting its
+            # reactive capability to a fraction of the scheduled transfer is
+            # an artefact: when the limit binds, the border busbar sags to
+            # 0.86 pu and the Malian result inherits a problem that belongs to
+            # the model rather than to the system.
+            max_q_mvar=link["capacity_mw"],
+            min_q_mvar=-link["capacity_mw"],
             controllable=False,
+            slack=False,
+            type="interconnection",
+            # Fault contribution of the neighbouring system, expressed as a
+            # subtransient reactance on the interconnection rating. Without
+            # it the IEC 60909 calculation divides by an undefined impedance
+            # and every busbar current comes back as "not a number".
+            vn_kv=net.bus.at[bus, "vn_kv"],
+            xdss_pu=0.10,
+            rdss_ohm=0.01 * net.bus.at[bus, "vn_kv"] ** 2 / max(link["capacity_mw"], 1.0),
+            cos_phi=0.90,
         )
-        result.sgen_index[link["id"]] = index
+        result.gen_index[link["id"]] = index
 
     if not slack_assigned:
         raise ValueError(

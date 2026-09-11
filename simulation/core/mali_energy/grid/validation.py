@@ -7,6 +7,7 @@ is not a crashing solver but a network that converges to confident nonsense.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 
 from ..config import StudyConfig
@@ -251,6 +252,45 @@ def validate(catalog: GridCatalog, config: StudyConfig | None = None) -> Validat
     inertia = catalog.system_inertia_mws()
     if inertia > 0:
         report.add("info", "inertia", f"system stored energy {inertia:.0f} MW.s")
+
+    # -- reactive compensation --------------------------------------------
+    compensation = catalog.installed_compensation_mvar()
+    if balance:
+        peak_mw = (
+            float(balance.get("electricity_demand") or 0.0)
+            * config.utility_demand_share
+            * 1e6
+            / 8760.0
+            * config.peak_to_average_ratio
+        )
+        mean_pf = (
+            sum(l.weight * l.power_factor for l in catalog.loads.values())
+            / max(sum(l.weight for l in catalog.loads.values()), 1e-9)
+        )
+        reactive_demand = peak_mw * math.tan(math.acos(mean_pf))
+        report.add(
+            "info",
+            "compensation",
+            f"{compensation:.0f} Mvar installed against about {reactive_demand:.0f} Mvar "
+            f"of peak reactive demand at an average power factor of {mean_pf:.2f}",
+        )
+        if compensation < 0.3 * reactive_demand:
+            report.add(
+                "warning",
+                "compensation",
+                "shunt compensation covers less than a third of the peak reactive "
+                "demand; the peak case may not hold voltage once generator "
+                "reactive limits are enforced",
+            )
+
+    for shunt in catalog.shunts.values():
+        bus = catalog.buses.get(shunt.bus)
+        if bus is not None and bus.vn_kv > 150.0 and shunt.type == "capacitor":
+            report.add(
+                "info",
+                "compensation",
+                f"{shunt.id} is a capacitor bank on a {bus.vn_kv:.0f} kV busbar",
+            )
 
     # -- load weights ------------------------------------------------------
     total_weight = sum(l.weight for l in catalog.loads.values())

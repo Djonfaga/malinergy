@@ -115,6 +115,41 @@ def _cmd_case(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_gaps(args: argparse.Namespace) -> int:
+    """List every row still resting on an engineering estimate."""
+    import pandas as pd
+
+    from .config import REFERENCE_DIR
+
+    tables = sorted(REFERENCE_DIR.glob("*.csv"))
+    if args.table:
+        tables = [t for t in tables if t.stem == args.table]
+        if not tables:
+            print(f"no reference table called {args.table!r}", file=sys.stderr)
+            return 1
+
+    total = estimated = 0
+    for path in tables:
+        frame = pd.read_csv(path)
+        if "confidence" not in frame.columns:
+            continue
+        total += len(frame)
+        rows = frame[frame["confidence"] == "estimated"]
+        estimated += len(rows)
+        if rows.empty:
+            continue
+        print(f"\n{path.stem}: {len(rows)} of {len(frame)} rows are estimates")
+        label = "id" if "id" in rows.columns else rows.columns[0]
+        for _, row in rows.iterrows():
+            note = str(row.get("note", "") or "")
+            print(f"  {str(row[label]):<24} {note[:88]}")
+
+    print(f"\n{estimated} of {total} rows are engineering estimates.")
+    print("See docs/replacing_data.md for how to substitute measured figures,")
+    print("and docs/verification_checklist.md for which ones to chase first.")
+    return 0
+
+
 def _cmd_inventory(args: argparse.Namespace) -> int:
     from .cache import inventory
 
@@ -159,6 +194,10 @@ def main(argv: list[str] | None = None) -> int:
     p_case.add_argument("name", choices=list(OPERATING_POINTS))
     p_case.add_argument("--year", type=int, default=StudyConfig().year)
     p_case.set_defaults(func=_cmd_case)
+
+    p_gaps = sub.add_parser("gaps", help="list every row still based on an estimate")
+    p_gaps.add_argument("--table", help="restrict to one reference table, e.g. plants")
+    p_gaps.set_defaults(func=_cmd_gaps)
 
     p_inv = sub.add_parser("inventory", help="list cached payloads with checksums")
     p_inv.set_defaults(func=_cmd_inventory)

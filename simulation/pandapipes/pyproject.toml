@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mali-pandapipes"
+version = "1.0.0"
+description = "Fluid network studies for Mali: Bamako water supply and a hydrogen scenario"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "djonfaga" }]
+dependencies = ["mali-energy-core", "pandapipes>=0.9", "numpy>=1.26", "pandas>=2.1"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mali-pandapipes = "mali_pandapipes.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mali_pandapipes*"]

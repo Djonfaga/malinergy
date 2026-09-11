@@ -1,0 +1,7 @@
+id,name,from_node,to_node,rated_flow_m3_h,rated_head_m,units,efficiency,motor_efficiency,electrical_bus,in_service,source,confidence,note,peak_in_service
+PU_KABALA_HL,Kabala high lift pumps,WN_NIGER_KABALA,WN_KABALA_PLANT,1600,45.0,4,0.78,0.95,BUS_BADALABOUGOU_33,True,somagep,estimated,Raw water lift from the Niger to the treatment plant,FALSE
+PU_DJICORONI_HL,Djicoroni high lift pumps,WN_NIGER_DJICORONI,WN_DJICORONI_PLANT,900,40.0,3,0.75,0.94,BUS_LAFIABOUGOU_33,True,somagep,estimated,Historic raw water pumping station,FALSE
+PU_MAGNAM_HL,Magnambougou high lift pumps,WN_NIGER_DJICORONI,WN_MAGNAMBOUGOU_PLANT,950,42.0,3,0.75,0.94,BUS_SIRAKORO_33,True,somagep,estimated,Left bank raw water pumping,TRUE
+PU_CENTRE_POINTG,Point G booster pumps,WN_CENTRE_JCT,WN_POINTG_PUMP,1000,145.0,5,0.8,0.95,BUS_BADALABOUGOU_33,True,somagep,estimated,125 m of static lift plus friction makes this the largest single water pumping load in Bamako,FALSE
+PU_CENTRE_FALADIE,Faladie booster pumps,WN_CENTRE_JCT,WN_FALADIE_PUMP,900,62.0,2,0.76,0.94,BUS_FALADIE_33,True,somagep,estimated,Southern booster station,FALSE
+PU_POINTG_KATI,Kati transfer pumps,WN_POINTG_RES,WN_KATI_PUMP,350,32.0,2,0.74,0.93,BUS_LAFIABOUGOU_33,True,somagep,estimated,Transfer to the northern reservoir above Kati,FALSE

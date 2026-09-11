@@ -1,0 +1,8 @@
+node,population_served,litres_per_capita_day,non_revenue_water,peak_factor,demand_class,source,confidence,note
+WN_LAFIA_DEM,520000,62,0.34,1.55,residential,somagep,estimated,North western districts of Bamako
+WN_HAMDALLAYE_DEM,430000,68,0.34,1.55,mixed,somagep,estimated,Central right bank
+WN_BADALA_DEM,310000,95,0.30,1.45,commercial,somagep,estimated,Administrative core with higher consumption per head
+WN_FALADIE_DEM,480000,55,0.36,1.60,residential,somagep,estimated,Expanding southern districts with lower service levels
+WN_MAGNAM_DEM,620000,58,0.36,1.58,residential,somagep,estimated,Dense left bank districts
+WN_SOTUBA_DEM,45000,180,0.20,1.25,industrial,somagep,estimated,Industrial estate; consumption expressed per equivalent inhabitant
+WN_KATI_DEM,180000,48,0.38,1.65,residential,somagep,estimated,Satellite town with intermittent service

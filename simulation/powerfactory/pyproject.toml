@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mali-powerfactory"
+version = "1.0.0"
+description = "PowerFactory export and automation for the Malian interconnected network"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "djonfaga" }]
+dependencies = ["mali-energy-core"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mali-powerfactory = "mali_powerfactory.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mali_powerfactory*"]

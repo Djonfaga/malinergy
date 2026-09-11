@@ -1,0 +1,8 @@
+// Generated from build/mali_case.json - do not edit by hand.
+loadModel(Modelica); getErrorString();
+loadFile("MaliEnergy/package.mo"); getErrorString();
+simulate(MaliEnergy.Systems.InterconnectedFrequency,
+  startTime=0, stopTime=60, numberOfIntervals=6000, tolerance=1e-8,
+  simflags="-override Sbase=500000000.0,Hsys=4.433900,Pdemand=385360000.0,Phydro=74380000.0,Pthermal=220990000.0,Psolar=0.0,Pimport=90000000.0,Ptrip=120000000.0,tTrip=5.0,solarProvidesResponse=false",
+  fileNamePrefix="dry_peak");
+getErrorString();

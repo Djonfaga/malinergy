@@ -185,7 +185,7 @@ def irradiance(
                 warnings=["PVGIS returns plane-of-array irradiance; the transposition "
                           "step is skipped for this provider"],
             )
-        except Exception:  # noqa: BLE001 - fall through to the next provider
+        except Exception:
             pass
 
     try:
@@ -209,7 +209,7 @@ def irradiance(
             longitude=longitude,
             station=station,
         )
-    except Exception:  # noqa: BLE001 - offline fallback
+    except Exception:
         pass
 
     return clear_sky_irradiance(

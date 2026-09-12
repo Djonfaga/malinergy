@@ -20,7 +20,6 @@ operating point.
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -89,7 +88,7 @@ class DgsExport:
         return self.tables[name]
 
     # -- construction ------------------------------------------------------
-    def build(self, case_name: str = "dry_peak") -> "DgsExport":
+    def build(self, case_name: str = "dry_peak") -> DgsExport:
         network = self.exchange["network"]
         case = self.exchange["cases"][case_name]
         self.case_name = case_name

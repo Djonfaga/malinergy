@@ -1,7 +1,7 @@
 """Network catalogue: schema, reference-table loader, derived electrical data."""
 
-from .catalog import CatalogError, data_card, export_json, load_catalog  # noqa: F401
-from .schema import (  # noqa: F401
+from .catalog import CatalogError, data_card, export_json, load_catalog
+from .schema import (
     Bus,
     Generator,
     GridCatalog,
@@ -13,16 +13,16 @@ from .schema import (  # noqa: F401
 )
 
 __all__ = [
-    "load_catalog",
-    "export_json",
-    "data_card",
-    "CatalogError",
-    "GridCatalog",
     "Bus",
-    "Line",
-    "Transformer",
+    "CatalogError",
     "Generator",
+    "GridCatalog",
+    "Interconnection",
+    "Line",
     "Load",
     "Shunt",
-    "Interconnection",
+    "Transformer",
+    "data_card",
+    "export_json",
+    "load_catalog",
 ]

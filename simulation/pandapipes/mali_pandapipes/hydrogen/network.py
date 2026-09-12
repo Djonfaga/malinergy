@@ -13,11 +13,11 @@ existing transmission line beside it is not a study, it is an advertisement.
 
 from __future__ import annotations
 
-import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+import pandas as pd
 
 import pandapipes as ppipes
-import pandas as pd
 
 #: Lower heating value of hydrogen.
 LHV_H2_KWH_KG = 33.33
@@ -102,7 +102,7 @@ def evaluate(scenario: HydrogenScenario | None = None) -> dict:
     converged = True
     try:
         ppipes.pipeflow(net, friction_model="swamee-jain", iter=200)
-    except Exception:  # noqa: BLE001
+    except Exception:
         converged = False
 
     result = {

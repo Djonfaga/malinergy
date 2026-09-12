@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import enum
 import json
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass, field
 from datetime import date
-from typing import Iterable
 
 
 class Confidence(enum.Enum):

@@ -107,7 +107,7 @@ def fetch(
             response.raise_for_status()
             payload = response.content
             break
-        except Exception as exc:  # noqa: BLE001 - re-raised as FetchError below
+        except Exception as exc:
             last_error = exc
             if attempt == retries - 1:
                 raise FetchError(

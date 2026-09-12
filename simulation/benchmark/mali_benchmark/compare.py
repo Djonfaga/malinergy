@@ -95,7 +95,7 @@ def compare(*, quantities: dict[str, float] | None = None) -> ComparisonResult:
         pandapower_frame = run_pandapower()
         frames.append(pandapower_frame)
         result.available["pandapower"] = True
-    except Exception as error:  # noqa: BLE001 - reported, not hidden
+    except Exception as error:
         result.available["pandapower"] = False
         result.notes.append(f"pandapower did not run: {error}")
 

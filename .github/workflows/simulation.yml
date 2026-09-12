@@ -1,0 +1,67 @@
+name: simulation
+
+# Runs on every simulation branch. Each branch carries a different subset of
+# the tools, so the job discovers what is present rather than assuming a fixed
+# layout: on sim/core-data it tests the data layer alone, on sim/benchmark it
+# tests all five environments together.
+
+on:
+  push:
+    branches: ["sim/**"]
+  pull_request:
+    branches: ["sim/**", main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install the packages present on this branch
+        run: |
+          python -m pip install --upgrade pip
+          for package in core pandapower pandapipes openmodelica simscape powerfactory benchmark; do
+            if [ -f "simulation/$package/pyproject.toml" ]; then
+              echo "installing simulation/$package"
+              pip install -e "simulation/$package"
+            fi
+          done
+          pip install pytest ruff
+
+      - name: Lint
+        run: ruff check --config simulation/ruff.toml simulation
+
+      - name: Build the canonical case
+        working-directory: simulation/core
+        run: |
+          # The committed snapshots make this work without network access; the
+          # connectors that need an open network degrade with a recorded note.
+          mali-energy validate
+          mali-energy build
+
+      - name: Test
+        run: |
+          paths=""
+          for package in core pandapower pandapipes openmodelica simscape powerfactory benchmark; do
+            if [ -d "simulation/$package/tests" ]; then
+              paths="$paths simulation/$package/tests"
+            fi
+          done
+          echo "testing:$paths"
+          pytest -q --import-mode=importlib $paths
+
+      - name: Report what could not be run here
+        if: always()
+        run: |
+          echo "PowerFactory and MATLAB need licences and OpenModelica needs an"
+          echo "installation, so those three are verified by their exports and by"
+          echo "second implementations rather than by execution. See"
+          echo "simulation/benchmark/README.md."

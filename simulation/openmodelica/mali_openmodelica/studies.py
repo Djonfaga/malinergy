@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 
 from .driver import openmodelica_available, openmodelica_version, simulate

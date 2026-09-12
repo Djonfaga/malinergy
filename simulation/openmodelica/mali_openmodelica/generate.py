@@ -14,13 +14,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from mali_energy.config import BUILD_DIR, StudyConfig
-from mali_energy.demand.allocation import ZONE_STATION
+from mali_energy.config import BUILD_DIR
 from mali_energy.exchange import load_exchange
-from mali_energy.grid import load_catalog
 from mali_energy.solar.pv import PlantDesign, plant_output
 
-from .reference import FrequencyCase, MinigridDesign
+from .reference import FrequencyCase
 
 #: Per-unit base used by every frequency case, so inertia constants compare.
 S_BASE_MW = 500.0
@@ -143,21 +141,15 @@ def high_solar_case(
     displaced = base.thermal_mw - thermal
 
     energy, contributions = stored_energy_mws(exchange, base_case)
-    thermal_units = [
-        (gen_id, value)
-        for gen_id, value in contributions.items()
-        if gen_id.startswith("GEN_") and "PV" not in gen_id and "HYDRO" not in gen_id
-    ]
-    # Remove the stored energy of thermal machines in proportion to the output
-    # they no longer produce.
+    # Remove the stored energy of the thermal machines in proportion to the
+    # output they no longer produce, because a machine backed off to zero comes
+    # off the bars and takes its inertia with it.
     thermal_energy = sum(
-        value for gen_id, value in contributions.items()
-        if exchange["network"] and _is_thermal(exchange, gen_id)
+        value for gen_id, value in contributions.items() if _is_thermal(exchange, gen_id)
     )
-    if base.thermal_mw > 0:
-        removed = thermal_energy * min(1.0, displaced / base.thermal_mw)
-    else:
-        removed = 0.0
+    removed = (
+        thermal_energy * min(1.0, displaced / base.thermal_mw) if base.thermal_mw > 0 else 0.0
+    )
 
     return replace(
         base,
@@ -261,7 +253,9 @@ def write_village_profile_table(frame: pd.DataFrame, path: Path, *, days: int = 
     rows = frame.head(days * 24)
     seconds = np.arange(len(rows)) * 3600.0
     lines = ["#1", f"double profiles({len(rows)},3)"]
-    for t, irradiance, load in zip(seconds, rows["irradiance_pu"], rows["load_pu"]):
+    for t, irradiance, load in zip(
+        seconds, rows["irradiance_pu"], rows["load_pu"], strict=True
+    ):
         lines.append(f"{t:.1f} {irradiance:.6f} {load:.6f}")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return path

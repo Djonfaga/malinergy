@@ -7,25 +7,25 @@ run and compared; where it is not, the reference is used and every result says
 which tool produced it.
 """
 
-from .driver import openmodelica_available, simulate  # noqa: F401
-from .reference import (  # noqa: F401
+from .driver import openmodelica_available, simulate
+from .reference import (
     FrequencyCase,
     MinigridDesign,
     simulate_frequency,
     simulate_minigrid,
 )
-from .studies import cross_check, frequency_scenarios, inertia_report, minigrid_study  # noqa: F401
+from .studies import cross_check, frequency_scenarios, inertia_report, minigrid_study
 
 __version__ = "1.0.0"
 __all__ = [
     "FrequencyCase",
     "MinigridDesign",
+    "cross_check",
+    "frequency_scenarios",
+    "inertia_report",
+    "minigrid_study",
+    "openmodelica_available",
+    "simulate",
     "simulate_frequency",
     "simulate_minigrid",
-    "inertia_report",
-    "frequency_scenarios",
-    "minigrid_study",
-    "cross_check",
-    "simulate",
-    "openmodelica_available",
 ]

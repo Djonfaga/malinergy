@@ -24,7 +24,7 @@ def matlab_version() -> str | None:
             ["matlab", "-batch", "disp(version)"], capture_output=True, text=True, timeout=120
         )
         return out.stdout.strip() or None
-    except Exception:  # noqa: BLE001
+    except Exception:
         return None
 
 
@@ -124,7 +124,7 @@ def compare_results(python_frame: pd.DataFrame, *, matlab_dir: Path | None = Non
             )
     return {
         "status": "compared",
-        "rows": int(len(merged)),
+        "rows": len(merged),
         "comparisons": comparisons,
         "agreement": all(c["max_absolute_difference"] < 0.05 for c in comparisons),
     }

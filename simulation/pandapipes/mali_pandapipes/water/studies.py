@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-import pandapipes as ppipes
 import pandas as pd
 
+import pandapipes as ppipes
+
 from .builder import MIN_SERVICE_PRESSURE_BAR, WaterBuildResult, build_water_network
-from .catalog import WATER_DENSITY_KG_M3, WaterCatalog, load_water_catalog
+from .catalog import WaterCatalog, load_water_catalog
 
 #: Colebrook-White is the reference friction law, but the implementation in the
 #: installed pandapipes fails when its internal Newton iteration is handed an
@@ -38,7 +39,7 @@ def solve(result: WaterBuildResult, *, iterations: int = 300) -> bool:
     try:
         ppipes.pipeflow(result.net, friction_model=FRICTION_MODEL, iter=iterations)
         return True
-    except Exception:  # noqa: BLE001 - pandapipes raises several types here
+    except Exception:
         return False
 
 
@@ -161,9 +162,9 @@ def run_case(
         else "",
         "max_service_head_m": round(float(demand_nodes["head_m"].max()), 1),
         "max_velocity_m_s": round(float(result.pipes["velocity_m_s"].abs().max()), 2),
-        "deficient_nodes": int(len(deficient)),
-        "isolated_nodes": int(len(isolated)),
-        "overloaded_mains": int(len(fast)),
+        "deficient_nodes": len(deficient),
+        "isolated_nodes": len(isolated),
+        "overloaded_mains": len(fast),
     }
 
     for _, row in isolated.iterrows():
@@ -231,7 +232,7 @@ def pump_outage_screening(catalog: WaterCatalog | None = None) -> pd.DataFrame:
                 "name": pump.name,
                 "rated_power_kw": round(pump.rated_electrical_power_kw, 0),
                 "status": "secure" if failed.empty else "service lost",
-                "nodes_below_minimum": int(len(failed)),
+                "nodes_below_minimum": len(failed),
                 "population_affected": int(affected),
                 "note": ", ".join(failed["node"]) if not failed.empty else "",
             }
@@ -278,12 +279,9 @@ def daily_pumping_profile(
 
     rows = []
     for hour, factor in enumerate(shape):
-        if storage_hours > 0:
-            # Reservoirs let the plants run flat; the draw-off shape is met from
-            # storage instead of from the pumps.
-            pumped = 1.0
-        else:
-            pumped = factor
+        # Reservoirs let the plants run flat: with storage, the draw-off shape
+        # is met from the tanks instead of from the pumps.
+        pumped = 1.0 if storage_hours > 0 else factor
         power = duty_kw * (0.35 + 0.65 * pumped**2)
         rows.append(
             {

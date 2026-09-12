@@ -9,7 +9,7 @@ description = "Canonical data layer for the Mali power-system simulation benchma
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "djonfaga" }]
+authors = [{ name = "Bourama DJONFGA", email = "bourama.phd@gmail.com" }]
 dependencies = [
     "numpy>=1.26",
     "pandas>=2.1",

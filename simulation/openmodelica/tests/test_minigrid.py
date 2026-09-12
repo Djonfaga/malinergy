@@ -1,7 +1,6 @@
 """The mini-grid dispatch is checked for the behaviour it exists to produce."""
 
 import numpy as np
-import pytest
 
 from mali_openmodelica.reference import MinigridDesign, simulate_minigrid
 

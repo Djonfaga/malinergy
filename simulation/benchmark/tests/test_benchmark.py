@@ -3,8 +3,16 @@
 import pytest
 
 from mali_benchmark.capability import (
-    ABSENT, CAPABILITIES, NATIVE, NOT_APPLICABLE, PARTIAL, SCRIPTED, TOOLS,
-    hand_written_work, matrix, scores,
+    ABSENT,
+    CAPABILITIES,
+    NATIVE,
+    NOT_APPLICABLE,
+    PARTIAL,
+    SCRIPTED,
+    TOOLS,
+    hand_written_work,
+    matrix,
+    scores,
 )
 from mali_benchmark.compare import RESULT_PATHS, compare, provenance
 from mali_benchmark.effort import access_table, effort_table

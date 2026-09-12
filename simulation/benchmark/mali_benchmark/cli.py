@@ -21,15 +21,19 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--output", default="results")
     parser.add_argument(
+        "--step-hours", type=int, default=3,
+        help="sampling interval of the annual run behind the monthly figure",
+    )
+    parser.add_argument(
         "--sections",
         default="capability,effort,findings,compare",
-        help="comma separated: capability, effort, findings, compare, all",
+        help="comma separated: capability, effort, findings, compare, figures, all",
     )
     args = parser.parse_args(argv)
 
     requested = {s.strip() for s in args.sections.split(",")}
     if "all" in requested:
-        requested = {"capability", "effort", "findings", "compare"}
+        requested = {"capability", "effort", "findings", "compare", "figures"}
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
 
@@ -91,6 +95,16 @@ def main(argv: list[str] | None = None) -> int:
         prov.to_csv(out / "provenance.csv", index=False)
         lines += ["### How each tool was verified", "", _table(prov), ""]
         lines += [f"- {note}" for note in result.notes] + [""]
+
+    if "figures" in requested:
+        print("\nFigures")
+        from .figures import build_all
+
+        paths = build_all(out / "figures", step_hours=args.step_hours)
+        for path in paths:
+            print(f"  {path}  (data beside it in {path.with_suffix('.csv').name})")
+        lines += ["## Figures", ""]
+        lines += [f"- `figures/{p.name}`" for p in paths] + [""]
 
     report = out / "report.md"
     report.write_text("\n".join(lines), encoding="utf-8")

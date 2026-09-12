@@ -141,6 +141,26 @@ The six that open the argument:
 6. **Ten per cent of solar headroom buys the response back.** Shedding falls
    from 91 MW to 68 MW, at the cost of a tenth of the solar energy.
 
+## Figures
+
+`mali-benchmark --sections figures` writes six figures to `results/figures/`,
+each with the table it drew beside it as a CSV. They are generated from the
+study outputs, never from numbers retyped into a plotting script.
+
+| Figure | What it shows |
+|---|---|
+| `fig1_monthly_balance.png` | Supply mix month by month, and the hours of shedding beneath it |
+| `fig2_frequency_response.png` | Frequency after the loss of the largest infeed, four scenarios |
+| `fig3_losses_by_case.png` | Network losses at each operating point |
+| `fig4_hosting_headroom.png` | Converter capacity each connection point can still carry |
+| `fig5_minigrid_fuel.png` | What each village mini-grid design burns over a year |
+| `fig6_water_flexibility.png` | Bamako's reservoirs against the evening electrical peak |
+
+One measure per axis and never a second y-scale; one colour per entity, fixed
+across every figure; a legend whenever more than one series is drawn. The stack
+order in the first figure puts aqua between orange and yellow because that pair
+fails the colour-vision separation floor when placed side by side.
+
 ## Replacing the data
 
 Everything above rests on a catalogue whose rows are marked `estimated`. See

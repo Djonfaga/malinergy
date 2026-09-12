@@ -10,7 +10,7 @@ import pytest
 
 matplotlib.use("Agg")
 
-from mali_benchmark import figures  # noqa: E402
+from mali_benchmark import figures
 
 
 @pytest.fixture
@@ -70,8 +70,9 @@ def test_status_colours_are_not_reused_as_series():
 def test_stack_order_avoids_the_yellow_orange_pair():
     """The palette's yellow and orange fail the colour-vision separation floor
     when placed side by side, so the stack puts aqua between them."""
-    source = (figures.__file__)
-    text = open(source, encoding="utf-8").read()
+    from pathlib import Path
+
+    text = Path(figures.__file__).read_text(encoding="utf-8")
     assert '["hydro_gwh", "thermal_gwh", "import_gwh", "solar_gwh"]' in text
 
 

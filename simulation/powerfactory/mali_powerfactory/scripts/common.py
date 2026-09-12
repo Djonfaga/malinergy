@@ -13,7 +13,7 @@ import os
 def get_app():
     """Return the PowerFactory application object, or raise with a clear message."""
     try:
-        import powerfactory  # noqa: PLC0415 - provided by the host application
+        import powerfactory
     except ImportError as exc:  # pragma: no cover - only outside PowerFactory
         raise RuntimeError(
             "this script runs inside PowerFactory. Either execute it from a "

@@ -52,7 +52,6 @@ def main():
         return
 
     rows = []
-    results = app.GetFromStudyCase("ComRes")
     for case in folder.GetContents("*.ComOutage"):
         rows.append(
             {

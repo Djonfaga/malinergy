@@ -32,7 +32,6 @@ def main():
         return
     target = targets[0]
 
-    study_case = app.GetActiveStudyCase()
     events = app.GetFromStudyCase("IntEvt")
     for event in events.GetContents():
         event.Delete()

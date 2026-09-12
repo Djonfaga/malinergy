@@ -9,7 +9,6 @@ end — which is a protection-coordination problem, not a rating problem.
 
 from __future__ import annotations
 
-import pandapower as pp
 import pandapower.shortcircuit as sc
 import pandas as pd
 
@@ -46,7 +45,7 @@ def run_short_circuit(
                     return_all_currents=False,
                     inverse_y=False,
                 )
-            except Exception as exc:  # noqa: BLE001 - reported, not hidden
+            except Exception as exc:
                 frames.append(
                     pd.DataFrame(
                         {

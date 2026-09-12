@@ -1,11 +1,9 @@
 """The translation into pandapower must preserve the exchange file exactly."""
 
-import pandapower as pp
 import pytest
 
 from mali_energy.config import BUILD_DIR
 from mali_energy.exchange import load_exchange
-
 from mali_pandapower.builder import VOLTAGE_CONTROL_MIN_MVA, build
 
 
@@ -37,7 +35,8 @@ def test_line_impedances_are_copied_not_recomputed(exchange):
 
 def test_demand_matches_the_case(exchange):
     result = build(exchange, "dry_peak")
-    case_total = sum(l["p_mw"] for l in exchange["cases"]["dry_peak"]["loads"].values())
+    case = exchange["cases"]["dry_peak"]
+    case_total = sum(load["p_mw"] for load in case["loads"].values())
     assert float(result.net.load.p_mw.sum()) == pytest.approx(case_total, rel=1e-9)
 
 

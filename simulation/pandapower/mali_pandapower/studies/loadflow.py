@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-import pandapower as pp
 import pandas as pd
 
+import pandapower as pp
 from mali_energy.config import LOADING_LIMIT_NORMAL_PCT, VOLTAGE_LIMITS_PU
 
 from ..builder import BuildResult, apply_load_shedding, build
@@ -162,7 +162,7 @@ def run_case(
         "max_line_loading_pct": round(float(net.res_line.loading_percent.max()), 1),
         "max_line": str(net.line.at[int(net.res_line.loading_percent.idxmax()), "name"]),
         "max_trafo_loading_pct": round(float(net.res_trafo.loading_percent.max()), 1),
-        "violations": int(len(lf.violations)),
+        "violations": len(lf.violations),
         "dispatch_iterations": operations.iterations,
         "slack_mismatch_mw": operations.residual_mismatch_mw,
         "capacitor_actions": len(operations.shunt_actions),
@@ -179,7 +179,7 @@ def run_case(
 
     # The slack machine must stay inside the power it was scheduled to have.
     # If it does not, the case is balanced by a machine that cannot deliver.
-    for gen_id, index in result.ext_grid_index.items():
+    for gen_id in result.ext_grid_index:
         clean_id = gen_id.replace("SLACK_", "")
         setpoint = case["generators"].get(clean_id)
         if not setpoint:

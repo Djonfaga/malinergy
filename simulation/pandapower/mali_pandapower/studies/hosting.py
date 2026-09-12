@@ -14,9 +14,9 @@ lowest.
 
 from __future__ import annotations
 
-import pandapower as pp
 import pandas as pd
 
+import pandapower as pp
 from mali_energy.config import VOLTAGE_LIMITS_PU
 
 from ..builder import build

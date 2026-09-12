@@ -17,9 +17,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import numpy as np
-import pandapower as pp
 import pandas as pd
 
+import pandapower as pp
 from mali_energy.config import StudyConfig
 from mali_energy.demand.allocation import ZONE_STATION, allocate_timeseries
 from mali_energy.grid.schema import GridCatalog

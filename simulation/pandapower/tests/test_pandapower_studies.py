@@ -4,9 +4,8 @@ import pytest
 
 from mali_energy.config import BUILD_DIR
 from mali_energy.exchange import load_exchange
-
 from mali_pandapower.studies.contingency import run_n1
-from mali_pandapower.studies.loadflow import run_all_cases, run_case
+from mali_pandapower.studies.loadflow import run_all_cases
 from mali_pandapower.studies.shortcircuit import run_short_circuit
 
 

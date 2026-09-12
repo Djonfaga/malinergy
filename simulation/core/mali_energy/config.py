@@ -101,7 +101,7 @@ class StudyConfig:
         remaining = (1.0 - self.network_loss_fraction) / (1.0 - self.transmission_loss_fraction)
         return max(0.0, 1.0 - remaining)
 
-    def with_(self, **changes) -> "StudyConfig":
+    def with_(self, **changes) -> StudyConfig:
         """Return a copy with ``changes`` applied (frozen dataclasses)."""
         from dataclasses import replace
 

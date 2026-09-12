@@ -264,8 +264,8 @@ def validate(catalog: GridCatalog, config: StudyConfig | None = None) -> Validat
             * config.peak_to_average_ratio
         )
         mean_pf = (
-            sum(l.weight * l.power_factor for l in catalog.loads.values())
-            / max(sum(l.weight for l in catalog.loads.values()), 1e-9)
+            sum(ld.weight * ld.power_factor for ld in catalog.loads.values())
+            / max(sum(ld.weight for ld in catalog.loads.values()), 1e-9)
         )
         reactive_demand = peak_mw * math.tan(math.acos(mean_pf))
         report.add(
@@ -293,7 +293,7 @@ def validate(catalog: GridCatalog, config: StudyConfig | None = None) -> Validat
             )
 
     # -- load weights ------------------------------------------------------
-    total_weight = sum(l.weight for l in catalog.loads.values())
+    total_weight = sum(ld.weight for ld in catalog.loads.values())
     if abs(total_weight - 1.0) > 0.02:
         report.add(
             "warning",

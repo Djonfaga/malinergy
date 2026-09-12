@@ -14,6 +14,6 @@ Two tiers exist:
   is empty, and says so in its data card.
 """
 
-from . import nasa_power, overpass, owid, population, pvgis, worldbank  # noqa: F401
+from . import nasa_power, overpass, owid, population, pvgis, worldbank
 
-__all__ = ["owid", "worldbank", "population", "pvgis", "nasa_power", "overpass"]
+__all__ = ["nasa_power", "overpass", "owid", "population", "pvgis", "worldbank"]

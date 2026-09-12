@@ -90,7 +90,7 @@ def connection_points(
     if short_circuit is not None and not short_circuit.empty:
         column = "sk_max_mva" if "sk_max_mva" in short_circuit else None
         if column:
-            levels = dict(zip(short_circuit["bus"], short_circuit[column]))
+            levels = dict(zip(short_circuit["bus"], short_circuit[column], strict=True))
 
     buses = {b["id"]: b for b in exchange["network"]["buses"]}
     points: list[ConnectionPoint] = []

@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "PowerFactory export and automation for the Malian interconnected network"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "djonfaga" }]
+authors = [{ name = "Bourama DJONFGA", email = "bourama.phd@gmail.com" }]
 dependencies = ["mali-energy-core"]
 
 [project.optional-dependencies]

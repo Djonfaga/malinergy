@@ -26,8 +26,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-import pandapower as pp
 import pandas as pd
+
+import pandapower as pp
 
 from .builder import BuildResult
 

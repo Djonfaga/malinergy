@@ -18,10 +18,10 @@ the demand isolated by each outage.
 
 from __future__ import annotations
 
-import pandapower as pp
 import pandapower.topology as top
 import pandas as pd
 
+import pandapower as pp
 from mali_energy.config import (
     LOADING_LIMIT_CONTINGENCY_PCT,
     VOLTAGE_LIMITS_PU_EMERGENCY,
@@ -63,8 +63,10 @@ def run_n1(
     try:
         pp.runpp(base.net, calculate_voltage_angles=True, init="dc", max_iteration=50)
         base_losses = float(base.net.res_line.pl_mw.sum() + base.net.res_trafo.pl_mw.sum())
-    except pp.LoadflowNotConverged:
-        raise RuntimeError(f"the base case {case_name} does not converge; fix it first")
+    except pp.LoadflowNotConverged as error:
+        raise RuntimeError(
+            f"the base case {case_name} does not converge; fix it before screening outages"
+        ) from error
 
     outages: list[tuple[str, str, int]] = [
         ("line", str(base.net.line.at[i, "name"]), i)

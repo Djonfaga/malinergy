@@ -6,10 +6,10 @@ check it and to produce results where MATLAB is not installed. Every result
 says which implementation produced it.
 """
 
-from .grid_strength import ConnectionPoint, connection_points, strength_table  # noqa: F401
-from .matlab import compare_results, matlab_available, run_matlab_studies  # noqa: F401
-from .reference import InverterDesign, simulate_inverter, stability_sweep  # noqa: F401
-from .studies import (  # noqa: F401
+from .grid_strength import ConnectionPoint, connection_points, strength_table
+from .matlab import compare_results, matlab_available, run_matlab_studies
+from .reference import InverterDesign, simulate_inverter, stability_sweep
+from .studies import (
     converter_limit_study,
     grid_strength_study,
     step_response_study,
@@ -20,19 +20,19 @@ from .studies import (  # noqa: F401
 
 __version__ = "1.0.0"
 __all__ = [
-    "InverterDesign",
-    "simulate_inverter",
-    "stability_sweep",
     "ConnectionPoint",
+    "InverterDesign",
+    "compare_results",
     "connection_points",
-    "strength_table",
-    "grid_strength_study",
-    "step_response_study",
     "converter_limit_study",
-    "strength_sweep",
-    "voltage_dip_study",
-    "weak_grid_comparison",
+    "grid_strength_study",
     "matlab_available",
     "run_matlab_studies",
-    "compare_results",
+    "simulate_inverter",
+    "stability_sweep",
+    "step_response_study",
+    "strength_sweep",
+    "strength_table",
+    "voltage_dip_study",
+    "weak_grid_comparison",
 ]

@@ -282,8 +282,9 @@ def stability_sweep(
     duration_s: float = 1.2,
 ):
     """Phase-locked loop bandwidth against stability at a fixed grid strength."""
-    import pandas as pd
     from dataclasses import replace
+
+    import pandas as pd
 
     rows = []
     for bandwidth in bandwidths_hz:

@@ -9,10 +9,10 @@ from .findings import table as findings_table
 __version__ = "1.0.0"
 __all__ = [
     "access_table",
+    "build_figures",
     "by_confidence",
     "compare",
     "effort_table",
-    "build_figures",
     "findings_table",
     "hand_written_work",
     "headline",

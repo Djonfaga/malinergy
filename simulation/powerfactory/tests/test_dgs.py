@@ -5,7 +5,6 @@ import pytest
 
 from mali_energy.config import BUILD_DIR
 from mali_energy.exchange import load_exchange
-
 from mali_powerfactory.dgs import DgsExport
 from mali_powerfactory.verify import parse, verify
 

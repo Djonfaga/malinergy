@@ -18,8 +18,8 @@ def powerfactory_available() -> bool:
     directory for the running Python version is on the path.
     """
     try:
-        import powerfactory  # noqa: F401, PLC0415
-    except Exception:  # noqa: BLE001
+        import powerfactory  # noqa: F401
+    except Exception:
         return False
     return True
 

@@ -11,7 +11,7 @@ Run from a ComPython object in the project, or:
 
 import os
 
-from common import activate_study_case, get_app, safe, write_csv
+from common import activate_study_case, get_app, write_csv
 
 OUTPUT_DIR = os.environ.get("MALI_PF_RESULTS", "results")
 VOLTAGE_LIMITS = (0.95, 1.05)
@@ -20,7 +20,6 @@ LOADING_LIMIT = 100.0
 
 def run_case(app, case_name):
     activate_study_case(app, case_name)
-    grid = app.GetCalcRelevantObjects("*.ElmNet")
 
     ldf = app.GetFromStudyCase("ComLdf")
     # Balanced AC load flow with the controls the Malian system actually has:
@@ -43,7 +42,6 @@ def run_case(app, case_name):
     for bus in app.GetCalcRelevantObjects("*.ElmTerm"):
         if not bus.HasResults():
             continue
-        vm = safe(bus, "GetAttribute", None)
         buses.append(
             {
                 "case": case_name,

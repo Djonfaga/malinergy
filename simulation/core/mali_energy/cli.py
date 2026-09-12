@@ -142,7 +142,7 @@ def _cmd_gaps(args: argparse.Namespace) -> int:
         label = "id" if "id" in rows.columns else rows.columns[0]
         for _, row in rows.iterrows():
             note = str(row.get("note", "") or "")
-            print(f"  {str(row[label]):<24} {note[:88]}")
+            print(f"  {row[label]!s:<24} {note[:88]}")
 
     print(f"\n{estimated} of {total} rows are engineering estimates.")
     print("See docs/replacing_data.md for how to substitute measured figures,")

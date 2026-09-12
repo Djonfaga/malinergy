@@ -17,7 +17,6 @@ component, and the mapping is stated in each docstring.
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass, field
 
 import numpy as np
@@ -117,7 +116,7 @@ def _shed_fraction(frequency: float, minimum_seen: float, case: FrequencyCase) -
     if not case.underfrequency_shedding:
         return 0.0
     total = 0.0
-    for stage, fraction in zip(case.shed_stages_hz, case.shed_fractions):
+    for stage, fraction in zip(case.shed_stages_hz, case.shed_fractions, strict=True):
         if minimum_seen < stage:
             total += fraction
     return total
@@ -226,7 +225,9 @@ def simulate_frequency(
     thermal = solution.y[4] * case.thermal_capacity_mw
     solar = solution.y[5] * case.solar_mw
     running_min = np.minimum.accumulate(f)
-    shed = np.array([_shed_fraction(fi, mi, case) for fi, mi in zip(f, running_min)])
+    shed = np.array(
+        [_shed_fraction(fi, mi, case) for fi, mi in zip(f, running_min, strict=True)]
+    )
     demand = case.demand_mw * (1 - shed) * (1 + case.load_damping * (f - F_NOM) / F_NOM)
 
     after_trip = solution.t >= case.trip_time_s

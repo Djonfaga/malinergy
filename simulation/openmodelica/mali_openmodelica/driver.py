@@ -8,6 +8,7 @@ equations with SciPy and the studies fall back to it, saying so in the result.
 
 from __future__ import annotations
 
+import contextlib
 import shutil
 import subprocess
 from dataclasses import dataclass
@@ -30,7 +31,7 @@ def openmodelica_version() -> str | None:
     try:
         out = subprocess.run(["omc", "--version"], capture_output=True, text=True, timeout=30)
         return out.stdout.strip() or None
-    except Exception:  # noqa: BLE001
+    except Exception:
         return None
 
 
@@ -116,10 +117,10 @@ def simulate(
         frame = read_result(path)
         return SimulationResult(model=model, ok=True, frame=frame, result_file=path, message=errors)
     finally:
-        try:
+        # Closing the session is best effort: if the compiler has already gone
+        # away there is nothing useful to report about it.
+        with contextlib.suppress(Exception):
             session.sendExpression("quit()")
-        except Exception:  # noqa: BLE001
-            pass
 
 
 def read_result(path: Path) -> pd.DataFrame:

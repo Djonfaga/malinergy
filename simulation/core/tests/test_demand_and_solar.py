@@ -2,7 +2,6 @@
 
 import pytest
 
-from mali_energy.config import StudyConfig
 from mali_energy.demand.profiles import DemandModel
 from mali_energy.grid import load_catalog
 from mali_energy.solar.pv import design_from_generator, plant_output

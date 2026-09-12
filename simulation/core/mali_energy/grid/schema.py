@@ -255,10 +255,10 @@ class GridCatalog:
         return {
             "meta": self.meta,
             "buses": [asdict(b) for b in self.buses.values()],
-            "lines": [asdict(l) for l in self.lines.values()],
+            "lines": [asdict(line) for line in self.lines.values()],
             "transformers": [asdict(t) for t in self.transformers.values()],
             "generators": [asdict(g) for g in self.generators.values()],
-            "loads": [asdict(l) for l in self.loads.values()],
+            "loads": [asdict(load) for load in self.loads.values()],
             "shunts": [asdict(s) for s in self.shunts.values()],
             "interconnections": [asdict(x) for x in self.interconnections.values()],
             "hydro_availability": {

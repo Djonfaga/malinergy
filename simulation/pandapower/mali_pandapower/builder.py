@@ -15,7 +15,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import pandapower as pp
-
 from mali_energy.config import BASE_MVA, NOMINAL_FREQUENCY_HZ
 from mali_energy.exchange import load_exchange
 

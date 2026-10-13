@@ -117,14 +117,24 @@ def solve(
     )
     result.prices = n.buses_t.marginal_price[BUS]
 
-    demand_mwh = float(
-        (n.loads_t.p_set.sum(axis=1) * weights).sum()
-    )
+    # Total load is demand plus any export obligation carried as a load. They
+    # are different quantities and reporting one under the other's name
+    # overstates demand and flatters every figure normalised by it.
+    total_load_mwh = float((n.loads_t.p_set.sum(axis=1) * weights).sum())
+    demand_mwh = float((n.loads_t.p_set["DEMAND"] * weights).sum())
+    export_mwh = total_load_mwh - demand_mwh
     unserved_mwh = float(energy_mwh[UNSERVED].sum()) if UNSERVED in energy_mwh else 0.0
-    served_mwh = demand_mwh - unserved_mwh
+    served_mwh = total_load_mwh - unserved_mwh
 
-    unserved_hours = int(
-        (dispatch_mw[UNSERVED] > 0.1).mul(weights).sum() if UNSERVED in dispatch_mw else 0
+    # Snapshots in which something was shed, converted to the hours they stand
+    # for. At a coarse interval a short deep shortfall is averaged into a long
+    # shallow one, so this number rises as the sampling coarsens even though
+    # the energy barely moves. It is a property of the run, not of the system,
+    # and the summary labels it accordingly.
+    unserved_hours = round(
+        float((dispatch_mw[UNSERVED] > 0.1).mul(weights).sum())
+        if UNSERVED in dispatch_mw
+        else 0.0
     )
     unserved_cost = float(result.cost_usd.get(UNSERVED, 0.0))
 
@@ -141,10 +151,14 @@ def solve(
         "year": build.demand.calibration.get("year"),
         "solver_status": result.status,
         "demand_gwh": round(demand_mwh / 1000.0, 1),
+        "export_obligation_gwh": round(export_mwh / 1000.0, 1),
+        "total_load_gwh": round(total_load_mwh / 1000.0, 1),
         "served_gwh": round(served_mwh / 1000.0, 1),
         "unserved_gwh": round(unserved_mwh / 1000.0, 2),
-        "unserved_pct": round(100.0 * unserved_mwh / demand_mwh, 2) if demand_mwh else 0.0,
-        "hours_with_unserved": unserved_hours,
+        "unserved_pct": (
+            round(100.0 * unserved_mwh / total_load_mwh, 2) if total_load_mwh else 0.0
+        ),
+        "snapshot_hours_with_unserved": unserved_hours,
         "system_cost_musd": round(float(result.cost_usd.sum()) / 1e6, 2),
         "operating_cost_musd": round(fuel_cost / 1e6, 2),
         "unserved_cost_musd": round(unserved_cost / 1e6, 2),
@@ -163,10 +177,15 @@ def solve(
 
     if unserved_mwh > 0:
         result.notes.append(
-            f"{unserved_mwh / 1000.0:.0f} GWh unserved over {unserved_hours} hours, "
-            f"{result.summary['unserved_share_of_cost_pct']:.0f} % of the objective. "
-            "That share is set by the value of lost load, which is an assumption: "
-            "read the operating cost separately."
+            f"{unserved_mwh / 1000.0:.0f} GWh unserved over {unserved_hours} hours. "
+            "That hour count is the hours the shedding snapshots stand for, and it "
+            "grows as the sampling coarsens because a short deep shortfall averages "
+            "into a long shallow one; the energy is the quantity to quote."
+        )
+        result.notes.append(
+            f"unserved energy is {result.summary['unserved_share_of_cost_pct']:.0f} % "
+            "of the objective. That share is set by the value of lost load, which is "
+            "an assumption: read the operating cost separately."
         )
     return result
 
@@ -197,10 +216,14 @@ def monthly_balance(result: DispatchResult) -> pd.DataFrame:
     demand = (n.loads_t.p_set.sum(axis=1) * weights).groupby(
         n.snapshots.month
     ).sum() / 1000.0
-    monthly["demand_gwh"] = demand
+    monthly["load_gwh"] = demand
     if UNSERVED in n.generators_t.p:
+        # Hours stood for by the snapshots that shed, rounded rather than
+        # truncated; see the note on the same quantity in the summary.
         hours = (n.generators_t.p[UNSERVED] > 0.1).mul(weights, axis=0)
-        monthly["hours_unserved"] = hours.groupby(n.snapshots.month).sum().astype(int)
+        monthly["snapshot_hours_unserved"] = (
+            hours.groupby(n.snapshots.month).sum().round().astype(int)
+        )
     return monthly.round(2).rename_axis("month")
 
 

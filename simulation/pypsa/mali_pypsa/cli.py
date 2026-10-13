@@ -36,6 +36,7 @@ def _cmd_solve(args: argparse.Namespace) -> int:
         year=args.year,
         step_hours=args.step_hours,
         import_basis=args.import_basis,
+        omvs_settlement=args.omvs_settlement,
         prefer_atlite=not args.no_atlite,
         include_scenario_assets=args.scenario_assets,
     )
@@ -57,8 +58,9 @@ def _cmd_solve(args: argparse.Namespace) -> int:
 
     s = result.summary
     print(f"\n  demand        {s['demand_gwh']:>9,.1f} GWh")
+    print(f"  total load    {s['total_load_gwh']:>9,.1f} GWh")
     print(f"  unserved      {s['unserved_gwh']:>9,.1f} GWh  ({s['unserved_pct']} %, "
-          f"{s['hours_with_unserved']:,} hours)")
+          f"{s['snapshot_hours_with_unserved']:,} hours)")
     print(f"  operating     {s['operating_cost_musd']:>9,.1f} MUSD  "
           f"({s['average_cost_usd_per_mwh']} USD/MWh served)")
     print(f"  emissions     {s['co2_kt']:>9,.1f} kt    ({s['co2_kg_per_kwh']} kg/kWh)")
@@ -96,10 +98,14 @@ def _cmd_compare(args: argparse.Namespace) -> int:
         if not result.ok:
             print(f"{basis}: did not solve")
             continue
+        problems = check_results(result)
+        if problems:
+            print(f"{basis}: failed its checks: {problems}")
+            return 1
         s = result.summary
         rows.append({"import_basis": basis, **{
             k: s[k] for k in (
-                "unserved_gwh", "unserved_pct", "hours_with_unserved",
+                "unserved_gwh", "unserved_pct", "snapshot_hours_with_unserved",
                 "operating_cost_musd", "average_cost_usd_per_mwh", "co2_kt",
             )
         }, **{f"{c}_gwh": round(v, 1) for c, v in result.by_carrier_gwh.items()}})
@@ -121,6 +127,10 @@ def _cmd_validate(args: argparse.Namespace) -> int:
     result = solve(build, solver_name=args.solver)
     if not result.ok:
         print(f"did not solve: {result.condition}")
+        return 1
+    problems = check_results(result)
+    if problems:
+        print(f"the dispatch failed its checks, so nothing is compared: {problems}")
         return 1
 
     report = against_national_statistics(result)
@@ -172,6 +182,10 @@ def main(argv: list[str] | None = None) -> int:
     p_solve = sub.add_parser("solve", parents=[common], help="run the dispatch")
     p_solve.add_argument("--import-basis", choices=["contracted", "capacity"],
                          default="contracted")
+    p_solve.add_argument("--omvs-settlement",
+                         choices=["at_the_plant", "and_again_on_the_link"],
+                         default="at_the_plant",
+                         help="where Mali's OMVS share is deducted; see the README")
     p_solve.add_argument("--scenario-assets", action="store_true",
                          help="include plant the catalogue marks out of service")
     p_solve.add_argument("--figures", action="store_true",

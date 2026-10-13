@@ -37,10 +37,28 @@ def test_an_unknown_basis_is_refused(catalog):
         build_demand(catalog, basis="whatever")
 
 
-def test_the_profile_carries_the_energy_it_was_calibrated_to(profile):
-    assert profile.annual_energy_gwh == pytest.approx(
-        profile.calibration["target_gwh"], rel=0.01
-    )
+def test_each_basis_carries_its_own_target_and_not_another(catalog):
+    """Comparing a profile with the target stored beside it cannot fail.
+
+    build_demand scales the series to that target by construction, so the
+    obvious assertion is arithmetic rather than evidence. What can fail, and
+    is the error worth catching, is a basis picking up the wrong figure.
+    """
+    keys = {
+        "utility_served": "utility_energy_gwh",
+        "network_entry": "network_entry_energy_gwh",
+        "generation_required": "generation_required_gwh",
+    }
+    for basis, key in keys.items():
+        built = build_demand(catalog, basis=basis)
+        assert built.annual_energy_gwh == pytest.approx(
+            built.calibration[key], rel=0.01
+        )
+        others = [v for k, v in keys.items() if k != basis]
+        for other in others:
+            assert built.annual_energy_gwh != pytest.approx(
+                built.calibration[other], rel=0.01
+            )
 
 
 def test_the_peak_is_in_the_evening(profile):
@@ -71,7 +89,35 @@ def test_the_checks_catch_a_profile_that_lost_its_energy(profile):
     from dataclasses import replace
 
     halved = replace(profile, series_mw=profile.series_mw * 0.5)
-    assert any("against a" in p for p in check_energy_balance(halved))
+    assert any("target of" in p for p in check_energy_balance(halved))
+
+
+def test_the_checks_catch_a_profile_built_on_the_wrong_basis(catalog):
+    """The failure the old assertion could not see: right arithmetic, wrong level."""
+    from dataclasses import replace
+
+    served = build_demand(catalog, basis="utility_served")
+    mislabelled = replace(served, basis="generation_required")
+    assert any("target of" in p for p in check_energy_balance(mislabelled))
+
+
+def test_the_checks_refuse_a_basis_they_do_not_know(profile):
+    from dataclasses import replace
+
+    assert check_energy_balance(replace(profile, basis="vibes")) == [
+        "unknown demand basis 'vibes'"
+    ]
+
+
+def test_monthly_sums_are_not_the_evidence_the_level_is(profile):
+    """Stated plainly: the sum of the parts equalling the whole proves nothing.
+
+    What this pins instead is that the monthly table disaggregates rather than
+    rescales -- no month carries the annual mean.
+    """
+    monthly = monthly_profile(profile)
+    mean = profile.annual_energy_gwh / 12
+    assert (monthly["energy_gwh"] - mean).abs().max() > 0.05 * mean
 
 
 def test_monthly_energy_sums_to_the_year(profile):

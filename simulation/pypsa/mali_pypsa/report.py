@@ -64,9 +64,12 @@ def markdown_report(result: DispatchResult, *, title: str = "Mali PyPSA v0.1") -
     lines += [
         "## Result",
         "",
-        f"- Demand **{s['demand_gwh']:,.0f} GWh**, served {s['served_gwh']:,.0f} GWh",
-        f"- Unserved **{s['unserved_gwh']:,.1f} GWh** ({s['unserved_pct']} %) "
-        f"over {s['hours_with_unserved']:,} hours",
+        f"- Demand **{s['demand_gwh']:,.0f} GWh** (generation required), "
+        f"export obligation {s['export_obligation_gwh']:,.0f} GWh, "
+        f"total load {s['total_load_gwh']:,.0f} GWh",
+        f"- Served {s['served_gwh']:,.0f} GWh",
+        f"- Unserved **{s['unserved_gwh']:,.1f} GWh** ({s['unserved_pct']} % of total "
+        f"load) in snapshots standing for {s['snapshot_hours_with_unserved']:,} hours",
         f"- Operating cost **{s['operating_cost_musd']:,.1f} million USD**, "
         f"{s['average_cost_usd_per_mwh']} USD/MWh served",
         f"- Emissions **{s['co2_kt']:,.0f} kt CO2**, {s['co2_kg_per_kwh']} kg/kWh",

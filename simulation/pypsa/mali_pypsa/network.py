@@ -18,10 +18,12 @@ much of total system cost it accounts for.
 what the wire can carry.** Imports from Côte d'Ivoire enter the merit order at
 their contract price, which is where they belong: cheaper than Malian
 distillate, dearer than Malian hydro. The ceiling matters more than the price.
-Given the 200 MW thermal rating of the line, the optimiser imports 1630 GWh a
-year — it holds the interconnection at its rating almost continuously, because
-Ivorian energy is cheaper than anything Mali can burn. That is not a forecast,
-it is an artefact of treating a transfer limit as an energy entitlement.
+Given the 200 MW thermal rating of the line the optimiser holds the
+interconnection at that rating almost continuously, because Ivorian energy is
+cheaper than anything Mali can burn; the figure the model then reports is in
+``results/import_basis_comparison.csv`` rather than quoted here, so that it
+cannot drift away from the run that produced it. That is not a forecast, it is
+an artefact of treating a transfer limit as an energy entitlement.
 ``import_basis`` therefore defaults to the contracted exchange the catalogue
 records, and the capacity basis is kept available so a study can show the gap
 between the two.
@@ -51,9 +53,9 @@ from .costs import (
     load_costs,
     load_interchange_costs,
 )
-from .demand import DemandProfile, build_demand, resample, snapshots
+from .demand import DemandProfile, build_demand, check_energy_balance, resample, snapshots
 from .fleet import GeneratorSpec, build_fleet, check_omvs_entitlement, reservoir_budgets
-from .resource import ResourceResult, capacity_factors
+from .resource import ResourceResult, capacity_factors, check_profiles
 from .sampling import resolves_day
 
 BUS = "MALI"
@@ -78,6 +80,12 @@ def _naive(obj):
 
 #: Carrier colours and emission factors are attached to the network so that
 #: results can be grouped without the report re-deriving them.
+#: Interconnections whose catalogue entry describes the settlement of the OMVS
+#: hydro shares rather than a commercial trade. For these, and only these, the
+#: export may already be accounted for at the plant.
+OMVS_SETTLEMENT_LINKS = ("XC_SEN",)
+OMVS_SHARE_DISPLAY = "52 % entitlement"
+
 CARRIERS = {
     "AC": 0.0,           # the bus and the loads sit on it; declared so the
                          # network passes its own consistency check
@@ -118,15 +126,36 @@ def build_network(
     include_scenario_assets: bool = False,
     value_of_lost_load: float = VALUE_OF_LOST_LOAD_USD_PER_MWH,
     import_basis: str = "contracted",
+    omvs_settlement: str = "at_the_plant",
 ) -> BuildResult:
     """Build the v0.1 network.
 
     ``import_basis`` selects the ceiling on each import: ``contracted`` uses the
     typical exchange the catalogue records, ``capacity`` uses the thermal rating
     of the interconnection. The difference is large and is a result in itself.
+
+    ``omvs_settlement`` says where Mali's share of the OMVS cascade is taken
+    off, and the choice matters more than it looks:
+
+    ``at_the_plant`` (default)
+        Manantali, Gouina and Felou never produce more than Mali's entitlement,
+        and the Senegal interconnection carries no export load. The catalogue
+        records that link as "exchange of the OMVS hydro shares", so carrying
+        it *as well* would deduct the same entitlement twice.
+    ``and_again_on_the_link``
+        The entitlement is withheld at the plant and the catalogue's exchange
+        is carried as a firm export on top. This is only right if that exchange
+        is a separate commercial sale rather than the share settlement, which
+        the catalogue does not say. Kept selectable because the question is
+        open and the answer moves the headline numbers by a factor of two.
     """
     if import_basis not in {"contracted", "capacity"}:
         raise ValueError(f"import_basis must be 'contracted' or 'capacity', not {import_basis!r}")
+    if omvs_settlement not in {"at_the_plant", "and_again_on_the_link"}:
+        raise ValueError(
+            "omvs_settlement must be 'at_the_plant' or 'and_again_on_the_link', "
+            f"not {omvs_settlement!r}"
+        )
     from mali_energy.grid import load_catalog
 
     catalog = catalog or load_catalog()
@@ -136,10 +165,19 @@ def build_network(
 
     index = snapshots(year, step_hours=step_hours)
     demand = build_demand(catalog, config, basis=demand_basis)
+    # Checked here rather than left for a test to find. A demand profile on the
+    # wrong basis, or with its evening peak in the wrong place, produces a
+    # model that solves cleanly and answers a different question.
+    problems = check_energy_balance(demand)
+    if problems:
+        raise ValueError("the demand profile failed its checks: " + "; ".join(problems))
     demand_series = resample(demand, index)
 
     resource = capacity_factors(catalog, year, index, prefer_atlite=prefer_atlite)
     notes.extend(resource.warnings)
+    problems = check_profiles(resource)
+    if problems:
+        raise ValueError("the solar resource failed its checks: " + "; ".join(problems))
 
     fleet = build_fleet(
         catalog,
@@ -203,6 +241,15 @@ def build_network(
                 f"({import_basis} basis; the line is rated {link.capacity_mw:.0f} MW "
                 f"and the contracted exchange is {link.typical_import_mw:.0f} MW)"
             )
+        elif link.id in OMVS_SETTLEMENT_LINKS and omvs_settlement == "at_the_plant":
+            notes.append(
+                f"{link.id}: the catalogue records this as the exchange of the OMVS "
+                f"hydro shares ({abs(link.typical_import_mw):.0f} MW out). It is not "
+                "carried as a load, because the same entitlement is already withheld "
+                "at Manantali, Gouina and Felou, which never produce more than Mali's "
+                f"{OMVS_SHARE_DISPLAY}. Deducting it twice would charge Mali for "
+                "energy it was never given"
+            )
         else:
             export_mw = abs(link.typical_import_mw)
             n.add(
@@ -263,6 +310,12 @@ def build_network(
             "profile is averaged over its interval, so annual energy is right, but a "
             "single snapshot straddles sunrise and the diurnal checks are not applied"
         )
+    notes.append(
+        "imported energy is counted as carbon free. It is not: the Ivorian system "
+        "is largely gas fired. Every emission figure here is therefore the carbon "
+        "of Malian plant, diluted over Malian and imported energy alike, and any "
+        "saving that comes from importing more is overstated"
+    )
     notes.append(
         "the model's import variable is not comparable with the national net-import "
         "statistic: Manantali stands on Malian soil and its Senegalese and "

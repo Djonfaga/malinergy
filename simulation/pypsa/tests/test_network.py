@@ -7,6 +7,7 @@ energy actually contracted, an export obligation forgotten, unserved energy
 priced below a diesel engine so the optimiser sheds load to save fuel.
 """
 
+import pandas as pd
 import pytest
 from mali_pypsa.costs import VALUE_OF_LOST_LOAD_USD_PER_MWH, load_interchange_costs
 from mali_pypsa.network import BUS, CARRIERS, UNSERVED, build_network
@@ -40,14 +41,96 @@ def test_demand_energy_matches_the_profile(build):
     assert served == pytest.approx(build.demand.annual_energy_gwh, rel=0.01)
 
 
-def test_an_export_obligation_is_carried_as_a_fixed_load(build, catalog):
-    exporting = [
-        link
-        for link in catalog.interconnections.values()
-        if link.in_service and link.typical_import_mw < 0
-    ]
-    for link in exporting:
-        assert f"EXPORT_{link.id}" in build.network.loads.index
+def test_demand_is_the_generation_required_figure_not_a_smaller_one(build):
+    """The copper plate has nowhere to put losses but inside demand."""
+    required = build.demand.calibration["generation_required_gwh"]
+    assert build.demand.annual_energy_gwh == pytest.approx(required, rel=0.01)
+    assert required > build.demand.calibration["utility_energy_gwh"]
+
+
+def test_a_broken_demand_profile_stops_the_build(catalog, monkeypatch):
+    """The checks run inside the build, not only in the test suite."""
+    from dataclasses import replace
+
+    import mali_pypsa.network as network
+
+    original = network.build_demand
+
+    def peaking_at_noon(*args, **kwargs):
+        profile = original(*args, **kwargs)
+        shifted = profile.series_mw.copy()
+        shifted[:] = 100.0
+        shifted[shifted.index.hour == 12] = 400.0
+        return replace(profile, series_mw=shifted)
+
+    monkeypatch.setattr(network, "build_demand", peaking_at_noon)
+    with pytest.raises(ValueError, match="demand profile failed its checks"):
+        build_network(catalog, step_hours=24, prefer_atlite=False)
+
+
+def test_a_broken_resource_stops_the_build(catalog, monkeypatch):
+    import mali_pypsa.network as network
+    from mali_pypsa.resource import ResourceResult
+
+    def always_on(cat, year, index, **kwargs):
+        return ResourceResult(
+            profiles={
+                g.id: pd.Series(0.5, index=index)
+                for g in cat.generators.values()
+                if g.technology == "solar"
+            },
+            provider="test",
+        )
+
+    monkeypatch.setattr(network, "capacity_factors", always_on)
+    with pytest.raises(ValueError, match="solar resource failed its checks"):
+        build_network(catalog, step_hours=1, prefer_atlite=False)
+
+
+def test_the_omvs_share_is_not_deducted_twice(build, catalog):
+    """The defect this guards against doubled the published unserved energy.
+
+    Manantali, Gouina and Felou are already capped at Mali's 52 per cent, so
+    Mali never receives the foreign share. The catalogue describes the Senegal
+    link as the exchange *of that share*, so carrying it as a firm export on
+    top deducts the same entitlement a second time -- and prices it at zero
+    against Malian load valued at the cost of lost load.
+    """
+    assert "EXPORT_XC_SEN" not in build.network.loads.index
+    assert list(build.network.loads.index) == ["DEMAND"]
+    assert any("twice" in note for note in build.notes)
+
+
+def test_the_other_reading_is_available_and_says_what_it_assumes(catalog):
+    """The catalogue is ambiguous, so the alternative stays reachable."""
+    both = build_network(
+        catalog, step_hours=12, prefer_atlite=False,
+        omvs_settlement="and_again_on_the_link",
+    )
+    assert "EXPORT_XC_SEN" in both.network.loads.index
+    assert any("export obligation" in note for note in both.notes)
+
+
+def test_the_two_settlements_differ_by_the_export_energy(catalog):
+    plant = build_network(catalog, step_hours=12, prefer_atlite=False)
+    link = catalog.interconnections["XC_SEN"]
+    both = build_network(
+        catalog, step_hours=12, prefer_atlite=False,
+        omvs_settlement="and_again_on_the_link",
+    )
+    weights = both.network.snapshot_weightings["objective"]
+    added = float((both.network.loads_t.p_set["EXPORT_XC_SEN"] * weights).sum())
+    assert added == pytest.approx(abs(link.typical_import_mw) * 8784, rel=1e-6)
+    assert float((plant.network.loads_t.p_set.sum(axis=1) * weights).sum()) == pytest.approx(
+        float((both.network.loads_t.p_set.sum(axis=1) * weights).sum()) - added, rel=1e-6
+    )
+
+
+def test_an_unknown_settlement_is_refused(catalog):
+    with pytest.raises(ValueError, match="omvs_settlement"):
+        build_network(
+            catalog, step_hours=24, prefer_atlite=False, omvs_settlement="whichever"
+        )
 
 
 def test_imports_default_to_what_is_contracted_not_what_the_line_can_carry(catalog):

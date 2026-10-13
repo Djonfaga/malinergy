@@ -6,8 +6,11 @@ Every one of those divisions has been got the wrong way round by someone, and a
 heat rate inverted by mistake still produces a plausible-looking dollar figure.
 """
 
+import pandas as pd
 import pytest
 from mali_pypsa.costs import (
+    CONFIDENCE_LEVELS,
+    REFERENCE_DIR,
     VALUE_OF_LOST_LOAD_USD_PER_MWH,
     cost_key,
     load_costs,
@@ -19,7 +22,38 @@ from mali_pypsa.costs import (
 def test_every_row_carries_provenance():
     for cost in load_costs().values():
         assert cost.source, f"{cost.technology} has no source"
-        assert cost.confidence in {"measured", "reported", "derived", "estimated"}
+        assert cost.confidence in CONFIDENCE_LEVELS
+
+
+def test_a_blank_source_is_refused(tmp_path):
+    """A blank cell arrives as nan, and str(nan) is "nan", which is truthy.
+
+    A guard written as `if not source` therefore waves through exactly the row
+    it was written to stop, so the guard is tested against a real blank rather
+    than against an empty string.
+    """
+    frame = pd.read_csv(REFERENCE_DIR / "costs.csv")
+    frame.loc[frame["technology"] == "thermal_hfo", "source"] = None
+    frame.to_csv(tmp_path / "costs.csv", index=False)
+    with pytest.raises(ValueError, match="no source"):
+        load_costs(tmp_path)
+
+
+def test_an_unrecognised_confidence_is_refused(tmp_path):
+    frame = pd.read_csv(REFERENCE_DIR / "costs.csv")
+    frame.loc[frame["technology"] == "hydro", "confidence"] = "pretty sure"
+    frame.to_csv(tmp_path / "costs.csv", index=False)
+    with pytest.raises(ValueError, match="confidence"):
+        load_costs(tmp_path)
+
+
+def test_the_interchange_table_is_held_to_the_same_rule(tmp_path):
+    """A zero price is a claim about settlement, not an absence of data."""
+    frame = pd.read_csv(REFERENCE_DIR / "interchange_costs.csv")
+    frame.loc[frame["link"] == "XC_SEN", "confidence"] = None
+    frame.to_csv(tmp_path / "interchange_costs.csv", index=False)
+    with pytest.raises(ValueError, match="confidence"):
+        load_interchange_costs(tmp_path)
 
 
 def test_marginal_cost_is_fuel_through_the_heat_rate_plus_upkeep():

@@ -2,40 +2,41 @@
 
 ## Result
 
-- Demand **3,948 GWh**, served 3,812 GWh
-- Unserved **136.3 GWh** (3.45 %) over 1,505 hours
-- Operating cost **284.8 million USD**, 74.72 USD/MWh served
-- Emissions **813 kt CO2**, 0.213 kg/kWh
+- Demand **3,685 GWh** (generation required), export obligation 0 GWh, total load 3,685 GWh
+- Served 3,614 GWh
+- Unserved **70.7 GWh** (1.92 % of total load) in snapshots standing for 994 hours
+- Operating cost **255.1 million USD**, 70.58 USD/MWh served
+- Emissions **689 kt CO2**, 0.191 kg/kWh
 - Resource provider: `core/clear-sky-model` (modelled)
 
-The system cost includes unserved energy priced at the value of lost load, which accounts for 22.3 % of it. That share is an assumption rather than a measurement, which is why the operating cost is reported separately.
+The system cost includes unserved energy priced at the value of lost load, which accounts for 14.3 % of it. That share is an assumption rather than a measurement, which is why the operating cost is reported separately.
 
 ## Energy by carrier
 
 | carrier | energy_gwh |
 |---|---|
 | hydro | 1,361 |
-| thermal | 1,230 |
-| import | 1,051 |
+| thermal | 1,043 |
+| import | 1,040 |
 | solar | 169.8 |
-| unserved | 136.4 |
+| unserved | 70.68 |
 
 ## Monthly balance
 
-| month | hydro | import | solar | thermal | unserved | demand_gwh | hours_unserved |
+| month | hydro | import | solar | thermal | unserved | load_gwh | snapshot_hours_unserved |
 |---|---|---|---|---|---|---|---|
-| 1 | 109.8 | 89.28 | 13.99 | 99.94 | 0 | 313.1 | 0 |
-| 2 | 86.88 | 83.52 | 13.37 | 125.2 | 0.29 | 309.3 | 34 |
-| 3 | 72.71 | 89.28 | 14.52 | 166.9 | 21.85 | 365.2 | 280 |
-| 4 | 53.55 | 86.4 | 14.22 | 162.2 | 56.77 | 373.2 | 716 |
-| 5 | 50.04 | 89.28 | 14.6 | 167.6 | 52.6 | 374.1 | 338 |
-| 6 | 65.48 | 86.4 | 13.73 | 159.6 | 4.84 | 330 | 137 |
-| 7 | 118 | 89.28 | 13.64 | 97.22 | 0 | 318.1 | 0 |
-| 8 | 168.7 | 89.28 | 13.87 | 37.78 | 0 | 309.6 | 0 |
-| 9 | 181.8 | 82.85 | 14.17 | 26.26 | 0 | 305.1 | 0 |
-| 10 | 177.3 | 89.28 | 15.19 | 48.06 | 0 | 329.8 | 0 |
-| 11 | 148.9 | 86.4 | 14.18 | 59.16 | 0 | 308.6 | 0 |
-| 12 | 128.2 | 89.28 | 14.32 | 80.3 | 0 | 312.1 | 0 |
+| 1 | 109.8 | 89.28 | 13.99 | 77.62 | 0 | 290.7 | 0 |
+| 2 | 86.88 | 83.52 | 13.37 | 104.6 | 0 | 288.4 | 0 |
+| 3 | 72.71 | 89.28 | 14.52 | 163.2 | 3.17 | 342.9 | 124 |
+| 4 | 53.55 | 86.4 | 14.22 | 161.5 | 35.91 | 351.6 | 447 |
+| 5 | 50.04 | 89.28 | 14.6 | 166.3 | 31.54 | 351.8 | 391 |
+| 6 | 65.48 | 86.4 | 13.73 | 142.7 | 0.06 | 308.4 | 32 |
+| 7 | 118 | 89.28 | 13.64 | 74.9 | 0 | 295.8 | 0 |
+| 8 | 168.7 | 88.9 | 13.87 | 15.83 | 0 | 287.3 | 0 |
+| 9 | 181.8 | 72.73 | 14.17 | 14.78 | 0 | 283.5 | 0 |
+| 10 | 177.3 | 89.28 | 15.19 | 25.74 | 0 | 307.5 | 0 |
+| 11 | 148.9 | 86.4 | 14.18 | 37.56 | 0 | 287 | 0 |
+| 12 | 128.2 | 89.28 | 14.32 | 57.98 | 0 | 289.7 | 0 |
 
 ## Merit order
 
@@ -68,12 +69,14 @@ The system cost includes unserved energy priced at the value of lost load, which
 - atlite is not installed; install the 'atlite' extra to use ERA5
 - resource is modelled, not measured: clear-sky geometry with the SoDa Linke turbidity climatology and a monthly cloud factor, validated against published irradiation for Mali
 - XC_CIV: import of up to 120 MW at $95/MWh (contracted basis; the line is rated 200 MW and the contracted exchange is 120 MW)
-- XC_SEN: 30 MW export obligation, carried as a fixed load because the OMVS exchange is an entitlement settled in energy rather than a purchase
+- XC_SEN: the catalogue records this as the exchange of the OMVS hydro shares (30 MW out). It is not carried as a load, because the same entitlement is already withheld at Manantali, Gouina and Felou, which never produce more than Mali's 52 % entitlement. Deducting it twice would charge Mali for energy it was never given
 - unserved energy priced at $600/MWh, above every generator so the optimiser sheds only when nothing else is available
 - minimum stable generation is recorded in the fleet specification but not bound: a linear dispatch without unit commitment cannot represent a machine that is off
 - GEN_MANANTALI: reservoir plant, limited by a monthly energy budget (573 GWh over the year) and free to reach its Malian share of nameplate in any hour, rather than capped hour by hour at the month's mean
 - GEN_SELINGUE: reservoir plant, limited by a monthly energy budget (245 GWh over the year) and free to reach its Malian share of nameplate in any hour, rather than capped hour by hour at the month's mean
 - run-of-river plant is limited hour by hour, because there is no storage to move energy with; reservoir plant is limited by energy within the month but not across months, so the model may not carry water from the wet season into the dry one the way the real operator does
 - no minimum release is imposed on the reservoir plants. In reality water is passed for irrigation and navigation whether or not the power is wanted; here hydro is the cheapest energy available, so the budget is spent in full regardless, and only its placement within the month is affected
+- imported energy is counted as carbon free. It is not: the Ivorian system is largely gas fired. Every emission figure here is therefore the carbon of Malian plant, diluted over Malian and imported energy alike, and any saving that comes from importing more is overstated
 - the model's import variable is not comparable with the national net-import statistic: Manantali stands on Malian soil and its Senegalese and Mauritanian shares are counted as Malian exports in national accounts, whereas this model simply never gives Mali that energy
-- 136 GWh unserved over 1505 hours, 22 % of the objective. That share is set by the value of lost load, which is an assumption: read the operating cost separately.
+- 71 GWh unserved over 994 hours. That hour count is the hours the shedding snapshots stand for, and it grows as the sampling coarsens because a short deep shortfall averages into a long shallow one; the energy is the quantity to quote.
+- unserved energy is 14 % of the objective. That share is set by the value of lost load, which is an assumption: read the operating cost separately.

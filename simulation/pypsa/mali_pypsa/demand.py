@@ -159,13 +159,44 @@ def resample(profile: DemandProfile, index: pd.DatetimeIndex) -> pd.Series:
 
 
 def check_energy_balance(profile: DemandProfile, tolerance: float = 0.01) -> list[str]:
-    """Confirm the profile carries the energy it was calibrated to."""
-    target = profile.calibration["target_gwh"]
+    """Confirm the profile carries the energy the chosen basis calls for.
+
+    The obvious version of this check -- compare the profile against the target
+    stored beside it -- cannot fail, because :func:`build_demand` scales the
+    profile to that target by construction. It would pass just as happily if
+    the wrong basis had been picked up, which is the error worth catching. So
+    the target is looked up again from the basis, and the three bases are
+    checked to be in the order the physics requires: what customers consume,
+    then the distribution losses on top, then the transmission losses on top of
+    that.
+    """
+    problems: list[str] = []
+    basis_key = {
+        "generation_required": "generation_required_gwh",
+        "network_entry": "network_entry_energy_gwh",
+        "utility_served": "utility_energy_gwh",
+    }
+    key = basis_key.get(profile.basis)
+    if key is None:
+        return [f"unknown demand basis {profile.basis!r}"]
+    target = profile.calibration.get(key)
+    if target is None:
+        return [f"the calibration carries no {key} to check against"]
+
+    served = profile.calibration.get("utility_energy_gwh", 0.0)
+    entry = profile.calibration.get("network_entry_energy_gwh", 0.0)
+    required = profile.calibration.get("generation_required_gwh", 0.0)
+    if not served < entry < required:
+        problems.append(
+            f"the three demand bases are not in order: consumed {served:.0f}, at "
+            f"network entry {entry:.0f}, generation required {required:.0f} GWh"
+        )
+
     actual = profile.annual_energy_gwh
-    problems = []
     if abs(actual - target) > tolerance * target:
         problems.append(
-            f"profile carries {actual:.0f} GWh against a {target:.0f} GWh target"
+            f"profile carries {actual:.0f} GWh against the {profile.basis} target "
+            f"of {target:.0f} GWh"
         )
     if not 0.5 < profile.load_factor < 0.85:
         problems.append(f"load factor {profile.load_factor:.3f} is outside a credible range")

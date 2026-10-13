@@ -59,9 +59,18 @@ def test_profiles_are_aligned_on_the_snapshots(index, resource):
 
 
 def test_capacity_factors_stay_within_zero_and_one(resource):
+    """Both producers clip, so this only pins that the clipping stays in place."""
     for series in resource.profiles.values():
         assert series.min() >= 0.0
         assert series.max() <= 1.0
+
+
+def test_a_plant_reaches_a_plausible_peak_rather_than_a_clipped_one(resource):
+    """A profile pinned at 1.0 would pass the bounds check and be nonsense."""
+    for name, series in resource.profiles.items():
+        peak = float(series.max())
+        assert 0.6 < peak < 1.0, f"{name} peaks at {peak:.2f}"
+        assert float((series >= 0.999).mean()) < 0.001, f"{name} is clipped flat"
 
 
 def test_nothing_generates_at_midnight(hourly_profiles):

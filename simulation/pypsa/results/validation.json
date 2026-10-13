@@ -20,18 +20,18 @@
     },
     {
       "quantity": "thermal",
-      "model_gwh": 1230.2,
+      "model_gwh": 1042.8,
       "reference_gwh": 2640.0,
-      "deviation_pct": -53.4,
+      "deviation_pct": -60.5,
       "basis": "national fossil generation times the 55% utility share",
       "verdict": "deviates",
       "explanation": "The national fossil figure includes the captive diesel plant of the gold mines, which is not on the interconnected network; the utility share is an assumption and this comparison inherits its uncertainty."
     },
     {
       "quantity": "total generation",
-      "model_gwh": 3811.8,
+      "model_gwh": 3614.0,
       "reference_gwh": 3278.0,
-      "deviation_pct": 16.3,
+      "deviation_pct": 10.2,
       "basis": "national generation times the 55% utility share",
       "verdict": "consistent",
       "explanation": "Imports are inside the model total and outside the national generation figure, so the model is expected to sit above it."
@@ -39,7 +39,7 @@
   ],
   "findings": [
     "hydro: model 1,361 GWh against 920 GWh (+48 %). The model dispatches every megawatt hour the river and Mali's OMVS share allow, because hydro is the cheapest thing in the merit order. A model above the statistic means either the monthly availability table is too generous or the real plants are not run to their limit.",
-    "thermal: model 1,230 GWh against 2,640 GWh (-53 %). The national fossil figure includes the captive diesel plant of the gold mines, which is not on the interconnected network; the utility share is an assumption and this comparison inherits its uncertainty.",
+    "thermal: model 1,043 GWh against 2,640 GWh (-60 %). The national fossil figure includes the captive diesel plant of the gold mines, which is not on the interconnected network; the utility share is an assumption and this comparison inherits its uncertainty.",
     "the national net-import statistic is not a reference for this model's import variable: Manantali stands on Malian soil and the Senegalese and Mauritanian shares of its output are counted as Malian exports, whereas the model simply never gives Mali that energy"
   ],
   "sibling": {
@@ -54,12 +54,12 @@
       "import_gwh": 755.3
     },
     "pypsa": {
-      "demand_gwh": 3948.2,
-      "unserved_gwh": 136.35,
+      "demand_gwh": 3684.7,
+      "unserved_gwh": 70.68,
       "hydro_gwh": 1361.3,
       "solar_gwh": 169.8,
-      "thermal_gwh": 1230.2,
-      "import_gwh": 1050.5
+      "thermal_gwh": 1042.8,
+      "import_gwh": 1040.0
     },
     "note": "the two models use different demand bases \u2014 the sibling works at network entry and computes transmission losses, this one is a copper plate and carries those losses inside demand \u2014 so totals differ by construction and the mix is the comparable part"
   }

@@ -16,9 +16,10 @@ something a reader would otherwise have to assemble in their head:
     river, and it is also the finding: in the dry season Mali is short of
     energy, not of power, and no amount of re-timing fixes that.
 ``capacity_and_energy``
-    Installed megawatts against delivered megawatt hours. The two bars are
-    nothing like each other, which is the whole argument about what Mali has
-    versus what Mali gets.
+    Entitled megawatts against delivered megawatt hours. Entitled, not
+    nameplate: 192 MW of the OMVS cascade belongs to Senegal and Mauritania,
+    and a figure arguing about what Mali has against what Mali gets would be
+    wrong by that much if it plotted the plates on the machines.
 ``price_duration``
     How many hours of the year are set by which plant, and how many by the
     value of lost load.
@@ -93,7 +94,7 @@ def monthly_balance_figure(result: DispatchResult, path: Path) -> Path:
         )
         bottom = bottom + monthly[carrier]
     ax.plot(
-        monthly.index, monthly["demand_gwh"], color="black", linewidth=1.4, label="demand"
+        monthly.index, monthly["load_gwh"], color="black", linewidth=1.4, label="load"
     )
     ax.set_xticks(list(monthly.index))
     ax.set_xticklabels(MONTHS)
@@ -136,14 +137,29 @@ def dry_season_week_figure(result: DispatchResult, path: Path, *, month: int = 5
 
 def capacity_and_energy_figure(result: DispatchResult, path: Path) -> Path:
     n = result.n
-    installed = n.generators.groupby("carrier")["p_nom"].sum()
+    # Entitled capacity, not nameplate. The figure's argument is what Mali has
+    # against what Mali gets, and 192 MW of the OMVS cascade is not Mali's to
+    # have; plotting nameplate here would make the left bar answer a different
+    # question from the right one.
+    entitled = {spec.name: spec.p_nom_mw * spec.mali_share for spec in result.build.fleet}
+    # An interconnection's entitlement is what is contracted on it, which is
+    # already the ceiling the model gave it. Leaving imports out would drop a
+    # third of Malian supply from both panels.
+    carrier_of = n.generators.carrier
+    for name in n.generators.index:
+        if carrier_of[name] == "import":
+            entitled[name] = float(n.generators.at[name, "p_nom"])
+    series = pd.Series(entitled)
+    installed = series.groupby(
+        [carrier_of.get(name, "unknown") for name in series.index]
+    ).sum()
     energy = result.by_carrier_gwh
     carriers = [c for c in CARRIER_ORDER if c in installed.index and c != "unserved"]
 
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.2))
     for ax, series, unit, title in (
-        (axes[0], installed, "MW", "Installed, as entitled"),
-        (axes[1], energy, "GWh", "Delivered"),
+        (axes[0], installed, "MW", "Capacity Mali is entitled to"),
+        (axes[1], energy, "GWh", "Energy delivered"),
     ):
         values = [float(series.get(c, 0.0)) for c in carriers]
         ax.barh(carriers, values, color=[CARRIER_COLOURS[c] for c in carriers])
@@ -151,7 +167,7 @@ def capacity_and_energy_figure(result: DispatchResult, path: Path) -> Path:
         ax.set_title(title, fontsize=9)
         ax.invert_yaxis()
     axes[1].set_yticklabels([])
-    fig.suptitle("What is installed against what it delivers", fontsize=10)
+    fig.suptitle("What Mali is entitled to against what it gets", fontsize=10)
     fig.savefig(path)
     plt.close(fig)
     return path

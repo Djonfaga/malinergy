@@ -76,12 +76,39 @@ class TechnologyCost:
         return self.co2_t_per_mwh_th / self.electrical_efficiency
 
 
+#: Confidence levels a row may declare, in descending order of evidence.
+CONFIDENCE_LEVELS = ("measured", "reported", "derived", "estimated")
+
+
+def _provenance(row: dict, what: str) -> tuple[str, str]:
+    """Read the source and confidence of a row, refusing anything missing.
+
+    A blank cell arrives from pandas as a float nan, and ``str(nan)`` is the
+    string ``"nan"``, which is perfectly truthy. A guard written as
+    ``if not source`` therefore passes a row with no provenance at all, which
+    is the exact failure it was written to prevent.
+    """
+    source = row.get("source")
+    confidence = row.get("confidence")
+    source = "" if source is None or pd.isna(source) else str(source).strip()
+    confidence = "" if confidence is None or pd.isna(confidence) else str(confidence).strip()
+    if not source:
+        raise ValueError(f"{what} has no source")
+    if confidence not in CONFIDENCE_LEVELS:
+        raise ValueError(
+            f"{what} declares confidence {confidence!r}, which is not one of "
+            f"{', '.join(CONFIDENCE_LEVELS)}"
+        )
+    return source, confidence
+
+
 def load_costs(directory: Path | None = None) -> dict[str, TechnologyCost]:
     """Read the cost table, refusing a row without provenance."""
     directory = Path(directory or REFERENCE_DIR)
     frame = pd.read_csv(directory / "costs.csv")
     costs: dict[str, TechnologyCost] = {}
     for row in frame.to_dict("records"):
+        source, confidence = _provenance(row, f"cost row {row.get('technology')!r}")
         cost = TechnologyCost(
             technology=str(row["technology"]),
             fuel=str(row["fuel"]),
@@ -90,21 +117,28 @@ def load_costs(directory: Path | None = None) -> dict[str, TechnologyCost]:
             electrical_efficiency=float(row["electrical_efficiency"]),
             vom_usd_per_mwh=float(row["vom_usd_per_mwh"]),
             co2_t_per_mwh_th=float(row["co2_t_per_mwh_th"]),
-            source=str(row["source"]),
-            confidence=str(row["confidence"]),
+            source=source,
+            confidence=confidence,
             note=str(row.get("note", "") or ""),
         )
-        if not (cost.source and cost.confidence):
-            raise ValueError(f"cost row {cost.technology} has no provenance")
         costs[cost.technology] = cost
     return costs
 
 
 def load_interchange_costs(directory: Path | None = None) -> dict[str, float]:
-    """Price of energy across each interconnection, in dollars per megawatt hour."""
+    """Price of energy across each interconnection, in dollars per megawatt hour.
+
+    Held to the same provenance rule as the cost table. A zero price here is a
+    claim about how an exchange is settled, not an absence of data, so it needs
+    a source as much as a dollar figure does.
+    """
     directory = Path(directory or REFERENCE_DIR)
     frame = pd.read_csv(directory / "interchange_costs.csv")
-    return {str(r["link"]): float(r["price_usd_per_mwh"]) for r in frame.to_dict("records")}
+    prices: dict[str, float] = {}
+    for row in frame.to_dict("records"):
+        _provenance(row, f"interchange row {row.get('link')!r}")
+        prices[str(row["link"])] = float(row["price_usd_per_mwh"])
+    return prices
 
 
 def cost_key(technology: str, fuel: str) -> str:

@@ -28,7 +28,7 @@ jobs:
       - name: Install the packages present on this branch
         run: |
           python -m pip install --upgrade pip
-          for package in core pandapower pandapipes openmodelica simscape powerfactory benchmark; do
+          for package in core pandapower pandapipes openmodelica simscape powerfactory pypsa benchmark; do
             if [ -f "simulation/$package/pyproject.toml" ]; then
               echo "installing simulation/$package"
               pip install -e "simulation/$package"
@@ -50,7 +50,7 @@ jobs:
       - name: Test
         run: |
           paths=""
-          for package in core pandapower pandapipes openmodelica simscape powerfactory benchmark; do
+          for package in core pandapower pandapipes openmodelica simscape powerfactory pypsa benchmark; do
             if [ -d "simulation/$package/tests" ]; then
               paths="$paths simulation/$package/tests"
             fi

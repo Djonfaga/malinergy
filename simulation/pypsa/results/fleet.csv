@@ -1,0 +1,12 @@
+generator,carrier,fuel,p_nom_mw,mali_share,mean_availability,limited_by,available_gwh,marginal_cost,min_stable_pu,limits,confidence
+GEN_PV_SEGOU,solar,sun,33.0,1.0,0.232,hourly ceiling,67.1,1.0,0.0,hourly solar resource,reported
+GEN_PV_KITA,solar,sun,50.0,1.0,0.234,hourly ceiling,102.7,1.0,0.0,hourly solar resource,reported
+GEN_MANANTALI,hydro,water,200.0,0.52,0.326,energy budget,572.9,3.0,0.1,monthly reservoir energy budget; Malian share of an OMVS scheme (52%),reported
+GEN_GOUINA,hydro,water,140.0,0.52,0.295,hourly ceiling,362.3,3.0,0.1,"monthly river availability, as a power limit; Malian share of an OMVS scheme (52%)",reported
+GEN_SOTUBA,hydro,water,5.7,1.0,0.523,hourly ceiling,26.2,3.0,0.105,"monthly river availability, as a power limit",reported
+GEN_SELINGUE,hydro,water,44.0,1.0,0.633,energy budget,244.7,3.0,0.1,monthly reservoir energy budget,reported
+GEN_FELOU,hydro,water,60.0,0.52,0.295,hourly ceiling,155.3,3.0,0.1,"monthly river availability, as a power limit; Malian share of an OMVS scheme (52%)",reported
+GEN_AEMK_KAYES,thermal,hfo,90.0,1.0,0.92,hourly ceiling,727.3,121.7,0.3,forced-outage allowance (8%),reported
+GEN_BALINGUE,thermal,hfo,65.0,1.0,0.92,hourly ceiling,525.3,121.7,0.3,forced-outage allowance (8%),estimated
+GEN_DARSALAM,thermal,diesel,40.0,1.0,0.92,hourly ceiling,323.3,233.89,0.3,forced-outage allowance (8%),estimated
+GEN_RENTAL_BKO,thermal,diesel,50.0,1.0,0.92,hourly ceiling,404.1,233.89,0.2,forced-outage allowance (8%),estimated

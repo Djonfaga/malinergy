@@ -27,6 +27,12 @@ dist-ssr
 simulation/**/data/raw/
 simulation/**/build/
 simulation/**/results/
+# The PyPSA branch is an exception: its README cites figures and the tables
+# behind them, and a reader should not have to run the model to see what it
+# produced. The hourly price series is the one output large enough, and dull
+# enough, to leave out; everything a figure rests on is kept.
+!simulation/pypsa/results/
+simulation/pypsa/results/prices_hourly.csv
 __pycache__/
 *.py[cod]
 .venv/

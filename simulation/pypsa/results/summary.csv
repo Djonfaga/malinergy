@@ -1,0 +1,2 @@
+year,solver_status,demand_gwh,served_gwh,unserved_gwh,unserved_pct,hours_with_unserved,system_cost_musd,operating_cost_musd,unserved_cost_musd,unserved_share_of_cost_pct,average_cost_usd_per_mwh,co2_kt,co2_kg_per_kwh,mean_price_usd_per_mwh,median_price_usd_per_mwh,solar_curtailed_gwh,resource_provider,resource_measured
+2024,ok,3948.2,3811.8,136.35,3.45,1505,366.65,284.84,81.81,22.3,74.72,813.1,0.213,289.8,121.7,0.0,core/clear-sky-model,False

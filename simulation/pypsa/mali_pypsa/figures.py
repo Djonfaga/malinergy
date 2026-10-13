@@ -7,9 +7,14 @@ something a reader would otherwise have to assemble in their head:
     The Malian year. Hydro collapses through the dry season exactly as demand
     rises into the hot months, and fuel fills the gap.
 ``dry_season_week``
-    What the reservoir budget buys. Manantali and Selingue sit low through the
-    day and open for the evening peak; the run-of-river plants hold a flat line
-    all week.
+    What the reservoir budget buys, and what it leaves undetermined. The hydro
+    band is no longer pinned at the month's mean: it moves, which is the point.
+    But in April and May the month's water is spent and a third of the hours
+    shed load anyway, so shifting a megawatt hour from one shedding hour to
+    another changes nothing and the optimiser is indifferent to where it goes.
+    The band therefore looks restless. That is a degenerate optimum, not the
+    river, and it is also the finding: in the dry season Mali is short of
+    energy, not of power, and no amount of re-timing fixes that.
 ``capacity_and_energy``
     Installed megawatts against delivered megawatt hours. The two bars are
     nothing like each other, which is the whole argument about what Mali has
@@ -121,9 +126,9 @@ def dry_season_week_figure(result: DispatchResult, path: Path, *, month: int = 5
     ax.plot(window.index, demand, color="black", linewidth=1.2, label="demand")
     ax.set_ylabel("MW")
     ax.set_title(f"Dispatch over the first week of month {month}, the dry-season peak")
-    ax.legend(ncol=6, frameon=False, fontsize=8, loc="upper center",
-              bbox_to_anchor=(0.5, -0.08))
-    fig.autofmt_xdate()
+    ax.legend(ncol=3, frameon=True, framealpha=0.9, fontsize=8, loc="upper left")
+    ax.margins(x=0)
+    fig.autofmt_xdate(rotation=30)
     fig.savefig(path)
     plt.close(fig)
     return path

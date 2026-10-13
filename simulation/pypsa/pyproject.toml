@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mali-pypsa"
+version = "0.1.0"
+description = "Single-node PyPSA model of the Malian power system: EDM-SA fleet, annual demand, least-cost dispatch"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Bourama DJONFGA", email = "bourama.phd@gmail.com" }]
+dependencies = [
+    "mali-energy-core",
+    "pypsa>=0.28",
+    "highspy>=1.7",
+    "numpy>=1.26",
+    "pandas>=2.1",
+]
+
+[project.optional-dependencies]
+# atlite pulls geopandas, rasterio and dask. The model runs without it, on the
+# documented fallback resource; installing it enables the ERA5 workflow.
+atlite = ["atlite>=0.2.12", "cdsapi>=0.7"]
+plots = ["matplotlib>=3.8"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+mali-pypsa = "mali_pypsa.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mali_pypsa*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"

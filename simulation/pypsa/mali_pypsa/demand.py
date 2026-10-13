@@ -30,7 +30,7 @@ import numpy as np
 import pandas as pd
 
 from mali_energy.config import TIMEZONE, StudyConfig
-from mali_energy.demand.allocation import allocate_timeseries, national_to_utility
+from mali_energy.demand.allocation import allocate_timeseries
 from mali_energy.grid.schema import GridCatalog
 
 

@@ -21,7 +21,7 @@ def _cmd_cutout(args: argparse.Namespace) -> int:
     print(f"  Target: {cutout_path(args.year)}")
     try:
         cutout = build_cutout(args.year)
-    except Exception as error:  # noqa: BLE001 - reported, not hidden
+    except Exception as error:
         print(f"\n  failed: {error}")
         print("  Without a cutout the model falls back on the clear-sky resource")
         print("  from simulation/core, and every result says so.")
@@ -51,7 +51,7 @@ def _cmd_solve(args: argparse.Namespace) -> int:
         return 1
 
     problems = check_results(result)
-    print(f"  {result.status}, checks: {'passed' if not problems else problems}")
+    print(f"  {result.status}, checks: {problems or 'passed'}")
     if problems:
         return 1
 

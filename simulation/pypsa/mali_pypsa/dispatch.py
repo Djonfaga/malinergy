@@ -1,13 +1,21 @@
-"""Least-cost dispatch, and the results worth reading from it."""
+"""Least-cost dispatch, and the results worth reading from it.
+
+Two things here are not stock PyPSA. The reservoir plants are limited by a
+monthly energy budget added to the optimisation model directly, because no
+generator attribute expresses "this much energy this month, at any power up to
+nameplate". And every result is run through :func:`check_results` before a
+number is quoted from it, including a check that those budgets held.
+"""
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 
 import pandas as pd
 import pypsa
+import xarray as xr
 
-from .costs import VALUE_OF_LOST_LOAD_USD_PER_MWH
 from .network import BUS, UNSERVED, BuildResult, emission_factors
 
 
@@ -33,6 +41,43 @@ class DispatchResult:
         return self.build.network
 
 
+def reservoir_constraints(
+    budgets: dict[str, dict[int, float]], weights: pd.Series
+) -> Callable[[pypsa.Network, pd.Index], None]:
+    """Build the extra_functionality that caps each reservoir month.
+
+    One constraint per plant and month: the weighted sum of output over the
+    month's snapshots may not exceed the water's energy. Nothing limits the
+    power within the month beyond the generator's own ceiling, which is the
+    point — this is what a reservoir does and what an hourly cap cannot say.
+    """
+
+    def add(n: pypsa.Network, snapshots: pd.Index) -> None:
+        if not budgets:
+            return
+        power = n.model["Generator-p"]
+        month_of = pd.DatetimeIndex(snapshots).month
+        for name, budget in budgets.items():
+            if name not in n.generators.index:
+                continue
+            for month, energy_mwh in sorted(budget.items()):
+                chosen = snapshots[month_of == month]
+                if not len(chosen):
+                    continue
+                hours = xr.DataArray(
+                    weights.loc[chosen].to_numpy(),
+                    coords={"snapshot": chosen},
+                    dims="snapshot",
+                )
+                produced = (power.loc[chosen, name] * hours).sum()
+                n.model.add_constraints(
+                    produced <= float(energy_mwh),
+                    name=f"reservoir-energy-{name}-{month:02d}",
+                )
+
+    return add
+
+
 def solve(
     build: BuildResult,
     *,
@@ -41,7 +86,13 @@ def solve(
 ) -> DispatchResult:
     """Solve the dispatch and reduce it to the quantities a report needs."""
     n = build.network
-    status, condition = n.optimize(solver_name=solver_name, log_to_console=log_to_console)
+    status, condition = n.optimize(
+        solver_name=solver_name,
+        log_to_console=log_to_console,
+        extra_functionality=reservoir_constraints(
+            build.reservoir_budgets, n.snapshot_weightings["objective"]
+        ),
+    )
 
     result = DispatchResult(build=build, status=str(status), condition=str(condition))
     result.notes.extend(build.notes)
@@ -193,9 +244,27 @@ def check_results(result: DispatchResult) -> list[str]:
         if excess > 1e-6:
             problems.append(f"{name} exceeds its availability by {excess:.4f} MW")
 
+    # Every reservoir month must respect its energy budget. The solver reports
+    # these as ordinary constraints, so a silent violation would mean the
+    # constraint was never added -- which is exactly the failure to catch.
+    energy_by_snapshot = n.generators_t.p.mul(weights, axis=0)
+    for name, budget in result.build.reservoir_budgets.items():
+        if name not in energy_by_snapshot:
+            problems.append(f"{name} has an energy budget but is not in the dispatch")
+            continue
+        produced = energy_by_snapshot[name].groupby(n.snapshots.month).sum()
+        for month, allowed in budget.items():
+            got = float(produced.get(month, 0.0))
+            if got > allowed + max(1e-6, 1e-9 * allowed):
+                problems.append(
+                    f"{name} produced {got / 1000:,.1f} GWh in month {month}, above its "
+                    f"{allowed / 1000:,.1f} GWh budget"
+                )
+
     # The objective must equal the cost of what was dispatched.
-    energy = n.generators_t.p.mul(weights, axis=0)
-    recomputed = float(energy.mul(n.generators.marginal_cost, axis=1).sum().sum())
+    recomputed = float(
+        energy_by_snapshot.mul(n.generators.marginal_cost, axis=1).sum().sum()
+    )
     if abs(recomputed - float(n.objective)) > max(1.0, 1e-6 * abs(float(n.objective))):
         problems.append(
             f"objective {n.objective:,.0f} does not match the dispatched cost "
@@ -225,7 +294,33 @@ def check_results(result: DispatchResult) -> list[str]:
                 )
                 for c in others
             )
-            headroom = (available - n.generators_t.p[others].sum(axis=1))[shedding]
+            # A reservoir plant with an exhausted monthly budget still shows
+            # headroom under its power ceiling, and counting that as available
+            # capacity would turn a correct dispatch into a false alarm.
+            exhausted = pd.Series(0.0, index=n.snapshots)
+            for name, budget in result.build.reservoir_budgets.items():
+                if name not in energy_by_snapshot:
+                    continue
+                produced = energy_by_snapshot[name].groupby(n.snapshots.month).sum()
+                spent = {
+                    month
+                    for month, allowed in budget.items()
+                    if float(produced.get(month, 0.0)) >= allowed - max(1.0, 1e-6 * allowed)
+                }
+                ceiling = (
+                    n.generators_t.p_max_pu[name]
+                    if name in n.generators_t.p_max_pu
+                    else pd.Series(n.generators.at[name, "p_max_pu"], index=n.snapshots)
+                )
+                headroom_mw = (n.generators.at[name, "p_nom"] * ceiling
+                               - n.generators_t.p[name])
+                exhausted += headroom_mw.where(
+                    pd.Series(n.snapshots.month, index=n.snapshots).isin(spent), 0.0
+                )
+
+            headroom = (
+                available - n.generators_t.p[others].sum(axis=1) - exhausted
+            )[shedding]
             if float(headroom.max()) > 1.0:
                 problems.append(
                     "load was shed while generation capacity was still available"

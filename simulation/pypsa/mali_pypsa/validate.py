@@ -176,8 +176,8 @@ def against_sibling_model(result: DispatchResult, *, step_hours: int = 6) -> dic
     so this runs the sibling study rather than quoting a remembered number.
     """
     try:
-        from mali_energy.grid import load_catalog  # noqa: PLC0415
-        from mali_pandapower.studies.timeseries import run_year  # noqa: PLC0415
+        from mali_energy.grid import load_catalog
+        from mali_pandapower.studies.timeseries import run_year
     except ImportError as error:
         return {
             "status": "not run",
@@ -185,8 +185,8 @@ def against_sibling_model(result: DispatchResult, *, step_hours: int = 6) -> dic
                     "Check out sim/pandapower or sim/benchmark and re-run.",
         }
 
-    from mali_energy.config import BUILD_DIR  # noqa: PLC0415
-    from mali_energy.exchange import load_exchange  # noqa: PLC0415
+    from mali_energy.config import BUILD_DIR
+    from mali_energy.exchange import load_exchange
 
     path = BUILD_DIR / "mali_case.json"
     if not path.exists():

@@ -45,6 +45,13 @@ DEFAULT_TILT = 13.0
 DEFAULT_AZIMUTH = 180.0
 
 
+def _step_hours(index) -> float:
+    """Hours each snapshot stands for, read off a regular index."""
+    if len(index) < 2:
+        return 1.0
+    return float((index[1] - index[0]).total_seconds() / 3600.0)
+
+
 @dataclass
 class ResourceResult:
     """Hourly capacity factors per plant, with the provider recorded."""
@@ -66,8 +73,11 @@ class ResourceResult:
                 name: round(float(series.mean()), 4)
                 for name, series in sorted(self.profiles.items())
             },
+            # Full-load hours are hours, so the sum of capacity factors has to
+            # be weighted by what each snapshot stands for; a six-hourly run
+            # would otherwise report a sixth of the sunshine.
             "annual_full_load_hours": {
-                name: int(round(float(series.sum())))
+                name: round(float(series.sum()) * _step_hours(series.index))
                 for name, series in sorted(self.profiles.items())
             },
             "warnings": self.warnings,
@@ -87,8 +97,8 @@ def cutout_path(year: int, directory: Path | None = None) -> Path:
 
 def atlite_available() -> bool:
     try:
-        import atlite  # noqa: F401, PLC0415
-    except Exception:  # noqa: BLE001
+        import atlite  # noqa: F401
+    except Exception:
         return False
     return True
 
@@ -100,7 +110,7 @@ def build_cutout(year: int, *, path: Path | None = None, dx: float = 0.25, dy: f
     first call downloads a year of hourly ERA5 over the bounding box, which is
     some hundreds of megabytes and takes a while; afterwards the file is reused.
     """
-    import atlite  # noqa: PLC0415
+    import atlite
 
     path = Path(path or cutout_path(year))
     cutout = atlite.Cutout(
@@ -131,7 +141,7 @@ def atlite_capacity_factors(
     spread between them is what makes a geographically distributed fleet
     smoother than a single site.
     """
-    import atlite  # noqa: PLC0415
+    import atlite
 
     path = Path(path or cutout_path(year))
     if not path.exists():
@@ -171,7 +181,7 @@ def core_capacity_factors(
     catalog: GridCatalog, year: int, index: pd.DatetimeIndex
 ) -> dict[str, pd.Series]:
     """Capacity factors from the validated clear-sky model in ``simulation/core``."""
-    from mali_energy.solar.pv import design_from_generator, plant_output  # noqa: PLC0415
+    from mali_energy.solar.pv import design_from_generator, plant_output
 
     profiles: dict[str, pd.Series] = {}
     for generator in catalog.generators.values():
@@ -206,7 +216,7 @@ def capacity_factors(
                     for name, series in profiles.items()
                 }
                 return ResourceResult(profiles=aligned, provider=f"atlite/era5 ({path.name})")
-            except Exception as error:  # noqa: BLE001 - reported, not hidden
+            except Exception as error:
                 warnings.append(f"atlite conversion failed ({error}); falling back")
         else:
             warnings.append(

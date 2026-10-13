@@ -38,7 +38,7 @@ commitment, and v0.1 says that the limit is absent.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import pandas as pd
 import pypsa
@@ -52,7 +52,7 @@ from .costs import (
     load_interchange_costs,
 )
 from .demand import DemandProfile, build_demand, snapshots
-from .fleet import GeneratorSpec, build_fleet, check_omvs_entitlement
+from .fleet import GeneratorSpec, build_fleet, check_omvs_entitlement, reservoir_budgets
 from .resource import ResourceResult, capacity_factors
 
 BUS = "MALI"
@@ -78,6 +78,8 @@ def _naive(obj):
 #: Carrier colours and emission factors are attached to the network so that
 #: results can be grouped without the report re-deriving them.
 CARRIERS = {
+    "AC": 0.0,           # the bus and the loads sit on it; declared so the
+                         # network passes its own consistency check
     "hydro": 0.0,
     "solar": 0.0,
     "thermal": 0.0,      # emissions are set per generator, from its own fuel
@@ -94,6 +96,10 @@ class BuildResult:
     resource: ResourceResult
     fleet: list[GeneratorSpec]
     notes: list[str]
+    #: Monthly energy, in megawatt hours, that each reservoir plant may produce.
+    #: Carried on the build because it is enforced as a constraint added to the
+    #: optimisation model rather than as a component attribute.
+    reservoir_budgets: dict[str, dict[int, float]] = field(default_factory=dict)
 
     @property
     def n(self) -> pypsa.Network:
@@ -120,7 +126,7 @@ def build_network(
     """
     if import_basis not in {"contracted", "capacity"}:
         raise ValueError(f"import_basis must be 'contracted' or 'capacity', not {import_basis!r}")
-    from mali_energy.grid import load_catalog  # noqa: PLC0415
+    from mali_energy.grid import load_catalog
 
     catalog = catalog or load_catalog()
     config = config or StudyConfig()
@@ -230,10 +236,25 @@ def build_network(
         "bound: a linear dispatch without unit commitment cannot represent a "
         "machine that is off"
     )
+    budgets = reservoir_budgets(fleet)
+    for name, budget in budgets.items():
+        notes.append(
+            f"{name}: reservoir plant, limited by a monthly energy budget "
+            f"({sum(budget.values()) / 1000:,.0f} GWh over the year) and free to reach "
+            "its Malian share of nameplate in any hour, rather than capped hour by "
+            "hour at the month's mean"
+        )
     notes.append(
-        "hydro is limited hour by hour by its monthly availability, which is a "
-        "power limit rather than an energy budget; reservoir optimisation is "
-        "deferred to a later version"
+        "run-of-river plant is limited hour by hour, because there is no storage to "
+        "move energy with; reservoir plant is limited by energy within the month but "
+        "not across months, so the model may not carry water from the wet season into "
+        "the dry one the way the real operator does"
+    )
+    notes.append(
+        "no minimum release is imposed on the reservoir plants. In reality water is "
+        "passed for irrigation and navigation whether or not the power is wanted; "
+        "here hydro is the cheapest energy available, so the budget is spent in full "
+        "regardless, and only its placement within the month is affected"
     )
     notes.append(
         "the model's import variable is not comparable with the national net-import "
@@ -242,14 +263,21 @@ def build_network(
         "whereas this model simply never gives Mali that energy"
     )
 
-    return BuildResult(network=n, demand=demand, resource=resource, fleet=fleet, notes=notes)
+    return BuildResult(
+        network=n,
+        demand=demand,
+        resource=resource,
+        fleet=fleet,
+        notes=notes,
+        reservoir_budgets=budgets,
+    )
 
 
 def emission_factors(catalog: GridCatalog | None = None) -> dict[str, float]:
     """Tonnes of carbon dioxide per megawatt hour, per generator."""
-    from mali_energy.grid import load_catalog  # noqa: PLC0415
+    from mali_energy.grid import load_catalog
 
-    from .costs import cost_key  # noqa: PLC0415
+    from .costs import cost_key
 
     catalog = catalog or load_catalog()
     costs = load_costs()

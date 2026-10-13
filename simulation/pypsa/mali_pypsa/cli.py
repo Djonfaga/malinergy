@@ -6,10 +6,13 @@ import argparse
 import json
 from pathlib import Path
 
+import pandas as pd
+
 from .dispatch import check_results, solve
 from .network import build_network
 from .report import markdown_report, write_tables
 from .resource import build_cutout, cutout_path
+from .validate import against_national_statistics, against_sibling_model
 
 
 def _cmd_cutout(args: argparse.Namespace) -> int:
@@ -92,14 +95,53 @@ def _cmd_compare(args: argparse.Namespace) -> int:
             )
         }, **{f"{c}_gwh": round(v, 1) for c, v in result.by_carrier_gwh.items()}})
 
-    import pandas as pd  # noqa: PLC0415
-
     frame = pd.DataFrame(rows)
     print(frame.to_string(index=False))
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
     frame.to_csv(out / "import_basis_comparison.csv", index=False)
     print(f"\n-> {out / 'import_basis_comparison.csv'}")
+    return 0
+
+
+def _cmd_validate(args: argparse.Namespace) -> int:
+    """Solve, then hold the result against figures the model never consumed."""
+    build = build_network(
+        year=args.year, step_hours=args.step_hours, prefer_atlite=not args.no_atlite
+    )
+    result = solve(build, solver_name=args.solver)
+    if not result.ok:
+        print(f"did not solve: {result.condition}")
+        return 1
+
+    report = against_national_statistics(result)
+    frame = report.frame()
+    print(frame[["quantity", "model_gwh", "reference_gwh", "deviation_pct",
+                 "verdict"]].to_string(index=False))
+    print("\nfindings")
+    for finding in report.findings:
+        print(f"  - {finding}")
+
+    sibling = against_sibling_model(result, step_hours=max(args.step_hours, 3))
+    print(f"\nsibling model ({sibling['status']})")
+    if sibling["status"] == "compared":
+        rows = pd.DataFrame([
+            {"model": "pandapower", **sibling["pandapower"]},
+            {"model": "pypsa", **sibling["pypsa"]},
+        ])
+        print(rows.to_string(index=False))
+    print(f"  {sibling['note']}")
+
+    out = Path(args.output)
+    out.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(out / "validation.csv", index=False)
+    (out / "validation.json").write_text(
+        json.dumps({"national": frame.to_dict(orient="records"),
+                    "findings": report.findings,
+                    "sibling": sibling}, indent=2),
+        encoding="utf-8",
+    )
+    print(f"\n-> {out / 'validation.csv'}")
     return 0
 
 
@@ -128,6 +170,11 @@ def main(argv: list[str] | None = None) -> int:
     p_compare = sub.add_parser("compare", parents=[common],
                                help="solve on both import bases and tabulate the gap")
     p_compare.set_defaults(func=_cmd_compare)
+
+    p_validate = sub.add_parser(
+        "validate", parents=[common],
+        help="compare the dispatched mix with figures the model did not use")
+    p_validate.set_defaults(func=_cmd_validate)
 
     p_cutout = sub.add_parser("cutout", help="prepare the ERA5 cutout (needs Copernicus)")
     p_cutout.add_argument("--year", type=int, default=2024)

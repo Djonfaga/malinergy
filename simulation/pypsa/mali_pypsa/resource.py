@@ -34,6 +34,8 @@ import pandas as pd
 from mali_energy.demand.allocation import ZONE_STATION
 from mali_energy.grid.schema import GridCatalog
 
+from .sampling import downsample, resolves_day, step_hours
+
 #: Bounding box of Mali, generous enough to cover every plant in the catalogue.
 MALI_BOUNDS = {"x": slice(-12.5, -3.5), "y": slice(10.0, 17.5)}
 
@@ -43,13 +45,6 @@ MALI_BOUNDS = {"x": slice(-12.5, -3.5), "y": slice(10.0, 17.5)}
 PANEL = "CSi"
 DEFAULT_TILT = 13.0
 DEFAULT_AZIMUTH = 180.0
-
-
-def _step_hours(index) -> float:
-    """Hours each snapshot stands for, read off a regular index."""
-    if len(index) < 2:
-        return 1.0
-    return float((index[1] - index[0]).total_seconds() / 3600.0)
 
 
 @dataclass
@@ -62,7 +57,16 @@ class ResourceResult:
 
     @property
     def is_measured(self) -> bool:
-        return self.provider.startswith("atlite")
+        """Whether the profiles rest on observation rather than on geometry.
+
+        A reanalysis (ERA5 through atlite) and a satellite product (PVGIS, NASA
+        POWER) are observations of the weather that actually happened. A
+        clear-sky model with a turbidity climatology is not: it is a good
+        description of a typical Malian year and no description at all of a
+        particular one. Which of the two produced a figure changes what may be
+        claimed from it, so the distinction is a property rather than a note.
+        """
+        return not self.provider.startswith("core/clear-sky")
 
     def summary(self) -> dict:
         return {
@@ -77,7 +81,7 @@ class ResourceResult:
             # be weighted by what each snapshot stands for; a six-hourly run
             # would otherwise report a sixth of the sunshine.
             "annual_full_load_hours": {
-                name: round(float(series.sum()) * _step_hours(series.index))
+                name: round(float(series.sum()) * step_hours(series.index))
                 for name, series in sorted(self.profiles.items())
             },
             "warnings": self.warnings,
@@ -178,21 +182,38 @@ def atlite_capacity_factors(
 
 
 def core_capacity_factors(
-    catalog: GridCatalog, year: int, index: pd.DatetimeIndex
-) -> dict[str, pd.Series]:
-    """Capacity factors from the validated clear-sky model in ``simulation/core``."""
+    catalog: GridCatalog,
+    year: int,
+    index: pd.DatetimeIndex,
+    *,
+    allow_network: bool = False,
+) -> tuple[dict[str, pd.Series], str]:
+    """Capacity factors from the photovoltaic model in ``simulation/core``.
+
+    Returns the profiles and the name of whichever irradiance provider the core
+    actually used, which is not knowable in advance: it prefers a cached or
+    live satellite product and falls back to clear-sky geometry. Labelling the
+    result from the function that was called rather than from what it found
+    would make the provenance a guess, and provenance that is a guess is worse
+    than none because it reads as fact.
+    """
     from mali_energy.solar.pv import design_from_generator, plant_output
 
     profiles: dict[str, pd.Series] = {}
+    providers: set[str] = set()
     for generator in catalog.generators.values():
         if generator.technology != "solar":
             continue
         bus = catalog.buses[generator.bus]
         design = design_from_generator(generator, station=ZONE_STATION.get(bus.zone, "Bamako"))
-        output = plant_output(design, year)
+        output = plant_output(design, year, allow_network=allow_network)
+        providers.add(output.resource.provider)
         series = (output.ac_mw / design.ac_capacity_mw).clip(0.0, 1.0)
-        profiles[generator.id] = series.reindex(index).fillna(0.0)
-    return profiles
+        # The geometry is solved hourly and then averaged over each snapshot's
+        # interval. Reading it at the snapshot instant would make a sampled
+        # year report a different amount of sunshine from an hourly one.
+        profiles[generator.id] = downsample(series, index).fillna(0.0)
+    return profiles, "core/" + "+".join(sorted(providers) or ["none"])
 
 
 def capacity_factors(
@@ -202,8 +223,15 @@ def capacity_factors(
     *,
     prefer_atlite: bool = True,
     cutout: Path | None = None,
+    allow_network: bool = False,
 ) -> ResourceResult:
-    """Best available hourly capacity factor per plant, provider recorded."""
+    """Best available hourly capacity factor per plant, provider recorded.
+
+    ``allow_network`` lets the core resource reach for a satellite product
+    instead of falling back to clear-sky geometry. Off by default so that a run
+    is reproducible and does not depend on what a remote service returned that
+    afternoon.
+    """
     warnings: list[str] = []
 
     if prefer_atlite and atlite_available():
@@ -212,7 +240,7 @@ def capacity_factors(
             try:
                 profiles = atlite_capacity_factors(catalog, year, path=path)
                 aligned = {
-                    name: series.reindex(index).interpolate(limit_direction="both").fillna(0.0)
+                    name: downsample(series, index).fillna(0.0)
                     for name, series in profiles.items()
                 }
                 return ResourceResult(profiles=aligned, provider=f"atlite/era5 ({path.name})")
@@ -226,13 +254,21 @@ def capacity_factors(
     elif prefer_atlite:
         warnings.append("atlite is not installed; install the 'atlite' extra to use ERA5")
 
-    profiles = core_capacity_factors(catalog, year, index)
-    warnings.append(
-        "resource is modelled, not measured: clear-sky geometry with the SoDa "
-        "Linke turbidity climatology and a monthly cloud factor, validated "
-        "against published irradiation for Mali"
+    profiles, provider = core_capacity_factors(
+        catalog, year, index, allow_network=allow_network
     )
-    return ResourceResult(profiles=profiles, provider="core/clear-sky", warnings=warnings)
+    if provider.startswith("core/clear-sky"):
+        warnings.append(
+            "resource is modelled, not measured: clear-sky geometry with the SoDa "
+            "Linke turbidity climatology and a monthly cloud factor, validated "
+            "against published irradiation for Mali"
+        )
+    else:
+        warnings.append(
+            f"resource from {provider}, which describes the weather of {year} rather "
+            "than a typical year"
+        )
+    return ResourceResult(profiles=profiles, provider=provider, warnings=warnings)
 
 
 def check_profiles(result: ResourceResult) -> list[str]:
@@ -241,9 +277,10 @@ def check_profiles(result: ResourceResult) -> list[str]:
     for name, series in result.profiles.items():
         if series.max() > 1.0 + 1e-9 or series.min() < -1e-9:
             problems.append(f"{name}: capacity factor outside 0..1")
-        night = series[(series.index.hour >= 21) | (series.index.hour <= 4)]
-        if len(night) and float(night.max()) > 0.01:
-            problems.append(f"{name}: generates at night, which sunlight does not")
+        if resolves_day(series.index):
+            night = series[(series.index.hour >= 21) | (series.index.hour <= 4)]
+            if len(night) and float(night.max()) > 0.01:
+                problems.append(f"{name}: generates at night, which sunlight does not")
         mean = float(series.mean())
         if not 0.15 < mean < 0.30:
             problems.append(

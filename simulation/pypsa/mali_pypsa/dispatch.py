@@ -17,6 +17,7 @@ import pypsa
 import xarray as xr
 
 from .network import BUS, UNSERVED, BuildResult, emission_factors
+from .sampling import resolves_day
 
 
 @dataclass
@@ -271,9 +272,11 @@ def check_results(result: DispatchResult) -> list[str]:
             f"{recomputed:,.0f}"
         )
 
-    # Solar must not run at night.
+    # Solar must not run at night -- but only where a snapshot falls clearly
+    # on one side of sunrise. Averaged over twelve hours it does not, and the
+    # check would then be testing the sampling rather than the model.
     solar = n.generators.index[n.generators.carrier == "solar"]
-    if len(solar):
+    if len(solar) and resolves_day(n.snapshots):
         night = n.generators_t.p[solar][
             (n.snapshots.hour >= 21) | (n.snapshots.hour <= 4)
         ]

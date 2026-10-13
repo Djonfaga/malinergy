@@ -41,6 +41,7 @@ import pandas as pd
 from mali_energy.grid.schema import GridCatalog
 
 from .costs import TechnologyCost, cost_key, load_costs
+from .sampling import step_hours
 
 #: Forced-outage and maintenance allowance on thermal plant, applied as a flat
 #: ceiling on availability. A fleet of medium-speed engines in Mali does not
@@ -88,8 +89,8 @@ class GeneratorSpec:
         """Energy the plant could deliver over the year if always called."""
         if self.monthly_energy_mwh:
             return float(sum(self.monthly_energy_mwh.values()) / 1000.0)
-        step_hours = _step_hours(self.p_max_pu.index)
-        return float(self.p_nom_mw * self.p_max_pu.sum() * step_hours / 1000.0)
+        step = step_hours(self.p_max_pu.index)
+        return float(self.p_nom_mw * self.p_max_pu.sum() * step / 1000.0)
 
     @property
     def mean_availability(self) -> float:
@@ -101,21 +102,14 @@ class GeneratorSpec:
         the two numbers mean the same thing and are comparable in a table.
         """
         if self.monthly_energy_mwh:
-            hours = len(self.p_max_pu) * _step_hours(self.p_max_pu.index)
+            hours = len(self.p_max_pu) * step_hours(self.p_max_pu.index)
             return float(sum(self.monthly_energy_mwh.values()) / (self.p_nom_mw * hours))
         return float(self.p_max_pu.mean())
 
 
-def _step_hours(index: pd.DatetimeIndex) -> float:
-    """Hours each snapshot stands for, read off a regular index."""
-    if len(index) < 2:
-        return 1.0
-    return float((index[1] - index[0]).total_seconds() / 3600.0)
-
-
 def _monthly_hours(index: pd.DatetimeIndex) -> dict[int, float]:
     """Real hours covered by the snapshots of each month."""
-    step = _step_hours(index)
+    step = step_hours(index)
     counts = pd.Series(1.0, index=index).groupby(index.month).sum()
     return {int(month): float(value * step) for month, value in counts.items()}
 
@@ -283,7 +277,7 @@ def check_omvs_entitlement(specs: list[GeneratorSpec]) -> list[str]:
                 # A budget is a second way to hand Mali more than its share, and
                 # it is the easier one to get wrong because the ceiling still
                 # looks right.
-                hours = len(spec.p_max_pu) * _step_hours(spec.p_max_pu.index)
+                hours = len(spec.p_max_pu) * step_hours(spec.p_max_pu.index)
                 ceiling_mwh = spec.p_nom_mw * spec.mali_share * hours
                 total = sum(spec.monthly_energy_mwh.values())
                 if total > ceiling_mwh + 1e-6:

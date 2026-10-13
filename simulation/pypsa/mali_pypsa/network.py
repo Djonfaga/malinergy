@@ -51,9 +51,10 @@ from .costs import (
     load_costs,
     load_interchange_costs,
 )
-from .demand import DemandProfile, build_demand, snapshots
+from .demand import DemandProfile, build_demand, resample, snapshots
 from .fleet import GeneratorSpec, build_fleet, check_omvs_entitlement, reservoir_budgets
 from .resource import ResourceResult, capacity_factors
+from .sampling import resolves_day
 
 BUS = "MALI"
 UNSERVED = "UNSERVED"
@@ -135,7 +136,7 @@ def build_network(
 
     index = snapshots(year, step_hours=step_hours)
     demand = build_demand(catalog, config, basis=demand_basis)
-    demand_series = demand.series_mw.reindex(index).interpolate(limit_direction="both")
+    demand_series = resample(demand, index)
 
     resource = capacity_factors(catalog, year, index, prefer_atlite=prefer_atlite)
     notes.extend(resource.warnings)
@@ -256,6 +257,12 @@ def build_network(
         "here hydro is the cheapest energy available, so the budget is spent in full "
         "regardless, and only its placement within the month is affected"
     )
+    if not resolves_day(index):
+        notes.append(
+            f"snapshots of {step_hours} hours do not resolve the solar day. Every "
+            "profile is averaged over its interval, so annual energy is right, but a "
+            "single snapshot straddles sunrise and the diurnal checks are not applied"
+        )
     notes.append(
         "the model's import variable is not comparable with the national net-import "
         "statistic: Manantali stands on Malian soil and its Senegalese and "

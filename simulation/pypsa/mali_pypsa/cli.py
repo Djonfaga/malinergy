@@ -72,6 +72,15 @@ def _cmd_solve(args: argparse.Namespace) -> int:
     report = out / "report.md"
     report.write_text(markdown_report(result), encoding="utf-8")
     print(f"\nreport -> {report}")
+
+    if args.figures:
+        try:
+            from .figures import write_figures
+        except ImportError as error:
+            print(f"\nno figures: {error}. Install the 'plots' extra.")
+            return 0
+        for path in write_figures(result, out / "figures"):
+            print(f"  -> {path}")
     return 0
 
 
@@ -165,6 +174,8 @@ def main(argv: list[str] | None = None) -> int:
                          default="contracted")
     p_solve.add_argument("--scenario-assets", action="store_true",
                          help="include plant the catalogue marks out of service")
+    p_solve.add_argument("--figures", action="store_true",
+                         help="also write the figures (needs the 'plots' extra)")
     p_solve.set_defaults(func=_cmd_solve)
 
     p_compare = sub.add_parser("compare", parents=[common],

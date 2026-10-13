@@ -33,6 +33,8 @@ from mali_energy.config import TIMEZONE, StudyConfig
 from mali_energy.demand.allocation import allocate_timeseries
 from mali_energy.grid.schema import GridCatalog
 
+from .sampling import downsample
+
 
 @dataclass
 class DemandProfile:
@@ -148,8 +150,12 @@ def diurnal_profile(profile: DemandProfile) -> pd.Series:
 
 
 def resample(profile: DemandProfile, index: pd.DatetimeIndex) -> pd.Series:
-    """Align a demand profile onto a sampled snapshot index."""
-    return profile.series_mw.reindex(index).interpolate(limit_direction="both")
+    """Align a demand profile onto a sampled snapshot index.
+
+    The mean over each interval, not the value at its start: a sampled year
+    must carry the same energy as the hourly one it stands for.
+    """
+    return downsample(profile.series_mw, index)
 
 
 def check_energy_balance(profile: DemandProfile, tolerance: float = 0.01) -> list[str]:

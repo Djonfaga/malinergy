@@ -1,0 +1,6 @@
+technology,fuel,fuel_price_usd_per_t,fuel_lhv_mwh_per_t,electrical_efficiency,vom_usd_per_mwh,co2_t_per_mwh_th,source,confidence,note
+hydro,water,0.0,0.0,1.00,3.0,0.0,engineering,estimated,No fuel cost. Variable operation and maintenance only
+solar,sun,0.0,0.0,1.00,1.0,0.0,engineering,estimated,No fuel cost. Cleaning and inverter maintenance
+thermal_hfo,hfo,550.0,11.25,0.43,8.0,0.279,engineering,estimated,Heavy fuel oil delivered to Mali through the Dakar and Abidjan corridors; medium-speed engine efficiency
+thermal_diesel,diesel,1000.0,11.86,0.38,12.0,0.267,engineering,estimated,Distillate trucked 1200 km inland; high price is the landlocked premium
+storage,battery,0.0,0.0,0.90,2.0,0.0,engineering,estimated,Round-trip efficiency applied as a charge and discharge pair

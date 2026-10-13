@@ -1,0 +1,4 @@
+link,partner,price_usd_per_mwh,direction,source,confidence,note
+XC_CIV,Cote d'Ivoire,95.0,import,wapp,estimated,Energy purchased through the West African Power Pool corridor
+XC_SEN,Senegal,0.0,bidirectional,omvs,estimated,OMVS hydro shares are an entitlement rather than a purchase; the exchange is settled in energy
+XC_GIN,Guinea,90.0,import,wapp,estimated,Planned link; scenario asset

@@ -116,3 +116,10 @@ def test_senegalese_entitlement_energy_is_not_priced_as_a_purchase():
     prices = load_interchange_costs()
     assert prices["XC_SEN"] == 0.0
     assert prices["XC_CIV"] > 0.0
+
+
+def test_an_unknown_thermal_fuel_is_refused():
+    """Falling through to distillate would price a gas plant as diesel."""
+    assert cost_key("thermal", "hfo") == "thermal_hfo"
+    with pytest.raises(KeyError, match="no cost row for thermal fuel"):
+        cost_key("thermal", "gas")

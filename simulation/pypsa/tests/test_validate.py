@@ -80,3 +80,49 @@ def test_the_sibling_comparison_says_when_it_could_not_run(result):
     else:
         assert set(sibling["pandapower"]) == set(sibling["pypsa"])
         assert sibling["note"]
+
+
+def test_the_comparison_year_comes_from_the_run_not_from_a_fresh_config(result):
+    """A 2022 run compared against 2024 statistics would call the mismatch a
+    deviation of the model."""
+    import mali_pypsa.validate as validate
+
+    from mali_energy.config import StudyConfig
+
+    asked = []
+    original = validate.owid.balance
+
+    def record(year):
+        asked.append(year)
+        return original(year)
+
+    validate.owid.balance = record
+    try:
+        against_national_statistics(result, StudyConfig(year=2019))
+    finally:
+        validate.owid.balance = original
+    assert asked == [result.summary["year"]]
+
+
+def test_a_missing_reference_is_an_absent_comparison_not_a_failed_one(result):
+    """abs(a - b) < 0.15 * b collapses to abs(a) < 0 when b is zero."""
+    from mali_pypsa.validate import _verdict
+
+    assert _verdict(100.0, 0.0, 15) == "no reference"
+    assert _verdict(100.0, 100.0, 15) == "consistent"
+    assert _verdict(200.0, 100.0, 15) == "deviates"
+
+
+def test_an_absent_reference_is_reported_as_a_gap_in_the_checking(result):
+    from mali_pypsa.validate import Comparison, ValidationReport
+
+    report = ValidationReport(
+        comparisons=[
+            Comparison(
+                quantity="wind", model_gwh=5.0, reference_gwh=0.0,
+                basis="national total", verdict="no reference",
+            )
+        ]
+    )
+    frame = report.frame()
+    assert frame.loc[0, "verdict"] == "no reference"

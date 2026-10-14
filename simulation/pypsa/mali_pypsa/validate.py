@@ -15,7 +15,7 @@ which is the work.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 import pandas as pd
 
@@ -63,12 +63,33 @@ class ValidationReport:
         )
 
 
+def _verdict(model_gwh: float, reference_gwh: float, tolerance_pct: float) -> str:
+    """Compare within a tolerance, refusing to compare against nothing.
+
+    Written once because the obvious form -- ``abs(a - b) < 0.15 * b`` --
+    collapses to ``abs(a) < 0`` when the reference is zero or missing, so the
+    verdict is always "deviates" and the deviation prints as ``+nan %``. A
+    reference the statistics do not carry is an absent comparison, not a
+    failed one.
+    """
+    if reference_gwh <= 0:
+        return "no reference"
+    deviation = 100.0 * abs(model_gwh - reference_gwh) / reference_gwh
+    return "consistent" if deviation < tolerance_pct else "deviates"
+
+
 def against_national_statistics(
     result: DispatchResult, config: StudyConfig | None = None
 ) -> ValidationReport:
     """Compare the dispatched mix with the national electricity balance."""
+    # The year the dispatch was actually solved for. Reading it from a fresh
+    # StudyConfig would compare a 2022 run against 2024 statistics and call
+    # the mismatch a deviation of the model.
     config = config or StudyConfig()
-    balance = owid.balance(config.year)
+    year = result.summary.get("year") or config.year
+    if config.year != year:
+        config = replace(config, year=year)
+    balance = owid.balance(year)
     report = ValidationReport()
 
     share = config.utility_demand_share
@@ -87,8 +108,7 @@ def against_national_statistics(
             reference_gwh=reference_solar,
             basis="national total; essentially all Malian solar is utility scale "
                   "and on the interconnected network, so no share is applied",
-            verdict="consistent" if abs(model_solar - reference_solar) < 0.15 * reference_solar
-            else "deviates",
+            verdict=_verdict(model_solar, reference_solar, 15),
             explanation="The resource, the plant list and the capacity factors are "
                         "independent of this statistic, so agreement here is a real check.",
         )
@@ -97,14 +117,13 @@ def against_national_statistics(
     # --- hydro -----------------------------------------------------------
     model_hydro = float(by_carrier.get("hydro", 0.0))
     reference_hydro = national("hydro_electricity")
-    deviation = 100.0 * (model_hydro - reference_hydro) / max(reference_hydro, 1e-9)
     report.comparisons.append(
         Comparison(
             quantity="hydro",
             model_gwh=model_hydro,
             reference_gwh=reference_hydro,
             basis="national total",
-            verdict="consistent" if abs(deviation) < 15 else "deviates",
+            verdict=_verdict(model_hydro, reference_hydro, 15),
             explanation="The model dispatches every megawatt hour the river and "
                         "Mali's OMVS share allow, because hydro is the cheapest thing "
                         "in the merit order. A model above the statistic means either "
@@ -122,9 +141,7 @@ def against_national_statistics(
             model_gwh=model_thermal,
             reference_gwh=reference_thermal,
             basis=f"national fossil generation times the {share:.0%} utility share",
-            verdict="consistent"
-            if abs(model_thermal - reference_thermal) < 0.30 * reference_thermal
-            else "deviates",
+            verdict=_verdict(model_thermal, reference_thermal, 30),
             explanation="The national fossil figure includes the captive diesel plant "
                         "of the gold mines, which is not on the interconnected network; "
                         "the utility share is an assumption and this comparison inherits "
@@ -141,15 +158,18 @@ def against_national_statistics(
             model_gwh=model_total,
             reference_gwh=reference_total,
             basis=f"national generation times the {share:.0%} utility share",
-            verdict="consistent"
-            if abs(model_total - reference_total) < 0.25 * reference_total
-            else "deviates",
+            verdict=_verdict(model_total, reference_total, 25),
             explanation="Imports are inside the model total and outside the national "
                         "generation figure, so the model is expected to sit above it.",
         )
     )
 
     for comparison in report.comparisons:
+        if comparison.verdict == "no reference":
+            report.findings.append(
+                f"{comparison.quantity}: the national balance for {year} carries no "
+                "figure to compare against, so the model is unchecked here"
+            )
         if comparison.verdict == "deviates":
             report.findings.append(
                 f"{comparison.quantity}: model {comparison.model_gwh:,.0f} GWh against "

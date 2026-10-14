@@ -204,3 +204,48 @@ def test_a_coarse_run_says_it_cannot_check_the_solar_day(catalog):
 
 def test_a_fine_run_makes_no_such_excuse(build):
     assert not any("do not resolve the solar day" in note for note in build.notes)
+
+
+def test_an_interconnection_with_no_price_row_is_refused(catalog, monkeypatch):
+    """A missing price is not a free import.
+
+    Defaulting to zero would put the link below hydro in the merit order and
+    run it flat out all year, which the model would report without complaint.
+    """
+    import mali_pypsa.network as network
+
+    monkeypatch.setattr(network, "load_interchange_costs", dict)
+    with pytest.raises(KeyError, match="not a free import"):
+        build_network(catalog, step_hours=24, prefer_atlite=False)
+
+
+def test_the_year_reaches_the_demand_model(catalog):
+    """Snapshots in one year and a demand profile in another.
+
+    They share no timestamp, so the profile resamples to a single flat value
+    -- or to nothing at all at hourly resolution -- and the model solves
+    cleanly with the right annual energy and no shape whatsoever.
+    """
+    build = build_network(catalog, year=2023, step_hours=6, prefer_atlite=False)
+    load = build.network.loads_t.p_set["DEMAND"]
+    assert build.network.snapshots[0].year == 2023
+    assert load.nunique() > 100, "the demand profile collapsed to a flat line"
+    assert load.max() > 1.3 * load.mean()
+
+
+def test_emissions_are_derived_from_the_catalogue_that_was_built(build):
+    """Not from a freshly loaded default one, which may not know these plants."""
+    assert build.catalog is not None
+    assert set(build.network.generators.index) - {"UNSERVED"} <= (
+        set(build.catalog.generators) | set(build.catalog.interconnections)
+    )
+
+
+def test_a_link_is_classified_by_its_recorded_direction(build, catalog):
+    """Not by the sign of this year's net exchange, which is an accident."""
+    for link in catalog.interconnections.values():
+        if not link.in_service:
+            continue
+        assert link.direction in {"import", "export", "bidirectional"}
+        if link.direction == "import":
+            assert link.id in build.network.generators.index

@@ -40,7 +40,7 @@ commitment, and v0.1 says that the limit is absent.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 import pandas as pd
 import pypsa
@@ -53,7 +53,14 @@ from .costs import (
     load_costs,
     load_interchange_costs,
 )
-from .demand import DemandProfile, build_demand, check_energy_balance, resample, snapshots
+from .demand import (
+    DemandProfile,
+    build_demand,
+    check_energy_balance,
+    resample,
+    snapshot_weightings,
+    snapshots,
+)
 from .fleet import GeneratorSpec, build_fleet, check_omvs_entitlement, reservoir_budgets
 from .resource import ResourceResult, capacity_factors, check_profiles
 from .sampling import resolves_day
@@ -105,6 +112,10 @@ class BuildResult:
     resource: ResourceResult
     fleet: list[GeneratorSpec]
     notes: list[str]
+    #: The catalogue this network was built from. Carried so that anything
+    #: derived afterwards -- emission factors above all -- is derived from the
+    #: same data, rather than quietly reloading the default one.
+    catalog: GridCatalog | None = None
     #: Monthly energy, in megawatt hours, that each reservoir plant may produce.
     #: Carried on the build because it is enforced as a constraint added to the
     #: optimisation model rather than as a component attribute.
@@ -161,6 +172,13 @@ def build_network(
     catalog = catalog or load_catalog()
     config = config or StudyConfig()
     year = year or config.year
+    # The year has to reach the demand model as well as the snapshot index.
+    # Without this, --year 2023 builds 2023 snapshots around a 2024 demand
+    # series: the two indices share no timestamp, so the profile resamples to
+    # all-NaN hourly or to a single flat value when sampled, and the model
+    # solves cleanly with the right annual energy and no shape at all.
+    if config.year != year:
+        config = replace(config, year=year)
     notes: list[str] = []
 
     index = snapshots(year, step_hours=step_hours)
@@ -194,7 +212,11 @@ def build_network(
     # Each snapshot stands for step_hours of real time. Without this the
     # objective and every energy total come out divided by the sampling
     # interval, and a six-hourly run silently reports a sixth of the fuel bill.
-    n.snapshot_weightings.loc[:, :] = float(step_hours)
+    # Taken from snapshot_weightings rather than written inline so that the
+    # model and the function the tests check cannot drift apart.
+    n.snapshot_weightings.loc[:, :] = snapshot_weightings(
+        index, step_hours=step_hours
+    ).to_numpy()[:, None]
 
     for carrier, emissions in CARRIERS.items():
         n.add("Carrier", carrier, co2_emissions=emissions)
@@ -222,8 +244,20 @@ def build_network(
     for link in catalog.interconnections.values():
         if not link.in_service:
             continue
-        price = prices.get(link.id, 0.0)
-        if link.typical_import_mw >= 0:
+        if link.id not in prices:
+            # Defaulting to zero would place the link below hydro in the merit
+            # order and run it flat out. build_fleet refuses the analogous case
+            # for a generator; this is the same refusal.
+            raise KeyError(
+                f"{link.id} has no row in interchange_costs.csv. A missing price "
+                "is not a free import."
+            )
+        price = prices[link.id]
+        # Keyed off the direction the catalogue records, not off the sign of a
+        # number. A bidirectional link with a net export happens to have a
+        # negative typical exchange today; reading the sign makes the model's
+        # treatment of it an accident of this year's data.
+        if link.direction == "import":
             ceiling = (
                 link.typical_import_mw if import_basis == "contracted" else link.capacity_mw
             )
@@ -240,6 +274,14 @@ def build_network(
                 f"{link.id}: import of up to {ceiling:.0f} MW at ${price:.0f}/MWh "
                 f"({import_basis} basis; the line is rated {link.capacity_mw:.0f} MW "
                 f"and the contracted exchange is {link.typical_import_mw:.0f} MW)"
+            )
+        elif link.direction == "bidirectional" and link.typical_import_mw >= 0:
+            # Recorded as able to flow either way, with no net exchange. The
+            # model offers nothing on it: claiming import headroom on a link
+            # the catalogue does not say delivers energy would invent supply.
+            notes.append(
+                f"{link.id}: bidirectional with no net exchange recorded, so no "
+                "energy is offered on it in either direction"
             )
         elif link.id in OMVS_SETTLEMENT_LINKS and omvs_settlement == "at_the_plant":
             notes.append(
@@ -329,6 +371,7 @@ def build_network(
         resource=resource,
         fleet=fleet,
         notes=notes,
+        catalog=catalog,
         reservoir_budgets=budgets,
     )
 

@@ -138,7 +138,20 @@ def solve(
     )
     unserved_cost = float(result.cost_usd.get(UNSERVED, 0.0))
 
-    factors = emission_factors()
+    # From the catalogue this network was built from, not the default one.
+    # With factors.get(name, 0.0), a plant the default catalogue has never
+    # heard of contributes zero carbon and the published total is understated.
+    factors = emission_factors(build.catalog)
+    missing = [
+        name
+        for name in energy_mwh.columns
+        if name not in factors and n.generators.at[name, "carrier"] == "thermal"
+    ]
+    if missing:
+        raise KeyError(
+            f"no emission factor for {', '.join(missing)}; the carbon total would "
+            "be understated by whatever they burnt"
+        )
     emissions_t = sum(
         float(energy_mwh[name].sum()) * factors.get(name, 0.0)
         for name in energy_mwh.columns

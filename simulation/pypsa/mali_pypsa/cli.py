@@ -96,8 +96,11 @@ def _cmd_compare(args: argparse.Namespace) -> int:
         )
         result = solve(build, solver_name=args.solver)
         if not result.ok:
-            print(f"{basis}: did not solve")
-            continue
+            # Not `continue`: a comparison table with a row missing is worse
+            # than no table, because the gap between the two bases is the
+            # whole point of the command.
+            print(f"{basis}: did not solve ({result.condition}), so nothing is written")
+            return 1
         problems = check_results(result)
         if problems:
             print(f"{basis}: failed its checks: {problems}")

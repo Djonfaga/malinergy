@@ -69,3 +69,30 @@ def test_three_hours_resolves_the_day_and_twelve_does_not():
     assert resolves_day(INDEX)
     assert resolves_day(INDEX[::3])
     assert not resolves_day(INDEX[::12])
+
+
+def test_a_target_after_the_source_raises():
+    """The first version of this guard only looked one way."""
+    series = pd.Series(1.0, index=INDEX)
+    later = pd.date_range("2025-01-01", "2025-12-31 23:00", freq="h", tz="UTC")[::6]
+    with pytest.raises(ValueError, match="do not overlap"):
+        downsample(series, later)
+
+
+def test_a_target_before_the_source_raises_too():
+    """Everything after the last snapshot lands *in* it, so it looked like a hit.
+
+    A 2023 index against a 2024 series does not return nothing; it returns one
+    flat value for the whole year, which a model will happily solve.
+    """
+    series = pd.Series(1.0, index=INDEX)
+    earlier = pd.date_range("2023-01-01", "2023-12-31 23:00", freq="h", tz="UTC")[::6]
+    with pytest.raises(ValueError, match="do not overlap"):
+        downsample(series, earlier)
+
+
+def test_the_ordinary_end_of_year_overhang_is_not_an_error():
+    """An hourly year ends at 23:00 and its last daily snapshot covers the day."""
+    series = pd.Series(1.0, index=INDEX)
+    daily = INDEX[::24]
+    assert downsample(series, daily).notna().all()

@@ -256,6 +256,17 @@ carries.
   climatology, and says so in the provider field of every result. That
   describes a typical Malian year, not 2024. `mali-pypsa cutout` builds the
   ERA5 cutout where credentials exist, and the provider field then changes.
+- **The ERA5 path has not been run end to end.** It is written and its call
+  into atlite was corrected after review — the conversion must ask for a
+  capacity-factor *time series*, since the plain flag returns a time-averaged
+  field and yields a scalar per plant — but neither atlite nor Copernicus
+  credentials exist in the environment this was built in, so no run has
+  exercised it. Treat it as untested until someone with credentials runs
+  `mali-pypsa cutout` followed by `solve`. A data or input failure there falls
+  back to clear-sky with a warning and the provider field saying so; a
+  programming error is now allowed to propagate rather than be absorbed into
+  that same fallback, because serving geometry to someone who paid for
+  reanalysis is worse than a traceback.
 - **Imported energy is counted as carbon free.** It is not: the Ivorian system
   is largely gas fired. Every emission figure here is the carbon of Malian
   plant diluted over Malian and imported energy alike, and any saving that

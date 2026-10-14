@@ -141,10 +141,25 @@ def load_interchange_costs(directory: Path | None = None) -> dict[str, float]:
     return prices
 
 
+#: Thermal fuels the cost table carries a row for. Anything else is refused
+#: rather than mapped to the nearest one.
+THERMAL_FUELS = {"hfo": "thermal_hfo", "diesel": "thermal_diesel"}
+
+
 def cost_key(technology: str, fuel: str) -> str:
-    """Map a catalogue generator onto a row of the cost table."""
+    """Map a catalogue generator onto a row of the cost table.
+
+    A thermal fuel with no row of its own is an error. Falling through to
+    distillate would give a future gas or biomass plant diesel's price and
+    diesel's carbon, and the model would run and report on it.
+    """
     if technology == "thermal":
-        return "thermal_hfo" if fuel == "hfo" else "thermal_diesel"
+        if fuel not in THERMAL_FUELS:
+            raise KeyError(
+                f"no cost row for thermal fuel {fuel!r}; add one to costs.csv "
+                f"rather than letting it be priced as {', '.join(THERMAL_FUELS)}"
+            )
+        return THERMAL_FUELS[fuel]
     return technology
 
 

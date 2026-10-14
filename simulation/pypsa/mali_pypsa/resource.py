@@ -155,22 +155,34 @@ def atlite_capacity_factors(
         )
     cutout = atlite.Cutout(path=str(path))
 
+    # capacity_factor=True returns the *time-averaged* field, one number per
+    # grid cell. Selecting a cell from it and calling to_pandas gives a scalar,
+    # not a year. The timeseries flag is the one that keeps the time axis, and
+    # getting this wrong is invisible until the index assignment below fails.
+    capacity_factor = cutout.pv(
+        panel=PANEL,
+        orientation={"slope": tilt, "azimuth": azimuth},
+        shapes=None,
+        capacity_factor_timeseries=True,
+    )
+
     profiles: dict[str, pd.Series] = {}
     for generator in catalog.generators.values():
         if generator.technology != "solar":
             continue
-        # A one-cell layout at the plant's coordinates: the conversion is run on
-        # the grid cell the plant actually sits in.
-        capacity_factor = cutout.pv(
-            panel=PANEL,
-            orientation={"slope": tilt, "azimuth": azimuth},
-            shapes=None,
-            capacity_factor=True,
-        )
+        # The conversion above does not depend on the plant, so it is run once
+        # and each plant takes the grid cell it actually sits in. Kita, Segou
+        # and Sikasso are in different cloud regimes, and that spread is what
+        # makes a distributed fleet smoother than a single site.
         cell = capacity_factor.sel(
             x=generator.longitude, y=generator.latitude, method="nearest"
         )
         series = cell.to_pandas()
+        if not isinstance(series, pd.Series):
+            raise TypeError(
+                "the cutout conversion returned a scalar rather than a time "
+                "series; capacity_factor_timeseries is what keeps the time axis"
+            )
         series.index = pd.to_datetime(series.index)
         profiles[generator.id] = series.clip(0.0, 1.0)
     return profiles
@@ -244,7 +256,12 @@ def capacity_factors(
                     for name, series in profiles.items()
                 }
                 return ResourceResult(profiles=aligned, provider=f"atlite/era5 ({path.name})")
-            except Exception as error:
+            except (OSError, ValueError, KeyError) as error:
+                # Data and input problems fall back, with the provider field
+                # saying so. A TypeError or AttributeError is a bug in the
+                # conversion above and is allowed to propagate: silently
+                # serving clear-sky geometry to someone who paid for ERA5 is
+                # worse than a traceback.
                 warnings.append(f"atlite conversion failed ({error}); falling back")
         else:
             warnings.append(

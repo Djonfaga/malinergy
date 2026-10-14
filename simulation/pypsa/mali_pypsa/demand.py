@@ -26,7 +26,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-import numpy as np
 import pandas as pd
 
 from mali_energy.config import TIMEZONE, StudyConfig
@@ -206,6 +205,3 @@ def check_energy_balance(profile: DemandProfile, tolerance: float = 0.01) -> lis
     return problems
 
 
-def unserved_price_series(index: pd.DatetimeIndex, price: float) -> np.ndarray:
-    """A flat price for unserved energy, as an array the optimiser can take."""
-    return np.full(len(index), float(price))

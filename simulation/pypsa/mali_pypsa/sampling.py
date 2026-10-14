@@ -51,9 +51,10 @@ def downsample(series: pd.Series, index: pd.DatetimeIndex) -> pd.Series:
     holes: a hole in a capacity factor becomes an unexplained megawatt hour.
 
     Source timestamps before the first snapshot belong to no interval and are
-    dropped. That is right when the two indices cover the same period and wrong
-    when they do not, so a target that shares nothing with the source raises
-    rather than returning a year of silent zeros.
+    dropped; timestamps after the last one are absorbed into it, which is why
+    a one-sided check is not enough. A target that does not overlap the source
+    raises in either direction, rather than returning a year of silent zeros
+    one way and a single flat value the other.
     """
     if not len(index):
         return pd.Series(dtype=float, index=index)
@@ -71,21 +72,32 @@ def downsample(series: pd.Series, index: pd.DatetimeIndex) -> pd.Series:
     # Label each hour of the source with the snapshot that covers it, then take
     # the mean per snapshot. searchsorted is used rather than resample so that
     # the windows follow the snapshot index itself and not a calendar grid.
-    position = index.searchsorted(aligned.index, side="right") - 1
-    inside = position >= 0
-    if not inside.any():
+    # Checked on the periods themselves rather than on what survives bucketing,
+    # because everything after the last snapshot lands *in* the last snapshot
+    # and so looks like a hit.
+    if aligned.index[-1] < index[0] or aligned.index[0] > index[-1]:
         raise ValueError(
             "the series and the snapshot index do not overlap: the series runs "
             f"{aligned.index[0]} to {aligned.index[-1]} and the snapshots run "
-            f"{index[0]} to {index[-1]}. Interpolating across that gap would "
-            "invent a year of data."
+            f"{index[0]} to {index[-1]}. Resampling across that gap would invent "
+            "a year of data -- a flat value, or nothing at all, depending on "
+            "which way round they sit."
         )
-    dropped = int((~inside).sum())
-    if dropped > 0.01 * len(aligned):
+
+    position = index.searchsorted(aligned.index, side="right") - 1
+    inside = position >= 0
+    before = int((~inside).sum())
+    after = int((aligned.index > index[-1]).sum())
+    step = step_hours(index)
+    # One interval's worth of overhang at the end is the ordinary case: an
+    # hourly year ends at 23:00 and its last daily snapshot covers that whole
+    # day. More than that means the two indices are misaligned.
+    tolerance = max(0.01 * len(aligned), step)
+    if before > tolerance or after > tolerance:
         raise ValueError(
-            f"{dropped} of {len(aligned)} values fall before the first snapshot and "
-            "would be dropped. The snapshot index does not start where the series "
-            "does, so an energy total taken from the result would be wrong."
+            f"{before} values fall before the first snapshot and {after} after the "
+            "last. The snapshot index does not line up with the series, so an "
+            "energy total taken from the result would be wrong."
         )
     grouped = aligned[inside].groupby(index[position[inside]]).mean()
     return grouped.reindex(index).interpolate(limit_direction="both")
